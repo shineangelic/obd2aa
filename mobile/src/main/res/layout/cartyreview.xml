@@ -73,5 +73,7 @@
                 android:textStyle="normal|bold" />
 
         </TableRow>
+
     </TableLayout>
+
 </LinearLayout>

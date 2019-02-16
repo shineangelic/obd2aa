@@ -17,7 +17,6 @@
             android:visibility="visible"
             android:weightSum="1">
 
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -59,15 +58,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-
                     android:text="@string/arch_width"
-                    android:textSize="16sp"
-
-                    />
+                    android:textSize="16sp" />
 
                 <EditText
                     android:id="@+id/arch_width"
-
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
@@ -77,7 +72,6 @@
                     android:textSize="16sp" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -99,9 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker"
-
-                    />
+                    android:onClick="showcolorpicker" />
 
             </LinearLayout>
 
@@ -150,6 +142,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:onClick="showcolorpicker" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -173,6 +166,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:onClick="showcolorpicker" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -196,8 +190,8 @@
                     android:layout_height="match_parent"
                     android:layout_weight="3"
                     android:onClick="showcolorpicker" />
-            </LinearLayout>
 
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -212,9 +206,7 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:text="@string/layout_style"
-                    android:textSize="16sp"
-
-                    />
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/layout_style_spinner"
@@ -223,7 +215,6 @@
                     android:layout_weight="2" />
 
             </LinearLayout>
-
 
             <LinearLayout
                 android:id="@+id/parrent_container"
@@ -239,6 +230,7 @@
                     android:layout_gravity="center"
                     android:onClick="doPreview"
                     android:text="@string/preview" />
+
             </LinearLayout>
 
         </LinearLayout>
@@ -257,6 +249,9 @@
                 android:text="@string/notorque"
                 android:textAlignment="center"
                 android:textSize="20sp" />
+
         </LinearLayout>
+
     </FrameLayout>
+
 </ScrollView>

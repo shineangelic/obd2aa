@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -32,10 +31,10 @@
             android:tag="collapsed">
 
         </ImageButton>
+
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -47,7 +46,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="PID:"
-
             android:textSize="16sp" />
 
         <EditText
@@ -64,7 +62,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -87,9 +84,7 @@
 
     </LinearLayout>
 
-
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -113,9 +108,7 @@
 
     </LinearLayout>
 
-
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -186,7 +179,6 @@
 
     </LinearLayout>
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -200,9 +192,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/show_needle"
-            android:textSize="16sp"
-
-            />
+            android:textSize="16sp" />
 
         <CheckBox
             android:id="@+id/showneedle"
@@ -267,7 +257,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:orientation="horizontal">
 
         <TextView
@@ -277,7 +266,6 @@
             android:gravity="center_vertical"
             android:text="@string/show_text"
             android:textSize="16sp" />
-        android:gravity="center_vertical"
 
         <CheckBox
             android:id="@+id/showtext"
@@ -341,7 +329,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -367,7 +354,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -390,7 +376,6 @@
             android:text="90" />
 
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -418,7 +403,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -497,7 +481,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -522,7 +505,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -547,7 +529,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">

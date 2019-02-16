@@ -5,7 +5,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -15,9 +14,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/front_left"
-            android:textSize="16sp"
-
-            />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/front_left_pressure"
@@ -33,7 +30,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -43,9 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/front_right"
-            android:textSize="16sp"
-
-            />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/front_right_pressure"
@@ -61,7 +55,6 @@
     </LinearLayout>
 
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -71,9 +64,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/rear_left"
-            android:textSize="16sp"
-
-            />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/rear_left_pressure"
@@ -88,9 +79,7 @@
 
     </LinearLayout>
 
-
     <LinearLayout
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -100,9 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/rear_right"
-            android:textSize="16sp"
-
-            />
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/rear_right_pressure"

@@ -6,5 +6,6 @@
     <TableLayout
         android:id="@+id/tv_log"
         android:layout_width="800dp"
-        android:layout_height="480dp"></TableLayout>
+        android:layout_height="480dp" />
+
 </FrameLayout>

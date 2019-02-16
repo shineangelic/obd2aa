@@ -2,15 +2,12 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
     android:id="@+id/activity_odb2_a"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="uk.co.boconi.emil.odb2aa.ODB2AA">
 
-
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
+    <TableLayout
         android:id="@+id/tv_log"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -23,10 +20,6 @@
         tools:layout_constraintBottom_creator="1"
         tools:layout_constraintLeft_creator="1"
         tools:layout_constraintRight_creator="1"
-        tools:layout_constraintTop_creator="1">
-
-
-    </TableLayout>
-
+        tools:layout_constraintTop_creator="1" />
 
 </android.support.constraint.ConstraintLayout>
