@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.preference;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -69,6 +69,12 @@ import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 import uk.co.boconi.emil.obd2aa.Helpers.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
+import uk.co.boconi.emil.obd2aa.model.ItemData;
+import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
+import uk.co.boconi.emil.obd2aa.model.PidList;
+import uk.co.boconi.emil.obd2aa.ui.activity.PreviewActivity;
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.ui.SpinnerAdapter;
 
 import static java.lang.Integer.parseInt;
 
@@ -804,8 +810,7 @@ public class AppSettings extends AppCompatActivity {
 
     }
 
-    protected void updateview(String position, int i) {
-
+    public void updateview(String position, int i) {
         for (PidList d : pidlist) {
             if (d.getPidName() != null && d.getPidName().equalsIgnoreCase(position)) {
                 Log.d("OBD2AA", "Item possition: " + d.getShortPidName() + d.getMaxValue() + d.getMinValue() + "unit:" + d.getUnit());
@@ -816,7 +821,6 @@ public class AppSettings extends AppCompatActivity {
 
                 TextView tv = (TextView) lp.findViewWithTag("gaugetitle_" + i);
                 tv.setText("Gauge " + i + " - " + d.getShortPidName() + ": ");
-
 
                 editor.putString("gaugepid_" + i, d.getPid());
 
@@ -837,7 +841,6 @@ public class AppSettings extends AppCompatActivity {
                 editor.putBoolean("locked_" + i, false);
                 editor.apply();
             }
-
         }
     }
 
@@ -870,8 +873,6 @@ public class AppSettings extends AppCompatActivity {
                         et.setText(files[0]);
                     }
                 });
-
-
             }
         };
     }
@@ -883,7 +884,6 @@ public class AppSettings extends AppCompatActivity {
                 Log.d("HU", "Caller tag: " + v.getTag());
                 final String i = v.getTag().toString().split("_")[1];
                 new PIDSearch(AppSettings.this, pidlist, i, AppSettings.this, null);
-
             }
         };
     }
@@ -1123,7 +1123,6 @@ public class AppSettings extends AppCompatActivity {
                 new DownloadHelper(2, this, 1);
             }
         }
-
     }
 
     public void doPreview(View view) {
@@ -1151,4 +1150,5 @@ public class AppSettings extends AppCompatActivity {
         msg.arg1 = type;
         handler.sendMessage(msg);
     }
+
 }

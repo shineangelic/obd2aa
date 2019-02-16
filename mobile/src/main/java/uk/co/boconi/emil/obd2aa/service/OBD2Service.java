@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.service;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -58,26 +58,31 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
+import uk.co.boconi.emil.obd2aa.auto.CarNotificationSoundPlayer;
 import uk.co.boconi.emil.obd2aa.Helpers.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
 import uk.co.boconi.emil.obd2aa.Helpers.NearbyCameras;
 import uk.co.boconi.emil.obd2aa.Helpers.isCameraInWay;
 import uk.co.boconi.emil.obd2aa.Helpers.myGeoDecoder;
+import uk.co.boconi.emil.obd2aa.OBD2AA;
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.PIDToFetch;
+import uk.co.boconi.emil.obd2aa.util.UnitConverter;
 
 import static java.lang.Integer.parseInt;
-import static uk.co.boconi.emil.obd2aa.SunSet.Calculate_Sunset_Sunrise;
+import static uk.co.boconi.emil.obd2aa.util.SunSet.Calculate_Sunset_Sunrise;
 
 /**
  * Created by Emil on 31/08/2017.
  */
-public class OBD2_Background extends Service {
+public class OBD2Service extends Service {
 
     public static boolean isdebugging;
-    static volatile boolean isrunning;
+    public static volatile boolean isrunning;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final IBinder mBinder = new LocalBinder();
     public boolean ecuconnected = true;
-    protected ITorqueService torqueService;
+    public ITorqueService torqueService;
     SharedPreferences.Editor editor;
     NotificationManager mNotifyMgr;
     private OBD2AA mOBD2AA = null;
@@ -434,7 +439,7 @@ public class OBD2_Background extends Service {
                                                         if (isdebugging)
                                                             Log.d("OBD2-APP", "PID BEFORE CONVERSION" + currpid.getPID()[0] + " unit: " + currpid.getUnit() + " value= " + myvals[index] + "last updated at: " + myupdates[index]);
 
-                                                        myvals[index] = UnitConvertHelper.ConvertValue(myvals[index], currpid.getUnit());
+                                                        myvals[index] = UnitConverter.ConvertValue(myvals[index], currpid.getUnit());
                                                     }
 
                                                     /* - Don't mess around with it, let user adjust min/max from preferences!
@@ -473,7 +478,7 @@ public class OBD2_Background extends Service {
                                                 currpid.putLastFetch(myupdates[0]);
                                                 if (mOBD2AA != null) {
                                                     if (currpid.getNeedsConversion())
-                                                        myvals[0] = UnitConvertHelper.ConvertValue(myvals[0], currpid.getUnit());
+                                                        myvals[0] = UnitConverter.ConvertValue(myvals[0], currpid.getUnit());
 
 
                                                     if (myvals[0] > currpid.getMaxValue() && !currpid.getPID()[0].equalsIgnoreCase("ff1201") && !currpid.getPID()[0].equalsIgnoreCase("ff1203") && !currpid.getPID()[0].equalsIgnoreCase("ff1207")) {
@@ -589,7 +594,7 @@ public class OBD2_Background extends Service {
                             if (prefs.getBoolean("monitorcoolant", false)) { //If we should monitor coolant
                                 float coolantval = torqueService.getPIDValues(fuelpid)[1];
                                 if (!celsius)
-                                    coolantval = UnitConvertHelper.ConvertValue(coolantval, "°C");
+                                    coolantval = UnitConverter.ConvertValue(coolantval, "°C");
 
                                 if (!warm_engine && coolantval >= warm_engine_degree) {
                                     Log.d("OBD2AA", "Should show the engine temp warning.");
@@ -625,7 +630,7 @@ public class OBD2_Background extends Service {
 
     }
 
-    protected String getUnit(String unit) {
+    public String getUnit(String unit) {
         if (torqueService == null)
             return "";
 
@@ -658,7 +663,7 @@ public class OBD2_Background extends Service {
 
                 }
                 if (needsconversion) {
-                    int max = Math.round(UnitConvertHelper.ConvertValue(Float.parseFloat(info[3]), units[i]));
+                    int max = Math.round(UnitConverter.ConvertValue(Float.parseFloat(info[3]), units[i]));
 
                     if (!prefs.getBoolean("locked_" + (i + 1), false) && prefs.getFloat("maxval_" + (i + 1), 0) != max) {
                         if (mOBD2AA != null)
@@ -667,7 +672,7 @@ public class OBD2_Background extends Service {
                         editor.putFloat("maxval_" + (i + 1), max);
                         editor.apply();
                     }
-                    int min = Math.round(UnitConvertHelper.ConvertValue(Float.parseFloat(info[4]), units[i]));
+                    int min = Math.round(UnitConverter.ConvertValue(Float.parseFloat(info[4]), units[i]));
                     if (!prefs.getBoolean("locked_" + (i + 1), false) && prefs.getFloat("minval_" + (i + 1), 0) != min) {
                         if (mOBD2AA != null)
                             mOBD2AA.update_gauge_min((i + 1), min);
@@ -718,13 +723,13 @@ public class OBD2_Background extends Service {
                 .setActionIconResId(actionicon)
                 .setBackgroundColor(Color.WHITE)
                 .setNightBackgroundColor(Color.DKGRAY)
-                .setThumbnail(BitmapFactory.decodeResource(OBD2_Background.this.getResources(), thumbnail))
+                .setThumbnail(BitmapFactory.decodeResource(OBD2Service.this.getResources(), thumbnail))
                 .build();
 
         NotificationCompat.Builder mynot = new NotificationCompat.Builder(getApplicationContext())
                 .setContentTitle(Title)
                 .setContentText(Subtitle)
-                .setLargeIcon(BitmapFactory.decodeResource(OBD2_Background.this.getResources(), thumbnail))
+                .setLargeIcon(BitmapFactory.decodeResource(OBD2Service.this.getResources(), thumbnail))
                 .setSmallIcon(actionicon)
                 .extend(paramString2);
 
@@ -737,7 +742,7 @@ public class OBD2_Background extends Service {
     protected void showNotification(String Title, String Subtitle, int actionicon, Bitmap thumbnail, int cameraid) {
 
 
-        Intent intent = new Intent(this, OBD2_Background.class);
+        Intent intent = new Intent(this, OBD2Service.class);
         intent.setAction("stop.camera.uk.co.boconi.emil.obd2aa");
         intent.putExtra("camerid", cameraid);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(), 0, intent, 0);
@@ -893,7 +898,7 @@ public class OBD2_Background extends Service {
                 }
 
                 if (!playSound) {
-                    CarNotificationSoundPlayer soundPlayer = new CarNotificationSoundPlayer(OBD2_Background.this, sound_to_play);
+                    CarNotificationSoundPlayer soundPlayer = new CarNotificationSoundPlayer(OBD2Service.this, sound_to_play);
                     soundPlayer.play();
                 } else {
                     MediaPlayer mp = MediaPlayer.create(this, sound_to_play);
@@ -946,9 +951,9 @@ public class OBD2_Background extends Service {
     }
 
     public class LocalBinder extends Binder {
-        OBD2_Background getService() {
+        public OBD2Service getService() {
             // Return this instance of LocalService so clients can call public methods
-            return OBD2_Background.this;
+            return OBD2Service.this;
         }
     }
 }

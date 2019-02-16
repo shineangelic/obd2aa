@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 
-import uk.co.boconi.emil.obd2aa.AppSettings;
+import uk.co.boconi.emil.obd2aa.preference.AppSettings;
 
 /**
  * Created by Emil on 19/10/2017.

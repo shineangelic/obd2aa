@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -15,6 +15,11 @@ import android.widget.EditText;
 import android.widget.ListView;
 
 import java.util.List;
+
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.PidList;
+import uk.co.boconi.emil.obd2aa.preference.AppSettings;
+import uk.co.boconi.emil.obd2aa.preference.TpmsSettings;
 
 import static java.lang.Integer.parseInt;
 

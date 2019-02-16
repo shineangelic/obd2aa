@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.auto;
 
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;

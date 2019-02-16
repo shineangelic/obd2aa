@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui.activity;
 
 import android.app.Activity;
 import android.content.SharedPreferences;
@@ -14,6 +14,11 @@ import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
 
 import java.util.Random;
+
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.ui.ArcProgress;
+import uk.co.boconi.emil.obd2aa.ui.ArchAnimaton;
+import uk.co.boconi.emil.obd2aa.ui.DrawGauges;
 
 /**
  * Created by Emil on 21/09/2017.

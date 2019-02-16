@@ -10,7 +10,7 @@
 
         <!-- Left column -->
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
@@ -19,7 +19,7 @@
 
         <!-- Right column -->
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
@@ -34,7 +34,7 @@
             android:layout_centerInParent="true"
             android:layout_gravity="center">
 
-            <uk.co.boconi.emil.obd2aa.ArcProgress
+            <uk.co.boconi.emil.obd2aa.ui.ArcProgress
                 android:id="@+id/top_gauge"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -42,7 +42,7 @@
                 android:layout_marginTop="15dp"
                 android:tag="gauge_3" />
 
-            <uk.co.boconi.emil.obd2aa.ArcProgress
+            <uk.co.boconi.emil.obd2aa.ui.ArcProgress
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"

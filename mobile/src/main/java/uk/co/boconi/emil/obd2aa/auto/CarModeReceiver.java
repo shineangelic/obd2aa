@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.auto;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import uk.co.boconi.emil.obd2aa.service.OBD2Service;
 
 /**
  * Created by Emil on 31/08/2017.
@@ -18,7 +20,7 @@ public class CarModeReceiver extends BroadcastReceiver {
         if (intent.getAction().equalsIgnoreCase("android.app.action.ENTER_CAR_MODE")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             Log.d("OBD2AA", "Should start the service now");
-            Intent starts = new Intent(context, uk.co.boconi.emil.obd2aa.OBD2_Background.class);
+            Intent starts = new Intent(context, OBD2Service.class);
             context.startService(starts);
 
             if (prefs.getBoolean("fartkontrol", false)) {
@@ -28,7 +30,7 @@ public class CarModeReceiver extends BroadcastReceiver {
             }
         } else {
             Log.d("OBD2AA", "Should stop the service now");
-            OBD2_Background.isrunning = false;
+            OBD2Service.isrunning = false;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             if (prefs.getBoolean("fartkontrol", false)) {

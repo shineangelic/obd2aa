@@ -12,14 +12,14 @@
         android:layout_weight="3"
         android:orientation="vertical">
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
             android:tag="gauge_2" />
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|center_vertical"
@@ -37,7 +37,7 @@
         android:layout_weight="2"
         android:orientation="horizontal">
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
@@ -54,14 +54,14 @@
         android:layout_weight="3"
         android:orientation="vertical">
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|center_vertical"
             android:layout_weight="1"
             android:tag="gauge_4" />
 
-        <uk.co.boconi.emil.obd2aa.ArcProgress
+        <uk.co.boconi.emil.obd2aa.ui.ArcProgress
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal|center_vertical"

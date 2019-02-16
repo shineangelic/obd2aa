@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui;
 
 /**
  * Created by Emil on 19/09/2017.
@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import uk.co.boconi.emil.obd2aa.model.ItemData;
+import uk.co.boconi.emil.obd2aa.R;
 
 public class SpinnerAdapter extends ArrayAdapter<ItemData> {
 

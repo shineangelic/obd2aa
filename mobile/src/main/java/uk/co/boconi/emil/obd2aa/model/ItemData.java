@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.model;
 
 /**
  * Created by Emil on 19/09/2017.

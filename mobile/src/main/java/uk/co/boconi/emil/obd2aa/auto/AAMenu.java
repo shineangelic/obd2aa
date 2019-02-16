@@ -1,7 +1,6 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.auto;
 
 import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.android.apps.auto.sdk.CarActivity;
 import com.google.android.apps.auto.sdk.MenuAdapter;
@@ -12,6 +11,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import uk.co.boconi.emil.obd2aa.service.MyOdbService;
+import uk.co.boconi.emil.obd2aa.service.MyTpmsService;
 
 public class AAMenu extends MenuAdapter {
 
@@ -57,7 +59,7 @@ public class AAMenu extends MenuAdapter {
 
     public void onMenuItemClicked(int paramInt) {
         Intent intent;
-        if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMS"))
+        if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMSActivity"))
             intent = new Intent(mActivity.getApplicationContext(), MyTpmsService.class);
         else
             intent = new Intent(mActivity.getApplicationContext(), MyOdbService.class);

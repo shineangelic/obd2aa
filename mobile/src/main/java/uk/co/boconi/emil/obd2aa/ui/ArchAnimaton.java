@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;

@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui.activity;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -21,10 +21,15 @@ import com.google.android.apps.auto.sdk.MenuController;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.co.boconi.emil.obd2aa.service.OBD2Service;
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.auto.AAMenu;
+import uk.co.boconi.emil.obd2aa.util.UnitConverter;
+
 /**
  * Created by Emil on 24/09/2017.
  */
-public class TPMS extends CarActivity {
+public class TPMSActivity extends CarActivity {
 
     private boolean isRunning;
     private String myunit;
@@ -50,15 +55,14 @@ public class TPMS extends CarActivity {
     };
 
     private boolean isDemoMode;
-    private OBD2_Background mOBD2Service;
+    private OBD2Service mOBD2Service;
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
-            OBD2_Background.LocalBinder binder = (OBD2_Background.LocalBinder) service;
+            OBD2Service.LocalBinder binder = (OBD2Service.LocalBinder) service;
             mOBD2Service = binder.getService();
             if (mOBD2Service.ecuconnected)
                 monitor_pressure();
-
         }
 
         public void onServiceDisconnected(ComponentName name) {
@@ -92,18 +96,18 @@ public class TPMS extends CarActivity {
         CarUiController paramMap = getCarUiController();
         paramMap.getStatusBarController().setDayNightStyle(2);
         Map<String, String> MenuMap = new HashMap<String, String>();
-        MenuMap.put("tpms", "TPMS");
+        MenuMap.put("tpms", "TPMSActivity");
         MenuMap.put("obd2", "OBD2");
         AAMenu xxx = new AAMenu();
         xxx.a(MenuMap);
         MenuController localMenuController = paramMap.getMenuController();
         localMenuController.setRootMenuAdapter(xxx);
         localMenuController.showMenuButton();
-        xxx.update_mActivity(TPMS.this);
-        Intent intent = new Intent(TPMS.this, OBD2_Background.class);
+        xxx.update_mActivity(TPMSActivity.this);
+        Intent intent = new Intent(TPMSActivity.this, OBD2Service.class);
         startService(intent);
         bindService(intent, mConnection, 0);
-        Log.d("OBD2AA", "TPMS View loaded.");
+        Log.d("OBD2AA", "TPMSActivity View loaded.");
     }
 
     private void monitor_pressure() {
@@ -135,7 +139,7 @@ public class TPMS extends CarActivity {
                             float[] tpmsvals = mOBD2Service.torqueService.getPIDValues(tpms_pids);
                             if (needsconversion)
                                 for (int i = 0; i < 4; i++) {
-                                    tpmsvals[i] = UnitConvertHelper.ConvertValue(tpmsvals[i], unit);
+                                    tpmsvals[i] = UnitConverter.ConvertValue(tpmsvals[i], unit);
                                 }
                             Message msg = new Message();
                             msg.obj = tpmsvals;

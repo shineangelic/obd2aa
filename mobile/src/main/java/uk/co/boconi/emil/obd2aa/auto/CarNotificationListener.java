@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.auto;
 
 
 import android.app.Notification;
@@ -13,6 +13,8 @@ import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
 
 import com.google.android.apps.auto.sdk.notification.CarNotificationExtender;
+
+import uk.co.boconi.emil.obd2aa.R;
 
 
 /**
@@ -37,7 +39,7 @@ public class CarNotificationListener extends NotificationListenerService {
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-        // if (!OBD2_Background.isrunning)
+        // if (!OBD2Service.isrunning)
         //  return;
         int icon = 0;
         String pack = sbn.getPackageName();

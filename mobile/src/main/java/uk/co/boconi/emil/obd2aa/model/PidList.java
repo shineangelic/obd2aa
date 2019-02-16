@@ -1,12 +1,8 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.model;
 
 import org.json.JSONObject;
 
-/**
- * Created by Emil on 31/08/2017.
- */
-
-class PidList {
+public class PidList {
 
     public String longName;
     public String shortName;

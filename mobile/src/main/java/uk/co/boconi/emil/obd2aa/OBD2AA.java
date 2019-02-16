@@ -31,6 +31,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.co.boconi.emil.obd2aa.auto.AAMenu;
+import uk.co.boconi.emil.obd2aa.service.OBD2Service;
+import uk.co.boconi.emil.obd2aa.ui.ArcProgress;
+import uk.co.boconi.emil.obd2aa.ui.ArchAnimaton;
+import uk.co.boconi.emil.obd2aa.ui.DrawGauges;
+
 import static java.lang.Integer.parseInt;
 
 
@@ -40,7 +46,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
     private SharedPreferences prefs;
 
     private int gauge_number;
-    private OBD2_Background mOBD2Service;
+    private OBD2Service mOBD2Service;
     private String[] pids;
     private long[] lastpiddraw;
     private boolean isshowing;
@@ -89,7 +95,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
 
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
-            OBD2_Background.LocalBinder binder = (OBD2_Background.LocalBinder) service;
+            OBD2Service.LocalBinder binder = (OBD2Service.LocalBinder) service;
             mOBD2Service = binder.getService();
             mOBD2Service.OBD2AA_update(OBD2AA.this);
             if (prefs.getBoolean("custombg", false)) {
@@ -160,7 +166,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 if (mOBD2Service != null)
                     mOBD2Service.OBD2AA_update(OBD2AA.this);
                 else {
-                    Intent intent = new Intent(OBD2AA.this, OBD2_Background.class);
+                    Intent intent = new Intent(OBD2AA.this, OBD2Service.class);
                     intent.putExtra("muststartTorque", true);
                     startService(intent);
                     bindService(intent, mConnection, 0);
@@ -184,7 +190,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 */
                 paramMap.getStatusBarController().setDayNightStyle(2);
                 Map<String, String> MenuMap = new HashMap<String, String>();
-                MenuMap.put("tpms", "TPMS");
+                MenuMap.put("tpms", "TPMSActivity");
                 MenuMap.put("obd2", "OBD2");
                 AAMenu xxx = new AAMenu();
                 xxx.a(MenuMap);

@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import uk.co.boconi.emil.obd2aa.OBD2_Background;
+import uk.co.boconi.emil.obd2aa.service.OBD2Service;
 
 /**
  * Created by Emil on 20/10/2017.
@@ -40,7 +40,7 @@ public class isCameraInWay {
         LatLng car_possiotion = new LatLng(location.getLatitude(), location.getLongitude());
         List<LatLng> latLngs = new ArrayList<>(); // Construct a tirangle for camera view/range
         latLngs.add(car_possiotion);
-        if (OBD2_Background.isdebugging) {
+        if (OBD2Service.isdebugging) {
             Log.d("OBD2AA", "Car possition: " + car_possiotion);
             Log.d("OBD2AA", "Tirangle 1:" + SphericalUtil.computeOffset(car_possiotion, seacrhdistance, (double) (location.getBearing() - 15)));
             Log.d("OBD2AA", "Tirangle 2:" + SphericalUtil.computeOffset(car_possiotion, seacrhdistance, (double) (location.getBearing() + 15)));
@@ -50,11 +50,11 @@ public class isCameraInWay {
 
         for (NearbyCameras currentcamera : nearbycamera) {
             if (PolyUtil.containsLocation(currentcamera.getlat(), currentcamera.getlng(), latLngs, false) || PolyUtil.isLocationOnEdge(new LatLng(currentcamera.getlat(), currentcamera.getlng()), latLngs, false, 10)) {
-                if (OBD2_Background.isdebugging)
+                if (OBD2Service.isdebugging)
                     Log.d("OBD2AA", "Found camera in way.... Checking bearing! Camera bearing: " + currentcamera.getbearing() + " Car bearing is: " + location.getBearing());
 
                 if (location.getBearing() >= currentcamera.getbearing() - 45 && location.getBearing() <= currentcamera.getbearing() + 45) {
-                    if (OBD2_Background.isdebugging)
+                    if (OBD2Service.isdebugging)
                         Log.d("OBD2AA", "Found camera in way.... Camera bearing: " + currentcamera.getbearing() + " Car bearing is: " + location.getBearing());
                     camera = currentcamera;
                     return;
@@ -77,7 +77,7 @@ public class isCameraInWay {
         if (PolyUtil.containsLocation(camera.getlat(), camera.getlng(), latLngs, false) || PolyUtil.isLocationOnEdge(new LatLng(camera.getlat(), camera.getlng()), latLngs, false, 10)) {
             if (location.getBearing() >= camera.getbearing() - 45 && location.getBearing() <= camera.getbearing() + 45) {
                 camera_in_way = true;
-                if (OBD2_Background.isdebugging)
+                if (OBD2Service.isdebugging)
                     Log.d("OBD2AA", "Found still in way....");
             }
         }

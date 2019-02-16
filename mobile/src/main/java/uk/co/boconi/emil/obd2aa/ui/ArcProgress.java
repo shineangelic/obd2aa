@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.ui;
 
 /**
  * Created by Emil on 12/08/2017.
@@ -22,6 +22,9 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
+
+import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.util.ViewUtils;
 
 
 /**
