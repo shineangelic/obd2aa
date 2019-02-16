@@ -1,6 +1,6 @@
 package uk.co.boconi.emil.obd2aa.util;
 
-public class UnitConverter {
+public class UnitConversionUtil {
 
     public static float ConvertValue(float val, String unit) {
         if (unit.equalsIgnoreCase("km/h"))

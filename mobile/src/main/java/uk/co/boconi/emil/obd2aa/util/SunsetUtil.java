@@ -1,20 +1,12 @@
 package uk.co.boconi.emil.obd2aa.util;
 
-
 import android.location.Location;
 
 import java.util.Calendar;
 
-/**
- * Created by Emil on 27/09/2017.
- */
+public class SunsetUtil {
 
-public class SunSet {
-
-    private static double sunrise;
-    private static double sunset;
-
-    public static int Calculate_Sunset_Sunrise(Location loc) {
+    public static int calculateSunsetSunrise(Location loc) {
         Calendar rightNow = Calendar.getInstance();
 
         double latitude = loc.getLatitude();
@@ -37,9 +29,7 @@ public class SunSet {
         double cosH1;
         double cosH2;
 
-
         day = rightNow.get(Calendar.DAY_OF_YEAR);
-
 
         t1 = day + ((6 - (longitude / 15)) / 24);
         t2 = day + ((18 - (longitude / 15)) / 24);
@@ -72,16 +62,14 @@ public class SunSet {
         else if (RA2 < 0)
             RA2 = RA2 + 360;
 
-
         RA1 = (RA1 + ((Math.floor(L1 / (90))) * 90 - (Math.floor(RA1 / 90)) * 90)) / 15;
         RA2 = (RA2 + ((Math.floor(L2 / (90))) * 90 - (Math.floor(RA2 / 90)) * 90)) / 15;
-
 
         cosH1 = (Math.cos(zenith * D2R) - (0.39782 * Math.sin(L1 * D2R) * Math.sin(latitude * D2R))) / (Math.cos(Math.asin(0.39782 * Math.sin(L1 * D2R))) * Math.cos(latitude * D2R));
         cosH2 = (Math.cos(zenith * D2R) - (0.39782 * Math.sin(L2 * D2R) * Math.sin(latitude * D2R))) / (Math.cos(Math.asin(0.39782 * Math.sin(L2 * D2R))) * Math.cos(latitude * D2R));
 
-        sunrise = (360 - R2D * Math.acos(cosH1)) / 15;
-        sunset = R2D * Math.acos(cosH2) / 15;
+        double sunrise = (360 - R2D * Math.acos(cosH1)) / 15;
+        double sunset = R2D * Math.acos(cosH2) / 15;
 
         sunrise = sunrise + RA1 - (0.06571 * t1) - 6.622;
         sunset = sunset + RA2 - (0.06571 * t2) - 6.622;
@@ -100,7 +88,6 @@ public class SunSet {
             UT2 = UT2 + 24;
         }
 
-
         int offsetFromUtc = rightNow.get(Calendar.ZONE_OFFSET) / 1000;
         int winterSummerOffset = rightNow.get(Calendar.DST_OFFSET) / 1000;
 
@@ -108,7 +95,6 @@ public class SunSet {
         sunset = UT2 * 3600 + offsetFromUtc + winterSummerOffset;
 
         int now_sec = (rightNow.get(Calendar.HOUR_OF_DAY) * 3600 + rightNow.get(Calendar.MINUTE) * 60 + rightNow.get(Calendar.SECOND));
-        //Log.d("HU-SERVICE","Night mode:"+nightmode+", isnightset="+isnightset+", now_sec:"+now_sec+",sunset: "+sunset+",sunrise: "+sunrise + "m_stopping: "+m_stopping);
         if (now_sec < sunrise || now_sec > sunset)
             return 2;
         else if (now_sec > sunrise && now_sec < sunset)

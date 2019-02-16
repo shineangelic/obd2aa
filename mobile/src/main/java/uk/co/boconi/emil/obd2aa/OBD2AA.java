@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -32,13 +31,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.boconi.emil.obd2aa.auto.AAMenu;
-import uk.co.boconi.emil.obd2aa.service.OBD2Service;
-import uk.co.boconi.emil.obd2aa.ui.ArcProgress;
-import uk.co.boconi.emil.obd2aa.ui.ArchAnimaton;
-import uk.co.boconi.emil.obd2aa.ui.DrawGauges;
+import uk.co.boconi.emil.obd2aa.service.AppService;
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcAnimation;
+import uk.co.boconi.emil.obd2aa.ui.gauge.DrawGauges;
 
 import static java.lang.Integer.parseInt;
-
 
 public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEventListener {
 
@@ -46,10 +44,11 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
     private SharedPreferences prefs;
 
     private int gauge_number;
-    private OBD2Service mOBD2Service;
+    private AppService mAppService;
     private String[] pids;
     private long[] lastpiddraw;
     private boolean isshowing;
+
     public final Handler handler = new Handler(Looper.getMainLooper()) {
         public void handleMessage(Message msg) {
             if (!isshowing)
@@ -76,13 +75,11 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 myvals = arcProgress.getMax();
             }
 
-            ArchAnimaton animation = new ArchAnimaton(arcProgress, myvals);
+            ArcAnimation animation = new ArcAnimation(arcProgress, myvals);
             if (animation == null)
                 return;
             animation.setDuration(170);
             arcProgress.startAnimation(animation);
-
-
         }
     };
     private boolean useDigital;
@@ -95,9 +92,9 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
 
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
-            OBD2Service.LocalBinder binder = (OBD2Service.LocalBinder) service;
-            mOBD2Service = binder.getService();
-            mOBD2Service.OBD2AA_update(OBD2AA.this);
+            AppService.LocalBinder binder = (AppService.LocalBinder) service;
+            mAppService = binder.getService();
+            mAppService.OBD2AA_update(OBD2AA.this);
             if (prefs.getBoolean("custombg", false)) {
                 File imgFile = new File(prefs.getString("custom_bg_path", ""));
                 if (imgFile.exists()) {
@@ -110,35 +107,19 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
             }
             TableLayout mywrapper = (TableLayout) findViewById(R.id.tv_log);
             DrawGauges gauge = new DrawGauges();
-            gauge.SetUpandDraw(OBD2AA.this, mywrapper.getWidth(), mywrapper.getHeight(), mywrapper, mOBD2Service);
+            gauge.SetUpandDraw(OBD2AA.this, mywrapper.getWidth(), mywrapper.getHeight(), mywrapper, mAppService);
 
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            mOBD2Service = null;
+            mAppService = null;
         }
-
     };
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        isshowing = false;
-        Log.d("OBD2-APP", "On Pause");
-        mOBD2Service.OBD2AA_update(null);
-        if (mConnection != null)
-            try {
-                unbindService(mConnection);
-            } catch (Exception E) {
-                Log.e("OBD2AA", "Cannot unbind something which is not registered.");
-            }
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_odb2_a);
-
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         gauge_number = prefs.getInt("gauge_number", 0);
@@ -150,7 +131,20 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
         isdebugging = prefs.getBoolean("debugging", false);
         //d().findViewById();
         Log.d("OBD2AA", "OBD2AA APP STARTED, BEFORE BIND.");
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        isshowing = false;
+        Log.d("OBD2-APP", "On Pause");
+        mAppService.OBD2AA_update(null);
+        if (mConnection != null)
+            try {
+                unbindService(mConnection);
+            } catch (Exception E) {
+                Log.e("OBD2AA", "Cannot unbind something which is not registered.");
+            }
     }
 
     @Override
@@ -162,11 +156,10 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
         vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-
-                if (mOBD2Service != null)
-                    mOBD2Service.OBD2AA_update(OBD2AA.this);
+                if (mAppService != null)
+                    mAppService.OBD2AA_update(OBD2AA.this);
                 else {
-                    Intent intent = new Intent(OBD2AA.this, OBD2Service.class);
+                    Intent intent = new Intent(OBD2AA.this, AppService.class);
                     intent.putExtra("muststartTorque", true);
                     startService(intent);
                     bindService(intent, mConnection, 0);
@@ -189,20 +182,20 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 }
                 */
                 paramMap.getStatusBarController().setDayNightStyle(2);
-                Map<String, String> MenuMap = new HashMap<String, String>();
-                MenuMap.put("tpms", "TPMSActivity");
+                Map<String, String> MenuMap = new HashMap<>();
+                MenuMap.put("tpms", "TPMS");
                 MenuMap.put("obd2", "OBD2");
                 AAMenu xxx = new AAMenu();
                 xxx.a(MenuMap);
                 MenuController localMenuController = paramMap.getMenuController();
                 localMenuController.setRootMenuAdapter(xxx);
                 localMenuController.showMenuButton();
-                xxx.update_mActivity(OBD2AA.this);
+                xxx.updateActivity(OBD2AA.this);
 
 
                 isshowing = true;
 
-                if (mOBD2Service != null) {
+                if (mAppService != null) {
                     if (prefs.getBoolean("custombg", false)) {
                         File imgFile = new File(prefs.getString("custom_bg_path", ""));
                         if (imgFile.exists()) {
@@ -216,13 +209,11 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                     TableLayout mywrapper = (TableLayout) findViewById(R.id.tv_log);
                     mywrapper.removeAllViews();
                     DrawGauges gauge = new DrawGauges();
-                    gauge.SetUpandDraw(OBD2AA.this, mywrapper.getWidth(), mywrapper.getHeight(), mywrapper, mOBD2Service);
+                    gauge.SetUpandDraw(OBD2AA.this, mywrapper.getWidth(), mywrapper.getHeight(), mywrapper, mAppService);
                 }
-
 
                 if (!prefs.contains("def_color_selector"))
                     do_nosettings();
-
 
                 layout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
             }
@@ -232,18 +223,15 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
 
     public void do_nosettings() {
         handler.post(new Runnable() {
-                         @Override
-                         public void run() {
-                             Log.d("OBD2AA", "DO ECU CONNECTED....");
-                             TableLayout mywrapper = (TableLayout) findViewById(R.id.tv_log);
-                             FrameLayout ecunot = (FrameLayout) findViewById(R.id.NoECU);
-                             ecunot.setVisibility(View.VISIBLE);
-                             mywrapper.setVisibility(View.GONE);
-
-                         }
-
-                     }
-        );
+            @Override
+            public void run() {
+                Log.d("OBD2AA", "DO ECU CONNECTED....");
+                TableLayout mywrapper = (TableLayout) findViewById(R.id.tv_log);
+                FrameLayout ecunot = (FrameLayout) findViewById(R.id.NoECU);
+                ecunot.setVisibility(View.VISIBLE);
+                mywrapper.setVisibility(View.GONE);
+            }
+        });
     }
 
     public void update_gauge_max(final int i, final float i1) {
@@ -311,7 +299,6 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 else
                     warn2 = parseInt(prefs.getString("warn2level_" + i, "0"));
                 if (isdebugging) {
-
                     Log.d("OBD2", "Gauge : " + i + " Min Level: " + i1 + " Warning level 1: " + Math.round(warn1 * i1 / 100) + "Warning level 2: " + Math.round(warn2 * i1 / 100));
                     Log.d("OBD2", "Min Level: " + i1 + " Warning 1 stored value: " + prefs.getString("warn1level_" + i, "0") + " Warning 2 stored value: " + prefs.getString("warn2level_" + i, "0"));
                 }
@@ -321,9 +308,9 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
         });
     }
 
-
     @Override
     public void onSensorChanged(int i, long l, float[] floats, byte[] bytes) {
         Log.d("OBD2AA", "Sensor changed: " + i + " timestamp: " + l + ", byte: " + bytes[0]);
     }
+
 }

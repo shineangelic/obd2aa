@@ -1,11 +1,8 @@
 package uk.co.boconi.emil.obd2aa.ui;
 
-/**
- * Created by Emil on 19/09/2017.
- */
-
 import android.app.Activity;
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +12,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import uk.co.boconi.emil.obd2aa.model.ItemData;
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.ItemData;
 
 public class SpinnerAdapter extends ArrayAdapter<ItemData> {
 
@@ -31,7 +28,8 @@ public class SpinnerAdapter extends ArrayAdapter<ItemData> {
         this.groupid = groupid;
     }
 
-    public View getView(int position, View convertView, ViewGroup parent) {
+    @NonNull
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         View itemView = inflater.inflate(groupid, parent, false);
         ImageView imageView = (ImageView) itemView.findViewById(R.id.img);
         imageView.setImageResource(list.get(position).getImageId());
@@ -40,7 +38,7 @@ public class SpinnerAdapter extends ArrayAdapter<ItemData> {
         return itemView;
     }
 
-    public View getDropDownView(int position, View convertView, ViewGroup parent) {
+    public View getDropDownView(int position, View convertView, @NonNull ViewGroup parent) {
         return getView(position, convertView, parent);
     }
 

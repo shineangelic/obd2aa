@@ -15,14 +15,11 @@ import org.json.JSONException;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
-import uk.co.boconi.emil.obd2aa.model.PidList;
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.PidList;
+import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
 
-/**
- * Created by Emil on 22/09/2017.
- */
-public class TpmsSettings extends AppCompatActivity {
+public class TPMSPreferences extends AppCompatActivity {
 
     List<PidList> pidlist = new ArrayList<>();
     SharedPreferences prefs;

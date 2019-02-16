@@ -16,13 +16,9 @@ import android.widget.TableLayout;
 import java.util.Random;
 
 import uk.co.boconi.emil.obd2aa.R;
-import uk.co.boconi.emil.obd2aa.ui.ArcProgress;
-import uk.co.boconi.emil.obd2aa.ui.ArchAnimaton;
-import uk.co.boconi.emil.obd2aa.ui.DrawGauges;
-
-/**
- * Created by Emil on 21/09/2017.
- */
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcAnimation;
+import uk.co.boconi.emil.obd2aa.ui.gauge.DrawGauges;
 
 public class PreviewActivity extends Activity {
 
@@ -59,7 +55,7 @@ public class PreviewActivity extends Activity {
                 myvals = arcProgress.getMax();
             }
 
-            ArchAnimaton animation = new ArchAnimaton(arcProgress, myvals);
+            ArcAnimation animation = new ArcAnimation(arcProgress, myvals);
             if (animation == null)
                 return;
             animation.setDuration(200);

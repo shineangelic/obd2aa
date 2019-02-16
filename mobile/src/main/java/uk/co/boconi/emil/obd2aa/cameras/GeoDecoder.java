@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.Helpers;
+package uk.co.boconi.emil.obd2aa.cameras;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -23,17 +23,12 @@ import java.util.List;
 
 import uk.co.boconi.emil.obd2aa.R;
 
-/**
- * Created by Emil on 23/10/2017.
- */
-
-public class myGeoDecoder {
+public class GeoDecoder {
 
     private Context mcontext;
     private Bitmap road;
-    private NotificationCompat.Builder mynot;
 
-    public myGeoDecoder(final Context context) {
+    public GeoDecoder(final Context context) {
         mcontext = context;
         road = BitmapFactory.decodeResource(context.getResources(), R.drawable.road);
     }
@@ -71,7 +66,7 @@ public class myGeoDecoder {
                         .setThumbnail(road)
                         .build();
 
-                mynot = new NotificationCompat.Builder(mcontext)
+                NotificationCompat.Builder mynot = new NotificationCompat.Builder(mcontext)
                         .setContentTitle(street)
                         .setSubText(speedlimit)
                         .setLargeIcon(road)

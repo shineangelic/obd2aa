@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.Helpers;
+package uk.co.boconi.emil.obd2aa.cameras;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,10 +11,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Emil on 19/10/2017.
- */
 
 public class CameraDataBaseHelper extends SQLiteOpenHelper {
 

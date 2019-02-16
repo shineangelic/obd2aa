@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.Helpers;
+package uk.co.boconi.emil.obd2aa.cameras;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,10 +13,6 @@ import java.net.URL;
 import java.net.URLConnection;
 
 import uk.co.boconi.emil.obd2aa.preference.AppSettings;
-
-/**
- * Created by Emil on 19/10/2017.
- */
 
 public class DownloadHelper {
 

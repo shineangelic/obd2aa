@@ -1,8 +1,5 @@
 package uk.co.boconi.emil.obd2aa.model;
 
-/**
- * Created by Emil on 19/09/2017.
- */
 public class ItemData {
 
     private String text;
@@ -11,9 +8,11 @@ public class ItemData {
 
     public ItemData(String text, Integer imageId, int gaugeNumber) {
         this.text = text;
-        if (imageId != null)
-            this.imageId = imageId;
         this.gaugeNumber = gaugeNumber;
+
+        if (imageId != null) {
+            this.imageId = imageId;
+        }
     }
 
     public String getText() {

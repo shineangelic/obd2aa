@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.Helpers;
+package uk.co.boconi.emil.obd2aa.cameras;
 
 import android.util.Log;
 
@@ -11,9 +11,6 @@ import uk.co.boconi.emil.obd2aa.R;
 
 import static java.lang.Integer.parseInt;
 
-/**
- * Created by Emil on 20/10/2017.
- */
 
 public class NearbyCameras {
 
@@ -169,4 +166,5 @@ public class NearbyCameras {
     public String toString() {
         return "Camera pos: " + this.lat + "," + this.lng + ", Bearing: " + this.bearing + ", distance: " + this.DistanceToCam;
     }
+
 }

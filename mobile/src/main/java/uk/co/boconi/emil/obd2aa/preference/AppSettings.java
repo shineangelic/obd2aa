@@ -67,20 +67,16 @@ import java.util.Set;
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
-import uk.co.boconi.emil.obd2aa.Helpers.CameraDataBaseHelper;
-import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
-import uk.co.boconi.emil.obd2aa.model.ItemData;
-import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
-import uk.co.boconi.emil.obd2aa.model.PidList;
-import uk.co.boconi.emil.obd2aa.ui.activity.PreviewActivity;
+import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
+import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.ItemData;
+import uk.co.boconi.emil.obd2aa.model.PidList;
+import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
 import uk.co.boconi.emil.obd2aa.ui.SpinnerAdapter;
+import uk.co.boconi.emil.obd2aa.ui.activity.PreviewActivity;
 
 import static java.lang.Integer.parseInt;
-
-/**
- * Created by Emil on 14/08/2017.
- */
 
 public class AppSettings extends AppCompatActivity {
     private final Handler handler = new Handler() {
@@ -134,7 +130,6 @@ public class AppSettings extends AppCompatActivity {
                     return;
                 }
             } catch (RemoteException e) {
-
             }
             Log.d("HU", "Have Torque service connection!");
 
@@ -165,17 +160,11 @@ public class AppSettings extends AppCompatActivity {
                     }
                 pidlist.add(new PidList(pidsdesc[i]));
             }
-
-
         }
-
-        ;
 
         public void onServiceDisconnected(ComponentName name) {
             torqueService = null;
         }
-
-        ;
     };
 
     @Override
@@ -408,9 +397,7 @@ public class AppSettings extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
             }
-
         });
-
 
         EditText et = (EditText) findViewById(R.id.arch_width);
         et.setTag("arch_width");
@@ -422,7 +409,6 @@ public class AppSettings extends AppCompatActivity {
         findViewById(R.id.warn2_color_selector).setBackgroundColor(warn2_color_selector);
         findViewById(R.id.text_color_selector).setBackgroundColor(text_color);
         findViewById(R.id.needle_color_selector).setBackgroundColor(needle_color);
-
 
         Spinner myspinner = (Spinner) findViewById(R.id.gaugeselector);
         dont_do_loop_update = true;
@@ -443,26 +429,19 @@ public class AppSettings extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parentView) {
                 // your code here
             }
-
         });
-
-        ColorMode colorMode = ColorMode.RGB;
 
         intent = new Intent();
         intent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
         startService(intent);
 
-
         if (prefs.getBoolean("ShowSpeedCamWarrning", true) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) { //only download if enabled!
             new DownloadHelper(1, this, 3000);
             new DownloadHelper(2, this, 0);
         }
-
     }
 
     public void showcolorpicker(final View V) {
-
-
         if (V.getId() == R.id.def_color_selector)
             mColor = def_color_selector;
         else if (V.getId() == R.id.warn1_color_selector)
@@ -611,7 +590,6 @@ public class AppSettings extends AppCompatActivity {
             LinearLayout lp = (LinearLayout) findViewById(R.id.parrent_container);
             lp.removeView(lp.findViewWithTag("gaugewrapper_" + i));
         }
-
     }
 
     public void showgaugesettings(int fromgauge, int newgauge) {
@@ -985,9 +963,9 @@ public class AppSettings extends AppCompatActivity {
         if (item.getItemId() == R.id.pref_menu)
             i = new Intent(getBaseContext(), AppPreferences.class);
         else if (item.getItemId() == R.id.speedcam_menu)
-            i = new Intent(getBaseContext(), AppCameraSettings.class);
+            i = new Intent(getBaseContext(), CameraPreferences.class);
         else if (item.getItemId() == R.id.tpms_menu) {
-            i = new Intent(getBaseContext(), TpmsSettings.class);
+            i = new Intent(getBaseContext(), TPMSPreferences.class);
             String listSerializedToJson = new Gson().toJson(pidlist);
             i.putExtra("pidlist", listSerializedToJson);
         }

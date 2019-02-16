@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.ui;
+package uk.co.boconi.emil.obd2aa.ui.gauge;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,18 +15,14 @@ import android.widget.TableRow;
 
 import java.io.File;
 
-import uk.co.boconi.emil.obd2aa.service.OBD2Service;
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.service.AppService;
 
 import static java.lang.Integer.parseInt;
 
-/**
- * Created by Emil on 01/09/2017.
- */
-
 public class DrawGauges {
 
-    public void SetUpandDraw(Context mcontext, int totalwidth, int totalheight, TableLayout mywrapper, OBD2Service mOBD2) {
+    public void SetUpandDraw(Context mcontext, int totalwidth, int totalheight, TableLayout mywrapper, AppService mOBD2) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mcontext);
         int def_color_selector = prefs.getInt("def_color_selector", 0);
         int warn1_color_selector = prefs.getInt("def_warn1_selector", 0);

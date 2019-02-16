@@ -1,11 +1,7 @@
 package uk.co.boconi.emil.obd2aa.model;
 
-
-/**
- * Created by Emil on 01/09/2017.
- */
-
 public class PIDToFetch {
+
     public String PID;
     public Boolean isActive;
     public long LastFetch;
@@ -79,4 +75,5 @@ public class PIDToFetch {
     public float getMinValue() {
         return this.minValue;
     }
+
 }

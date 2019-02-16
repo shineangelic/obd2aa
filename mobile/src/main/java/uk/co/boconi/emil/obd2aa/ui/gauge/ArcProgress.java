@@ -1,8 +1,4 @@
-package uk.co.boconi.emil.obd2aa.ui;
-
-/**
- * Created by Emil on 12/08/2017.
- */
+package uk.co.boconi.emil.obd2aa.ui.gauge;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -26,11 +22,8 @@ import android.view.View;
 import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.util.ViewUtils;
 
-
-/**
- * Created by bruce on 11/6/14.
- */
 public class ArcProgress extends View {
+
     private static final String INSTANCE_STATE = "saved_instance";
     private static final String INSTANCE_STROKE_WIDTH = "stroke_width";
     private static final String INSTANCE_SUFFIX_TEXT_SIZE = "suffix_text_size";

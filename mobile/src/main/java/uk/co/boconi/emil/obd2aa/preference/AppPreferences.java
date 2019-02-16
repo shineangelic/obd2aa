@@ -24,10 +24,6 @@ import java.io.File;
 
 import uk.co.boconi.emil.obd2aa.R;
 
-/**
- * Created by Emil on 17/09/2017.
- */
-
 public class AppPreferences extends PreferenceActivity {
 
     private static Context mContext;

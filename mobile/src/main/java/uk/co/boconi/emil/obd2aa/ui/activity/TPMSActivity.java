@@ -21,14 +21,11 @@ import com.google.android.apps.auto.sdk.MenuController;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.boconi.emil.obd2aa.service.OBD2Service;
 import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.auto.AAMenu;
-import uk.co.boconi.emil.obd2aa.util.UnitConverter;
+import uk.co.boconi.emil.obd2aa.service.AppService;
+import uk.co.boconi.emil.obd2aa.util.UnitConversionUtil;
 
-/**
- * Created by Emil on 24/09/2017.
- */
 public class TPMSActivity extends CarActivity {
 
     private boolean isRunning;
@@ -55,18 +52,18 @@ public class TPMSActivity extends CarActivity {
     };
 
     private boolean isDemoMode;
-    private OBD2Service mOBD2Service;
+    private AppService mAppService;
     private ServiceConnection mConnection = new ServiceConnection() {
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
-            OBD2Service.LocalBinder binder = (OBD2Service.LocalBinder) service;
-            mOBD2Service = binder.getService();
-            if (mOBD2Service.ecuconnected)
+            AppService.LocalBinder binder = (AppService.LocalBinder) service;
+            mAppService = binder.getService();
+            if (mAppService.ecuconnected)
                 monitor_pressure();
         }
 
         public void onServiceDisconnected(ComponentName name) {
-            mOBD2Service = null;
+            mAppService = null;
         }
     };
 
@@ -95,19 +92,19 @@ public class TPMSActivity extends CarActivity {
             myunit = " PSI";
         CarUiController paramMap = getCarUiController();
         paramMap.getStatusBarController().setDayNightStyle(2);
-        Map<String, String> MenuMap = new HashMap<String, String>();
-        MenuMap.put("tpms", "TPMSActivity");
+        Map<String, String> MenuMap = new HashMap<>();
+        MenuMap.put("tpms", "TPMS");
         MenuMap.put("obd2", "OBD2");
         AAMenu xxx = new AAMenu();
         xxx.a(MenuMap);
         MenuController localMenuController = paramMap.getMenuController();
         localMenuController.setRootMenuAdapter(xxx);
         localMenuController.showMenuButton();
-        xxx.update_mActivity(TPMSActivity.this);
-        Intent intent = new Intent(TPMSActivity.this, OBD2Service.class);
+        xxx.updateActivity(TPMSActivity.this);
+        Intent intent = new Intent(TPMSActivity.this, AppService.class);
         startService(intent);
         bindService(intent, mConnection, 0);
-        Log.d("OBD2AA", "TPMSActivity View loaded.");
+        Log.d("OBD2AA", "TPMS View loaded.");
     }
 
     private void monitor_pressure() {
@@ -126,20 +123,20 @@ public class TPMSActivity extends CarActivity {
                         Message msg = new Message();
                         msg.obj = tpmsvals;
                         handler.sendMessage(msg);
-                    } else if (!isDemoMode && mOBD2Service.torqueService != null) {
+                    } else if (!isDemoMode && mAppService.torqueService != null) {
                         try {
                             if (unit == null) {
-                                String[] desc = mOBD2Service.torqueService.getPIDInformation(tpms_pids);
-                                if (!desc[0].split(",")[2].equalsIgnoreCase(mOBD2Service.torqueService.getPreferredUnit(desc[0].split(",")[2]))) {
+                                String[] desc = mAppService.torqueService.getPIDInformation(tpms_pids);
+                                if (!desc[0].split(",")[2].equalsIgnoreCase(mAppService.torqueService.getPreferredUnit(desc[0].split(",")[2]))) {
                                     needsconversion = true;
                                 }
-                                unit = mOBD2Service.torqueService.getPreferredUnit(desc[0].split(",")[2]);
+                                unit = mAppService.torqueService.getPreferredUnit(desc[0].split(",")[2]);
                                 myunit = unit;
                             }
-                            float[] tpmsvals = mOBD2Service.torqueService.getPIDValues(tpms_pids);
+                            float[] tpmsvals = mAppService.torqueService.getPIDValues(tpms_pids);
                             if (needsconversion)
                                 for (int i = 0; i < 4; i++) {
-                                    tpmsvals[i] = UnitConverter.ConvertValue(tpmsvals[i], unit);
+                                    tpmsvals[i] = UnitConversionUtil.ConvertValue(tpmsvals[i], unit);
                                 }
                             Message msg = new Message();
                             msg.obj = tpmsvals;

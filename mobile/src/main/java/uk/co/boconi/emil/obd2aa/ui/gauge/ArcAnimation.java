@@ -1,20 +1,16 @@
-package uk.co.boconi.emil.obd2aa.ui;
+package uk.co.boconi.emil.obd2aa.ui.gauge;
 
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-/**
- * Created by Emil on 18/08/2017.
- */
-
-public class ArchAnimaton extends Animation {
+public class ArcAnimation extends Animation {
 
     private ArcProgress circle;
 
     private float oldAngle;
     private float newAngle;
 
-    public ArchAnimaton(ArcProgress circle, float newAngle) {
+    public ArcAnimation(ArcProgress circle, float newAngle) {
         this.oldAngle = circle.getProgress();
         this.newAngle = newAngle;
         this.circle = circle;

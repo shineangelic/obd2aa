@@ -12,11 +12,7 @@ import android.view.MenuInflater;
 
 import uk.co.boconi.emil.obd2aa.R;
 
-/**
- * Created by Emil on 17/09/2017.
- */
-
-public class AppCameraSettings extends PreferenceActivity {
+public class CameraPreferences extends PreferenceActivity {
 
     private AppCompatDelegate mDelegate;
 

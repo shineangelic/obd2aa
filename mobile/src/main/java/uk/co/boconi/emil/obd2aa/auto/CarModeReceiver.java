@@ -7,11 +7,8 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import uk.co.boconi.emil.obd2aa.service.OBD2Service;
+import uk.co.boconi.emil.obd2aa.service.AppService;
 
-/**
- * Created by Emil on 31/08/2017.
- */
 public class CarModeReceiver extends BroadcastReceiver {
 
     @Override
@@ -20,17 +17,18 @@ public class CarModeReceiver extends BroadcastReceiver {
         if (intent.getAction().equalsIgnoreCase("android.app.action.ENTER_CAR_MODE")) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             Log.d("OBD2AA", "Should start the service now");
-            Intent starts = new Intent(context, OBD2Service.class);
+            Intent starts = new Intent(context, AppService.class);
             context.startService(starts);
 
             if (prefs.getBoolean("fartkontrol", false)) {
                 Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("nu.fartkontrol.app");
-                if (LaunchIntent != null)
+                if (LaunchIntent != null) {
                     context.startActivity(LaunchIntent);
+                }
             }
         } else {
             Log.d("OBD2AA", "Should stop the service now");
-            OBD2Service.isrunning = false;
+            AppService.isrunning = false;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             if (prefs.getBoolean("fartkontrol", false)) {

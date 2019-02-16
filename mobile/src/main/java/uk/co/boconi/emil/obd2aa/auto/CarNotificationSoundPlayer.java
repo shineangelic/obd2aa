@@ -18,8 +18,9 @@ public class CarNotificationSoundPlayer {
 
     private final static int PLAYBACK_START_DELAY_MS = 300;
 
-    private final @RawRes
-    int mSoundResource;
+    @RawRes
+    private final int mSoundResource;
+
     private final Context mContext;
     private final Handler mHandler;
     private final CarConnectionCallback mCarConnectionCallback = new CarConnectionCallback() {
@@ -86,7 +87,6 @@ public class CarNotificationSoundPlayer {
     }
 
     public void play() {
-        Log.d(TAG, "Starting");
         Car car = Car.createCar(mContext, mCarConnectionCallback);
         car.connect();
     }

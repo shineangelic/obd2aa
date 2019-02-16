@@ -12,17 +12,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import uk.co.boconi.emil.obd2aa.service.MyOdbService;
-import uk.co.boconi.emil.obd2aa.service.MyTpmsService;
+import uk.co.boconi.emil.obd2aa.service.OBD2Service;
+import uk.co.boconi.emil.obd2aa.service.TPMSService;
 
 public class AAMenu extends MenuAdapter {
 
     private CarActivity mActivity;
     private AAMenu.a b;
-    private List<MenuItem> c = new ArrayList<>();
+    private List<MenuItem> menuItems = new ArrayList<>();
 
-    public void update_mActivity(CarActivity caractivity) {
-        this.mActivity = caractivity;
+    public void updateActivity(CarActivity activity) {
+        this.mActivity = activity;
     }
 
     public void a(AAMenu.a parama) {
@@ -31,7 +31,7 @@ public class AAMenu extends MenuAdapter {
 
     public void a(Map<String, String> paramMap) {
         if ((paramMap != null) && (!paramMap.isEmpty())) {
-            this.c = new ArrayList<>(paramMap.size());
+            this.menuItems = new ArrayList<>(paramMap.size());
             Iterator<Entry<String, String>> mparamMap = paramMap.entrySet().iterator();
             while (mparamMap.hasNext()) {
                 Object localObject = mparamMap.next();
@@ -40,7 +40,7 @@ public class AAMenu extends MenuAdapter {
                         .setType(0)
                         .setTitle((CharSequence) ((Map.Entry) localObject).getValue())
                         .build();
-                this.c.add((MenuItem) localObject);
+                this.menuItems.add((MenuItem) localObject);
             }
         }
     }
@@ -50,19 +50,19 @@ public class AAMenu extends MenuAdapter {
     }
 
     public MenuItem getMenuItem(int paramInt) {
-        return this.c.get(paramInt);
+        return this.menuItems.get(paramInt);
     }
 
     public int getMenuItemCount() {
-        return this.c.size();
+        return this.menuItems.size();
     }
 
     public void onMenuItemClicked(int paramInt) {
         Intent intent;
-        if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMSActivity"))
-            intent = new Intent(mActivity.getApplicationContext(), MyTpmsService.class);
+        if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMS"))
+            intent = new Intent(mActivity.getApplicationContext(), TPMSService.class);
         else
-            intent = new Intent(mActivity.getApplicationContext(), MyOdbService.class);
+            intent = new Intent(mActivity.getApplicationContext(), OBD2Service.class);
         mActivity.startCarActivity(intent);
     }
 
