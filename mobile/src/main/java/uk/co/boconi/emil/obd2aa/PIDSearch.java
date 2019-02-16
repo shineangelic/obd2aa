@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
@@ -18,7 +17,6 @@ import android.widget.ListView;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
-import uk.co.boconi.emil.obd2aa.AppSettings;
 
 /**
  * Created by Emil on 31/08/2017.
@@ -26,11 +24,24 @@ import uk.co.boconi.emil.obd2aa.AppSettings;
 
 public class PIDSearch extends AlertDialog implements View.OnClickListener {
 
+    private static final String TAG = "OBD2AA";
+    ArrayAdapter<PidList> adapter = null;
     private ListView list;
     private EditText filterText = null;
-    ArrayAdapter<PidList> adapter = null;
-    private static final String TAG = "OBD2AA";
+    private TextWatcher filterTextWatcher = new TextWatcher() {
 
+        public void afterTextChanged(Editable s) {
+        }
+
+        public void beforeTextChanged(CharSequence s, int start, int count,
+                                      int after) {
+        }
+
+        public void onTextChanged(CharSequence s, int start, int before,
+                                  int count) {
+            adapter.getFilter().filter(s);
+        }
+    };
 
     public PIDSearch(final Context context, List<PidList> pidlist, final String i, final AppSettings mAppSettings, final TpmsSettings tpmsSettings) {
         super(context);
@@ -45,7 +56,8 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-            } });
+            }
+        });
         b.setView(alertLayout);
         b.setTitle("Select PID");
         b.setCancelable(true);
@@ -63,11 +75,11 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 ;
-                Log.d(TAG, "Selected Item is = "+list.getItemAtPosition(position) + " position: " + position + "ID: " );
-                if (mAppSettings!=null)
-                    mAppSettings.updateview(list.getItemAtPosition(position).toString(),parseInt(i));
+                Log.d(TAG, "Selected Item is = " + list.getItemAtPosition(position) + " position: " + position + "ID: ");
+                if (mAppSettings != null)
+                    mAppSettings.updateview(list.getItemAtPosition(position).toString(), parseInt(i));
                 else
-                    tpmsSettings.updateview(list.getItemAtPosition(position).toString(),parseInt(i));
+                    tpmsSettings.updateview(list.getItemAtPosition(position).toString(), parseInt(i));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                 v.clearFocus();
                 imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
@@ -76,26 +88,14 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
             }
         });
     }
+
     @Override
     public void onClick(View v) {
 
     }
-    private TextWatcher filterTextWatcher = new TextWatcher() {
 
-        public void afterTextChanged(Editable s) {
-        }
-
-        public void beforeTextChanged(CharSequence s, int start, int count,
-                                      int after) {
-        }
-
-        public void onTextChanged(CharSequence s, int start, int before,
-                                  int count) {
-            adapter.getFilter().filter(s);
-        }
-    };
     @Override
-    public void onStop(){
+    public void onStop() {
         filterText.removeTextChangedListener(filterTextWatcher);
     }
 }

@@ -28,66 +28,21 @@ import java.io.File;
 
 public class AppPreferences extends PreferenceActivity {
 
-    private AppCompatDelegate mDelegate;
     private static Context mContext;
+    private AppCompatDelegate mDelegate;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
-        mContext=this;
+        mContext = this;
         //getActionBar().show();
         getFragmentManager().beginTransaction()
-                .replace(android.R.id.content, new MyPreferenceFragment ())
+                .replace(android.R.id.content, new MyPreferenceFragment())
                 .commit();
 
 
-        }
-    public static class MyPreferenceFragment extends PreferenceFragment
-    {
-
-        private FilePickerDialog filedialog;
-
-        @Override
-        public void onCreate(final Bundle savedInstanceState)
-        {
-            super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.preference);
-            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
-            findPreference("custom_bg_path").setSummary(preferences.getString("custom_bg_path",""));
-            findPreference("custom_bg_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    DialogProperties properties = new DialogProperties();
-                    properties.selection_mode = DialogConfigs.SINGLE_MODE;
-                    properties.selection_type = DialogConfigs.FILE_SELECT;
-                    properties.root = new File(DialogConfigs.DEFAULT_DIR);
-                    properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
-                    properties.offset = new File(DialogConfigs.DEFAULT_DIR);
-                    properties.extensions = null;
-                    filedialog = new FilePickerDialog(mContext,properties);
-                    filedialog.setTitle("Select a File");
-                    filedialog.show();
-                    filedialog.setDialogSelectionListener(new DialogSelectionListener() {
-                        @Override
-                        public void onSelectedFilePaths(String[] files) {
-                            //files is the array of the paths of files selected by the Application User.
-                            Log.d("OBD2AA","Selected file"+files[0]);
-
-                            SharedPreferences.Editor editor = preferences.edit();
-                            editor.putString("custom_bg_path",files[0] );
-                            editor.commit();
-                            findPreference("custom_bg_path").setSummary(files[0]);
-
-
-                        }
-                    });
-                    return false;
-                };
-            });
-
-        }
     }
 
     @Override
@@ -113,7 +68,6 @@ public class AppPreferences extends PreferenceActivity {
     public void setContentView(@LayoutRes int layoutResID) {
         getDelegate().setContentView(layoutResID);
     }
-
 
     @Override
     protected void onPostResume() {
@@ -154,5 +108,51 @@ public class AppPreferences extends PreferenceActivity {
             mDelegate = AppCompatDelegate.create(this, null);
         }
         return mDelegate;
+    }
+
+    public static class MyPreferenceFragment extends PreferenceFragment {
+
+        private FilePickerDialog filedialog;
+
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.preference);
+            final SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+            findPreference("custom_bg_path").setSummary(preferences.getString("custom_bg_path", ""));
+            findPreference("custom_bg_path").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    DialogProperties properties = new DialogProperties();
+                    properties.selection_mode = DialogConfigs.SINGLE_MODE;
+                    properties.selection_type = DialogConfigs.FILE_SELECT;
+                    properties.root = new File(DialogConfigs.DEFAULT_DIR);
+                    properties.error_dir = new File(DialogConfigs.DEFAULT_DIR);
+                    properties.offset = new File(DialogConfigs.DEFAULT_DIR);
+                    properties.extensions = null;
+                    filedialog = new FilePickerDialog(mContext, properties);
+                    filedialog.setTitle("Select a File");
+                    filedialog.show();
+                    filedialog.setDialogSelectionListener(new DialogSelectionListener() {
+                        @Override
+                        public void onSelectedFilePaths(String[] files) {
+                            //files is the array of the paths of files selected by the Application User.
+                            Log.d("OBD2AA", "Selected file" + files[0]);
+
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putString("custom_bg_path", files[0]);
+                            editor.commit();
+                            findPreference("custom_bg_path").setSummary(files[0]);
+
+
+                        }
+                    });
+                    return false;
+                }
+
+                ;
+            });
+
+        }
     }
 }

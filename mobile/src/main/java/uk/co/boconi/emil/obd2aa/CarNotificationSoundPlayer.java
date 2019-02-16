@@ -21,19 +21,6 @@ public class CarNotificationSoundPlayer {
     int mSoundResource;
     private final Context mContext;
     private final Handler mHandler;
-
-    public CarNotificationSoundPlayer(Context context, @RawRes int soundResource) {
-        this.mSoundResource = soundResource;
-        this.mContext = context;
-        this.mHandler = new Handler(context.getMainLooper());
-    }
-
-    public void play() {
-        Log.d(TAG, "Starting");
-        Car car = Car.createCar(mContext, mCarConnectionCallback);
-        car.connect();
-    }
-
     private final CarConnectionCallback mCarConnectionCallback = new CarConnectionCallback() {
         @Override
         public void onConnected(final Car car) {
@@ -90,4 +77,16 @@ public class CarNotificationSoundPlayer {
         public void onDisconnected(Car car) {
         }
     };
+
+    public CarNotificationSoundPlayer(Context context, @RawRes int soundResource) {
+        this.mSoundResource = soundResource;
+        this.mContext = context;
+        this.mHandler = new Handler(context.getMainLooper());
+    }
+
+    public void play() {
+        Log.d(TAG, "Starting");
+        Car car = Car.createCar(mContext, mCarConnectionCallback);
+        car.connect();
+    }
 }

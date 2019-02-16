@@ -27,16 +27,15 @@ public class NearbyCameras {
     private int DistanceToCam;
     private int dbtype;
     private int cameratext = R.string.danger;
-    private boolean shownot=true;
+    private boolean shownot = true;
 
-    private boolean [] show_warrning = {false,false,false};
+    private boolean[] show_warrning = {false, false, false};
 
-    public NearbyCameras(double lat, double lng, int id, Integer bearing, String speed, String type, String street, int dbtype, double latitude, double longitude)
-    {
-        this.DistanceToCam = (int) SphericalUtil.computeDistanceBetween(new LatLng(lat,lng), new LatLng(latitude,longitude));
-        this.lat=lat;
-        this.lng=lng;
-        this.id=id;
+    public NearbyCameras(double lat, double lng, int id, Integer bearing, String speed, String type, String street, int dbtype, double latitude, double longitude) {
+        this.DistanceToCam = (int) SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), new LatLng(latitude, longitude));
+        this.lat = lat;
+        this.lng = lng;
+        this.id = id;
         if (id < 0) {
             if (bearing == null) {
                 this.bearing = -1;
@@ -48,20 +47,35 @@ public class NearbyCameras {
         } else {
             this.bearing = decodeHeading(lat, lng, bearing.intValue());
         }
-      //  Log.d("OBD2AA","Decoded heading is: " + this.bearing);
-        this.speed=speed;
-        this.type=type;
-        this.street=street;
-        this.dbtype=dbtype;
+        //  Log.d("OBD2AA","Decoded heading is: " + this.bearing);
+        this.speed = speed;
+        this.type = type;
+        this.street = street;
+        this.dbtype = dbtype;
     }
 
-    public double getlat() {return lat;}
-    public double getlng() {return lng;}
-    public int getbearing() {return bearing;}
-    public int getDbtype() { return dbtype; }
-    public int getType() {return parseInt(type);}
+    public double getlat() {
+        return lat;
+    }
+
+    public double getlng() {
+        return lng;
+    }
+
+    public int getbearing() {
+        return bearing;
+    }
+
+    public int getDbtype() {
+        return dbtype;
+    }
+
+    public int getType() {
+        return parseInt(type);
+    }
+
     public String getspeed() {
-        if(speed != null && !speed.isEmpty())
+        if (speed != null && !speed.isEmpty())
             return speed;
         else
             return "?";
@@ -88,45 +102,46 @@ public class NearbyCameras {
         return Integer.valueOf(toPlainString).intValue() + (i - Integer.valueOf(substring).intValue());
     }
 
-    public String getstreet() {return street;}
-    public void setDistanceToCam (int distance) {DistanceToCam=distance;}
-    public int getDistaceToCam () { return DistanceToCam; }
-    public void setCameratext(int textid) {cameratext=textid;}
-    public int[] geticon()
-    {
-        Log.d("OBD2AA","Db type = " + dbtype + " type = " + type);
-        if ((dbtype==1 && type.equalsIgnoreCase("1")) || (dbtype==2 && type.equalsIgnoreCase("7")) )
-        {
-            Log.d("OBD2AA","This should be a speed camera");
+    public String getstreet() {
+        return street;
+    }
+
+    public void setDistanceToCam(int distance) {
+        DistanceToCam = distance;
+    }
+
+    public int getDistaceToCam() {
+        return DistanceToCam;
+    }
+
+    public void setCameratext(int textid) {
+        cameratext = textid;
+    }
+
+    public int[] geticon() {
+        Log.d("OBD2AA", "Db type = " + dbtype + " type = " + type);
+        if ((dbtype == 1 && type.equalsIgnoreCase("1")) || (dbtype == 2 && type.equalsIgnoreCase("7"))) {
+            Log.d("OBD2AA", "This should be a speed camera");
             setCameratext(R.string.speedcam);
-            return new int[]{R.drawable.speed_camera_sam_b, R.string.speedcam,0};
-        }
-        else if ((dbtype==1 && type.equalsIgnoreCase("2")) || (dbtype==2 && type.equalsIgnoreCase("11")) )
-        {
+            return new int[]{R.drawable.speed_camera_sam_b, R.string.speedcam, 0};
+        } else if ((dbtype == 1 && type.equalsIgnoreCase("2")) || (dbtype == 2 && type.equalsIgnoreCase("11"))) {
 
-            return new int[]{R.drawable.speed_camera_sam_b,R.string.traffic_cam,1};
-        }
-        else if (dbtype==2 && type.equalsIgnoreCase("12"))
-        {
+            return new int[]{R.drawable.speed_camera_sam_b, R.string.traffic_cam, 1};
+        } else if (dbtype == 2 && type.equalsIgnoreCase("12")) {
 
-            return new int[]{R.drawable.speed_camera_sam_b,R.string.section_cam_beg,0};
-        }
-        else if (dbtype==2 && type.equalsIgnoreCase("13"))
-        {
+            return new int[]{R.drawable.speed_camera_sam_b, R.string.section_cam_beg, 0};
+        } else if (dbtype == 2 && type.equalsIgnoreCase("13")) {
 
-            return new int[]{R.drawable.speed_camera_sam_b,R.string.section_cam_over,0};
-        }
-        else if (dbtype==2 && type.equalsIgnoreCase("14"))
-        {
+            return new int[]{R.drawable.speed_camera_sam_b, R.string.section_cam_over, 0};
+        } else if (dbtype == 2 && type.equalsIgnoreCase("14")) {
 
-            return new int[]{R.drawable.speed_camera_sam_b,R.string.tunnel,0};
-        }
-        else {
-            return new int[]{R.drawable.ic_danger_r,R.string.danger,0};
+            return new int[]{R.drawable.speed_camera_sam_b, R.string.tunnel, 0};
+        } else {
+            return new int[]{R.drawable.ic_danger_r, R.string.danger, 0};
         }
     }
-    public int getstring ()
-    {
+
+    public int getstring() {
         return cameratext;
     }
 
@@ -134,12 +149,24 @@ public class NearbyCameras {
         return id;
     }
 
-    public void setShow_warrning(int i,boolean b) {show_warrning[i]=b;}
-    public boolean getShow_warrning(int i){return show_warrning[i];}
-    public void setShownot(boolean shownot){this.shownot=shownot;}
-    public boolean getShownot() {return shownot;}
+    public void setShow_warrning(int i, boolean b) {
+        show_warrning[i] = b;
+    }
+
+    public boolean getShow_warrning(int i) {
+        return show_warrning[i];
+    }
+
+    public boolean getShownot() {
+        return shownot;
+    }
+
+    public void setShownot(boolean shownot) {
+        this.shownot = shownot;
+    }
+
     @Override
-    public String toString(){
-        return "Camera pos: " + this.lat+ "," + this.lng + ", Bearing: "+this.bearing + ", distance: " + this.DistanceToCam;
+    public String toString() {
+        return "Camera pos: " + this.lat + "," + this.lng + ", Bearing: " + this.bearing + ", distance: " + this.DistanceToCam;
     }
 }

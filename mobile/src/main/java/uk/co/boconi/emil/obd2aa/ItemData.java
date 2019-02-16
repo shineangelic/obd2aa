@@ -9,22 +9,24 @@ public class ItemData {
     int imageId;
     int gaugenumbers;
 
-    public ItemData(String text, Integer imageId, int gaugenumbers){
-        this.text=text;
-        if (imageId!=null)
-            this.imageId=imageId;
-        this.gaugenumbers=gaugenumbers;
+    public ItemData(String text, Integer imageId, int gaugenumbers) {
+        this.text = text;
+        if (imageId != null)
+            this.imageId = imageId;
+        this.gaugenumbers = gaugenumbers;
     }
 
-    public String getText(){
+    public String getText() {
         return text;
     }
 
-    public int getImageId(){
+    public int getImageId() {
         return imageId;
     }
 
-    public int getGaugenumber() {return  gaugenumbers; }
+    public int getGaugenumber() {
+        return gaugenumbers;
+    }
 
 
 }

@@ -5,8 +5,7 @@ package uk.co.boconi.emil.obd2aa;
  */
 
 public class UnitConvertHelper {
-    public static float ConvertValue (float inputval, String unit)
-    {
+    public static float ConvertValue(float inputval, String unit) {
         if (unit.equalsIgnoreCase("km/h"))
             inputval = (float) (inputval / 1.60);
         else if (unit.equalsIgnoreCase("km"))
@@ -26,7 +25,7 @@ public class UnitConvertHelper {
         else if (unit.equalsIgnoreCase("kPa"))
             inputval = (float) (inputval * 0.145038);
         else if (unit.equalsIgnoreCase("l/hr"))
-            inputval=(float) (inputval * 0.219969);
+            inputval = (float) (inputval * 0.219969);
         return inputval;
     }
 }

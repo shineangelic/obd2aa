@@ -4,29 +4,15 @@ package uk.co.boconi.emil.obd2aa;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Context;
-
-import android.content.pm.PackageManager;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-
-import android.graphics.drawable.Drawable;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
-import android.widget.Toast;
-
-
-import com.google.android.apps.auto.sdk.CarToast;
 
 import com.google.android.apps.auto.sdk.notification.CarNotificationExtender;
-
 
 
 /**
@@ -46,34 +32,31 @@ public class CarnotificationListener extends NotificationListenerService {
         context = getApplicationContext();
 
     }
-    @Override
-    public void onNotificationRemoved(StatusBarNotification sbn){
 
-       //Nothing to do here
+    @Override
+    public void onNotificationRemoved(StatusBarNotification sbn) {
+
+        //Nothing to do here
     }
 
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
-       // if (!OBD2_Background.isrunning)
-          //  return;
-        int icon=0;
+        // if (!OBD2_Background.isrunning)
+        //  return;
+        int icon = 0;
         String pack = sbn.getPackageName();
-        if  (pack.equalsIgnoreCase("nu.fartkontrol.app"))
-        {
+        if (pack.equalsIgnoreCase("nu.fartkontrol.app")) {
 
-            icon=R.drawable.speed_camera_sam;
-        }
-
-        else
+            icon = R.drawable.speed_camera_sam;
+        } else
             return;
 
 
         Bundle extras = sbn.getNotification().extras;
 
 
-        if (extras.getString("android.title")==null ||  extras.getString("android.title").equalsIgnoreCase("Fartkontrol.nu"))
-        {
+        if (extras.getString("android.title") == null || extras.getString("android.title").equalsIgnoreCase("Fartkontrol.nu")) {
             //Log.d("ODB2AA","Title null or Only CamSam");
             return;
         }
@@ -82,18 +65,15 @@ public class CarnotificationListener extends NotificationListenerService {
 
         String title = "Speed Camera ahead";
         String text = extras.getString("android.title");
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(),icon);
-        if (pack.equalsIgnoreCase("nu.fartkontrol.app"))
-        {
-            title=extras.getString("android.title");
-            text=extras.getString("android.text");
-            bmp =  extras.getParcelable(Notification.EXTRA_LARGE_ICON);
-
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), icon);
+        if (pack.equalsIgnoreCase("nu.fartkontrol.app")) {
+            title = extras.getString("android.title");
+            text = extras.getString("android.text");
+            bmp = extras.getParcelable(Notification.EXTRA_LARGE_ICON);
 
 
         }
         //Log.d("OBD2AA","About to send a notification to the car...");
-
 
 
         CarNotificationExtender paramString2 = new CarNotificationExtender.Builder()
@@ -116,8 +96,7 @@ public class CarnotificationListener extends NotificationListenerService {
                 .extend(paramString2);
 
 
-        mNotifyMgr.notify(1983,mynot.build());
-
+        mNotifyMgr.notify(1983, mynot.build());
 
 
     }

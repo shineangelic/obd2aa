@@ -1,33 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="uk.co.boconi.emil.obd2aa">
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-feature android:name="android.hardware.location.gps" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-feature android:name="android.hardware.location.gps" />
 
     <application
         android:allowBackup="true"
+        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:hardwareAccelerated="false"
-        >
-        <activity android:name=".OBD2AA"/>
-        <activity android:name=".TPMS"/>
+        tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
+        <activity android:name=".OBD2AA" />
 
-        <activity  android:name=".AppPreferences" android:label="@string/pref_title" />
-        <activity  android:name=".AppCameraSettings" android:label="@string/Speed_camera_settings" />
-        <activity android:name=".TpmsSettings" android:label="@string/tpms_set_tit" />
+        <activity android:name=".TPMS" />
 
-        <activity android:name=".PreviewActivity" android:label="Preview"
+        <activity
+            android:name=".AppPreferences"
+            android:label="@string/pref_title" />
+
+        <activity
+            android:name=".AppCameraSettings"
+            android:label="@string/Speed_camera_settings" />
+
+        <activity
+            android:name=".TpmsSettings"
+            android:label="@string/tpms_set_tit" />
+
+        <activity
+            android:name=".PreviewActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="landscape"/>
+            android:label="Preview"
+            android:screenOrientation="landscape" />
+
         <activity
             android:name=".AppSettings"
             android:configChanges="keyboardHidden|orientation|screenSize"
@@ -37,7 +51,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
 
         <meta-data
             android:name="com.google.android.gms.car.application"
@@ -49,6 +62,7 @@
             android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION" />
                 <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION_OEM" />
             </intent-filter>
@@ -59,29 +73,36 @@
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>
-
                 <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION" />
                 <category android:name="com.google.android.gms.car.category.CATEGORY_PROJECTION_OEM" />
             </intent-filter>
         </service>
 
+        <service
+            android:name=".OBD2_Background"
+            android:exported="true" />
 
-        <service android:name=".OBD2_Background" android:exported="true" />
-        <service android:name=".CarnotificationListener" android:exported="false"
+        <service
+            android:name=".CarnotificationListener"
+            android:exported="false"
             android:permission="android.permission.BIND_NOTIFICATION_LISTENER_SERVICE">
             <intent-filter>
                 <action android:name="android.service.notification.NotificationListenerService" />
             </intent-filter>
         </service>
 
-       <receiver android:enabled="true" android:name=".CarModeReceiver" android:exported="true">
-           <intent-filter>
-               <action android:name="android.app.action.ENTER_CAR_MODE"/>
-               <action android:name="android.app.action.EXIT_CAR_MODE" />
-               <action android:name="android.intent.action.DOCK_EVENT" />
+        <receiver
+            android:name=".CarModeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.app.action.ENTER_CAR_MODE" />
+                <action android:name="android.app.action.EXIT_CAR_MODE" />
+                <action android:name="android.intent.action.DOCK_EVENT" />
 
-           </intent-filter>
-       </receiver>
+            </intent-filter>
+        </receiver>
+
         <provider
             android:name=".GenericFileProvider"
             android:authorities="${applicationId}.uk.co.boconi.emil.obd2aa.provider"
@@ -89,7 +110,7 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
     </application>

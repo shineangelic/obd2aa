@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
@@ -25,10 +24,10 @@ class PidList {
         this.maxValue = pidinfo[3];
         this.minValue = pidinfo[4];
         this.scale = pidinfo[5];
-        this.pid = pidinfo[6]+","+pidinfo[7];
+        this.pid = pidinfo[6] + "," + pidinfo[7];
     }
-    public PidList(JSONObject data)
-    {
+
+    public PidList(JSONObject data) {
         try {
             this.longName = data.getString("longName");
             this.shortName = data.getString("shortName");
@@ -37,9 +36,7 @@ class PidList {
             this.minValue = data.getString("minValue");
             this.scale = data.getString("scale");
             this.pid = data.getString("pid");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
 
         }
     }
@@ -54,34 +51,29 @@ class PidList {
         return this.longName;
     }
 
-    public String getShortPidName()
-    {
+    public String getShortPidName() {
         return this.shortName;
     }
 
-    public String getUnit()
-    {
+    public String getUnit() {
         return this.unit;
     }
 
-    public String getMaxValue()
-    {
+    public String getMaxValue() {
         return this.maxValue;
     }
 
-    public String getMinValue()
-    {
+    public String getMinValue() {
         return this.minValue;
     }
-    public String getScale()
-    {
+
+    public String getScale() {
         return this.scale;
     }
-    public String getPid()
-    {
+
+    public String getPid() {
         return this.pid;
     }
-
 
 
 }
