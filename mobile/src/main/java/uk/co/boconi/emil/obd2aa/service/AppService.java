@@ -58,14 +58,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
-import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
-import uk.co.boconi.emil.obd2aa.cameras.NearbyCameras;
-import uk.co.boconi.emil.obd2aa.cameras.isCameraInWay;
-import uk.co.boconi.emil.obd2aa.cameras.GeoDecoder;
 import uk.co.boconi.emil.obd2aa.OBD2AA;
 import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.auto.CarNotificationSoundPlayer;
+import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
+import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
+import uk.co.boconi.emil.obd2aa.cameras.GeoDecoder;
+import uk.co.boconi.emil.obd2aa.cameras.NearbyCameras;
+import uk.co.boconi.emil.obd2aa.cameras.isCameraInWay;
 import uk.co.boconi.emil.obd2aa.model.PIDToFetch;
 import uk.co.boconi.emil.obd2aa.util.UnitConversionUtil;
 
@@ -162,8 +162,6 @@ public class AppService extends Service {
                 text = "Current value " + String.format("%.2f", torqueAlarm.getDouble("CURRENT_VALUE")) + " " + torqueAlarm.getString("UNIT") + " is over than: " + String.format("%.2f", torqueAlarm.getDouble("TRIGGER_VALUE")) + " " + torqueAlarm.getString("UNIT");
 
             showNotification(torqueAlarm.getString("ALARM_NAME"), text, R.drawable.ic_category_engine, R.drawable.ic_danger_r);
-
-
         }
     };
     private Location lastlocation = null;
@@ -238,7 +236,6 @@ public class AppService extends Service {
             }
             mobile_filter = mobile_filter.substring(0, mobile_filter.length() - 1) + ")";
             static_filter = static_filter.substring(0, static_filter.length() - 1) + ")";
-
         }
 
         pids = new String[gauge_number];
@@ -312,8 +309,6 @@ public class AppService extends Service {
 
             mUimodemanager = (UiModeManager) getSystemService(UI_MODE_SERVICE);
         }
-
-
     }
 
     @Override
@@ -372,7 +367,6 @@ public class AppService extends Service {
                     int sleeptime = 100;
 
                     try {
-
                         //Context mContext = createPackageContext("com.google.android.projection.gearhead", 3);
                         //SharedPreferences myprefs = mContext.getSharedPreferences("engineer_preferences", Context.MODE_PRIVATE);
                         //SharedPreferences.Editor medit = myprefs.edit();
@@ -389,8 +383,6 @@ public class AppService extends Service {
                     if (prefs.getBoolean("daynight", false) && mUimodemanager != null && mUimodemanager.getNightMode() != nightMode)
                         mUimodemanager.setNightMode(nightMode);
                     if (torqueService != null) {
-
-
                         if (!ecuconnected)
                             try {
 
@@ -836,8 +828,6 @@ public class AppService extends Service {
                     }
                 }
             });
-
-
         }
 
 
@@ -917,9 +907,8 @@ public class AppService extends Service {
     }
 
     private void populateLocationCarSensorEvent(CarSensorEvent paramCarSensorEvent, Location paramLocation) {
-
         paramCarSensorEvent.intValues[1] = ((int) (0 * 1.0E7D));
-        int j = 0x0 | 0x2 | 0x1;
+        int j = 0x2 | 0x1;
         paramCarSensorEvent.intValues[1] = ((int) (0 * 1.0E7D));
         int i = j;
 
@@ -952,4 +941,5 @@ public class AppService extends Service {
             return AppService.this;
         }
     }
+
 }

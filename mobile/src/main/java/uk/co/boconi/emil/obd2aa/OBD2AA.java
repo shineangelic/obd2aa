@@ -32,8 +32,8 @@ import java.util.Map;
 
 import uk.co.boconi.emil.obd2aa.auto.AAMenu;
 import uk.co.boconi.emil.obd2aa.service.AppService;
-import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
 import uk.co.boconi.emil.obd2aa.ui.gauge.ArcAnimation;
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
 import uk.co.boconi.emil.obd2aa.ui.gauge.DrawGauges;
 
 import static java.lang.Integer.parseInt;

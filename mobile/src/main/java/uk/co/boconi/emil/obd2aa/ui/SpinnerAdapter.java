@@ -1,8 +1,8 @@
 package uk.co.boconi.emil.obd2aa.ui;
 
-import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +21,7 @@ public class SpinnerAdapter extends ArrayAdapter<ItemData> {
     private ArrayList<ItemData> list;
     private LayoutInflater inflater;
 
-    public SpinnerAdapter(Activity context, int groupid, int id, ArrayList<ItemData> list) {
+    public SpinnerAdapter(AppCompatActivity context, int groupid, int id, ArrayList<ItemData> list) {
         super(context, id, list);
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

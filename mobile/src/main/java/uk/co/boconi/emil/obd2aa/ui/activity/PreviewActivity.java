@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa.ui.activity;
 
-import android.app.Activity;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.preference.PreferenceManager;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.ViewTreeObserver;
 import android.widget.TableLayout;
@@ -16,11 +16,11 @@ import android.widget.TableLayout;
 import java.util.Random;
 
 import uk.co.boconi.emil.obd2aa.R;
-import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
 import uk.co.boconi.emil.obd2aa.ui.gauge.ArcAnimation;
+import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
 import uk.co.boconi.emil.obd2aa.ui.gauge.DrawGauges;
 
-public class PreviewActivity extends Activity {
+public class PreviewActivity extends AppCompatActivity {
 
     private ArcProgress arcProgress;
     private SharedPreferences prefs;

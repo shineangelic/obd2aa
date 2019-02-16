@@ -1,7 +1,6 @@
 package uk.co.boconi.emil.obd2aa.preference;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -24,6 +23,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -67,9 +67,9 @@ import java.util.Set;
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
+import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
-import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.model.ItemData;
 import uk.co.boconi.emil.obd2aa.model.PidList;
 import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
@@ -133,12 +133,6 @@ public class AppSettings extends AppCompatActivity {
             }
             Log.d("HU", "Have Torque service connection!");
 
-            /*try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-
             try {
                 pids = torqueService.listAllPIDs();
                 pidsdesc = torqueService.getPIDInformation(pids);
@@ -200,9 +194,7 @@ public class AppSettings extends AppCompatActivity {
             notification_dialog.dismiss();
             storage_dialog.dismiss();
         } catch (Exception E) {
-
         }
-
     }
 
     @Override
@@ -212,11 +204,9 @@ public class AppSettings extends AppCompatActivity {
         boolean successfulBind = bindService(intent, connection, 0);
 
         if (successfulBind) {
-
             // Not really anything to do here.  Once you have bound to the service, you can start calling
             // methods on torqueService.someMethod()  - look at the aidl file for more info on the calls
             Log.d("HU", "Connected to torque service!");
-
         } else {
             findViewById(R.id.mainappsetting).setVisibility(View.GONE);
             findViewById(R.id.notorque).setVisibility(View.VISIBLE);
@@ -249,9 +239,7 @@ public class AppSettings extends AppCompatActivity {
             notification_dialog = builder.show();
         }
 
-
         if (((ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) && prefs.getBoolean("daynight", false)) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(AppSettings.this);
             builder.setTitle(getResources().getString(R.string.loc_perm_tit));
             builder.setMessage(getResources().getString(R.string.loc_perm_desc));
@@ -268,11 +256,9 @@ public class AppSettings extends AppCompatActivity {
                 }
             });
             location_dialog = builder.show();
-
         }
 
         if (((ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)) && prefs.getBoolean("ShowSpeedCamWarrning", false)) {
-
             AlertDialog.Builder builder = new AlertDialog.Builder(AppSettings.this);
             builder.setTitle(getResources().getString(R.string.storage_perm));
             builder.setMessage(getResources().getString(R.string.storage_perm_desc));
@@ -289,9 +275,7 @@ public class AppSettings extends AppCompatActivity {
                 }
             });
             storage_dialog = builder.show();
-
         }
-
     }
 
     @Override
