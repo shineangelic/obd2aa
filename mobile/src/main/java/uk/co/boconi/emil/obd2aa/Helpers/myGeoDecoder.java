@@ -28,16 +28,14 @@ import uk.co.boconi.emil.obd2aa.R;
  */
 
 public class myGeoDecoder {
-    Context mcontext;
-    String LastStreet;
-    Bitmap road;
-    NotificationCompat.Builder mynot;
+
+    private Context mcontext;
+    private Bitmap road;
+    private NotificationCompat.Builder mynot;
 
     public myGeoDecoder(final Context context) {
         mcontext = context;
         road = BitmapFactory.decodeResource(context.getResources(), R.drawable.road);
-
-
     }
 
     public void dedoceaddress(Location location) throws Exception {
@@ -48,10 +46,8 @@ public class myGeoDecoder {
             String street = myaddress.get(0).getThoroughfare();
             if (street != null) //Updated notification
             {
-
                 String speedlimit = "";
                 try {
-
                     URL url = new URL("http://94.23.203.111/zone/o2/osm.php?l=" + location.getLatitude() + "&x=" + location.getLongitude());
                     URLConnection con = url.openConnection();
                     con.setConnectTimeout(2000);
@@ -68,7 +64,6 @@ public class myGeoDecoder {
                 CarNotificationExtender paramString2 = new CarNotificationExtender.Builder()
                         .setTitle(street)
                         .setSubtitle(speedlimit)
-
                         .setShouldShowAsHeadsUp(false)
                         .setActionIconResId(R.drawable.ic_info_outline_black_24dp)
                         .setBackgroundColor(Color.WHITE)
@@ -78,7 +73,6 @@ public class myGeoDecoder {
 
                 mynot = new NotificationCompat.Builder(mcontext)
                         .setContentTitle(street)
-
                         .setSubText(speedlimit)
                         .setLargeIcon(road)
                         .setSmallIcon(R.drawable.ic_info_outline_black_24dp)
@@ -86,14 +80,11 @@ public class myGeoDecoder {
                         .setPriority(Notification.PRIORITY_DEFAULT)
                         .extend(paramString2);
 
-
                 NotificationManager mNotifyMgr = (NotificationManager) mcontext.getSystemService(mcontext.NOTIFICATION_SERVICE);
 
-
                 mNotifyMgr.notify(1986, mynot.build());
-
             }
         }
-
     }
+
 }

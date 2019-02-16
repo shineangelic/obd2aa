@@ -20,25 +20,20 @@ import com.google.android.apps.auto.sdk.notification.CarNotificationExtender;
  * Notification listener. This class will show CamSam and Blitzer.De notifications inside Android Auto
  * Can be future extended to show notifications from other apps as
  */
+public class CarNotificationListener extends NotificationListenerService {
 
-public class CarnotificationListener extends NotificationListenerService {
     Context context;
 
     @Override
-
     public void onCreate() {
-
         super.onCreate();
         context = getApplicationContext();
-
     }
 
     @Override
     public void onNotificationRemoved(StatusBarNotification sbn) {
-
         //Nothing to do here
     }
-
 
     @Override
     public void onNotificationPosted(StatusBarNotification sbn) {
@@ -52,10 +47,7 @@ public class CarnotificationListener extends NotificationListenerService {
         } else
             return;
 
-
         Bundle extras = sbn.getNotification().extras;
-
-
         if (extras.getString("android.title") == null || extras.getString("android.title").equalsIgnoreCase("Fartkontrol.nu")) {
             //Log.d("ODB2AA","Title null or Only CamSam");
             return;
@@ -70,11 +62,8 @@ public class CarnotificationListener extends NotificationListenerService {
             title = extras.getString("android.title");
             text = extras.getString("android.text");
             bmp = extras.getParcelable(Notification.EXTRA_LARGE_ICON);
-
-
         }
         //Log.d("OBD2AA","About to send a notification to the car...");
-
 
         CarNotificationExtender paramString2 = new CarNotificationExtender.Builder()
                 .setTitle(title)
@@ -90,14 +79,12 @@ public class CarnotificationListener extends NotificationListenerService {
                 .setContentTitle(title)
                 .setContentText(text)
                 .setLargeIcon(bmp)
-
                 .setSmallIcon(R.drawable.ic_danger_r)
                 .setColor(Color.GRAY)
                 .extend(paramString2);
 
 
         mNotifyMgr.notify(1983, mynot.build());
-
-
     }
+
 }

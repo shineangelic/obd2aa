@@ -18,7 +18,6 @@ public class ArchAnimaton extends Animation {
         this.oldAngle = circle.getProgress();
         this.newAngle = newAngle;
         this.circle = circle;
-
     }
 
     @Override
@@ -26,6 +25,6 @@ public class ArchAnimaton extends Animation {
         float angle = oldAngle + ((newAngle - oldAngle) * interpolatedTime);
 
         circle.setProgress(angle);
-
     }
+
 }

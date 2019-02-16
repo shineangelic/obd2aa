@@ -37,7 +37,6 @@ class PidList {
             this.scale = data.getString("scale");
             this.pid = data.getString("pid");
         } catch (Exception e) {
-
         }
     }
 
@@ -74,6 +73,5 @@ class PidList {
     public String getPid() {
         return this.pid;
     }
-
 
 }

@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
@@ -68,12 +67,9 @@ import uk.co.boconi.emil.obd2aa.Helpers.myGeoDecoder;
 import static java.lang.Integer.parseInt;
 import static uk.co.boconi.emil.obd2aa.SunSet.Calculate_Sunset_Sunrise;
 
-
 /**
  * Created by Emil on 31/08/2017.
  */
-
-
 public class OBD2_Background extends Service {
 
     public static boolean isdebugging;
@@ -883,17 +879,17 @@ public class OBD2_Background extends Service {
                 }
 
                 int sound_to_play = 0;
-                if (camera.getDistaceToCam() > audio_2 && camera.getDistaceToCam() <= audio_1 && !camera.getShow_warrning(0)) {
+                if (camera.getDistaceToCam() > audio_2 && camera.getDistaceToCam() <= audio_1 && !camera.getShowWarning(0)) {
                     sound_to_play = R.raw.beep;
-                    camera.setShow_warrning(0, true);
+                    camera.setShowWarning(0, true);
                 }
-                if (camera.getDistaceToCam() > audio_3 && camera.getDistaceToCam() <= audio_2 && !camera.getShow_warrning(1)) {
+                if (camera.getDistaceToCam() > audio_3 && camera.getDistaceToCam() <= audio_2 && !camera.getShowWarning(1)) {
                     sound_to_play = R.raw.beepbeep;
-                    camera.setShow_warrning(1, true);
+                    camera.setShowWarning(1, true);
                 }
-                if (camera.getDistaceToCam() <= audio_3 && !camera.getShow_warrning(2)) {
+                if (camera.getDistaceToCam() <= audio_3 && !camera.getShowWarning(2)) {
                     sound_to_play = R.raw.beepbeepbeep;
-                    camera.setShow_warrning(2, true);
+                    camera.setShowWarning(2, true);
                 }
 
                 if (!playSound) {

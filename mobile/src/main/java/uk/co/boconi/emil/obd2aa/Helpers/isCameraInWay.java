@@ -32,7 +32,7 @@ public class isCameraInWay {
         Collections.sort(nearbycamera, new Comparator<NearbyCameras>() {
             @Override
             public int compare(NearbyCameras o1, NearbyCameras o2) {
-                return Integer.valueOf(o1.getDistaceToCam()).compareTo(o2.getDistaceToCam());
+                return Integer.compare(o1.getDistaceToCam(), o2.getDistaceToCam());
             }
         });
         // Log.d("OBD2AA","Sorted Camere list" + nearbycamera.toString());
@@ -61,12 +61,9 @@ public class isCameraInWay {
                 }
             }
         }
-
-
     }
 
     public static boolean stillinRange(Location location, NearbyCameras camera, int seacrhdistance) {
-
         LatLng camera_coordinates = new LatLng(camera.getlat(), camera.getlng());  // get camera position
         LatLng current_possition = new LatLng(location.getLatitude(), location.getLongitude());
         double distance_to_camera = SphericalUtil.computeDistanceBetween(camera_coordinates, current_possition);
@@ -85,16 +82,14 @@ public class isCameraInWay {
             }
         }
 
-
         if (camera_in_way)
             camera.setDistanceToCam((int) distance_to_camera);
 
         return camera_in_way;
-
-
     }
 
     public NearbyCameras getCamera() {
         return camera;
     }
+
 }

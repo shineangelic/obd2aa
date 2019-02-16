@@ -16,13 +16,12 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class SpinnerAdapter extends ArrayAdapter<ItemData> {
-    int groupid;
-    Activity context;
-    ArrayList<ItemData> list;
-    LayoutInflater inflater;
 
-    public SpinnerAdapter(Activity context, int groupid, int id, ArrayList<ItemData>
-            list) {
+    private int groupid;
+    private ArrayList<ItemData> list;
+    private LayoutInflater inflater;
+
+    public SpinnerAdapter(Activity context, int groupid, int id, ArrayList<ItemData> list) {
         super(context, id, list);
         this.list = list;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -38,9 +37,8 @@ public class SpinnerAdapter extends ArrayAdapter<ItemData> {
         return itemView;
     }
 
-    public View getDropDownView(int position, View convertView, ViewGroup
-            parent) {
+    public View getDropDownView(int position, View convertView, ViewGroup parent) {
         return getView(position, convertView, parent);
-
     }
+
 }

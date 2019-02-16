@@ -5,15 +5,15 @@ package uk.co.boconi.emil.obd2aa;
  */
 public class ItemData {
 
-    String text;
-    int imageId;
-    int gaugenumbers;
+    private String text;
+    private int imageId;
+    private int gaugeNumber;
 
-    public ItemData(String text, Integer imageId, int gaugenumbers) {
+    public ItemData(String text, Integer imageId, int gaugeNumber) {
         this.text = text;
         if (imageId != null)
             this.imageId = imageId;
-        this.gaugenumbers = gaugenumbers;
+        this.gaugeNumber = gaugeNumber;
     }
 
     public String getText() {
@@ -24,10 +24,9 @@ public class ItemData {
         return imageId;
     }
 
-    public int getGaugenumber() {
-        return gaugenumbers;
+    public int getGaugeNumber() {
+        return gaugeNumber;
     }
-
 
 }
 

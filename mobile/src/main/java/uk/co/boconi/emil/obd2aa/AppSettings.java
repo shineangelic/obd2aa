@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ComponentName;
@@ -73,11 +72,9 @@ import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
 
 import static java.lang.Integer.parseInt;
 
-
 /**
  * Created by Emil on 14/08/2017.
  */
-
 
 public class AppSettings extends AppCompatActivity {
     private final Handler handler = new Handler() {
@@ -88,6 +85,7 @@ public class AppSettings extends AppCompatActivity {
                 CarToast.makeText(getBaseContext(), getString(R.string.static_updated), Toast.LENGTH_LONG).show();
         }
     };
+
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     int gauge_number = 0;
@@ -387,14 +385,14 @@ public class AppSettings extends AppCompatActivity {
         sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                Log.d("HU", "BG Spinner callback  pos: " + position + "Guages needed: " + style_list.get(position).getGaugenumber());
+                Log.d("HU", "BG Spinner callback  pos: " + position + "Guages needed: " + style_list.get(position).getGaugeNumber());
 
                 editor.putInt("layout", position);
                 editor.apply();
                 editor.commit();
                 Spinner tmpspinner = (Spinner) findViewById(R.id.gaugeselector);
                 dont_do_loop_update = true;
-                tmpspinner.setSelection(style_list.get(position).getGaugenumber() - 1);
+                tmpspinner.setSelection(style_list.get(position).getGaugeNumber() - 1);
 
                 //gaugechanger(findViewById(R.id.gaugeselector));
 

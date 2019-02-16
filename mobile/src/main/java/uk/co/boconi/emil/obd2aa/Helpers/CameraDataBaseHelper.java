@@ -23,7 +23,7 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
 
     private static String DB_NAME_FIXED = "fixedcamera";
     private static String DB_NAME_MOBILE = "mobilecamera";
-    private final Context myContext;
+
     private SQLiteDatabase myDataBase;
     private String DB_NAME;
     private String tablename;
@@ -36,10 +36,7 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
      * @param context
      */
     public CameraDataBaseHelper(Context context, int type, String dbname) {
-
         super(context, dbname, null, 1);
-
-        this.myContext = context;
 
         if (type == 1) {
             DB_NAME = DB_NAME_MOBILE;
@@ -50,25 +47,21 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
             tablename = "blitzerstat";
             dbtype = type;
         }
-
     }
 
     /**
      * Creates a empty database on the system and rewrites it with your own database.
      */
     public void createDataBase() throws IOException {
-
         boolean dbExist = checkDataBase();
 
         if (dbExist) {
             //do nothing - database already exist
         } else {
-
             //By calling this method and empty database will be created into the default system path
             //of your application so we are gonna be able to overwrite that database with our database.
             this.getReadableDatabase();
         }
-
     }
 
     /**
@@ -77,26 +70,20 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
      * @return true if it exists, false if it doesn't
      */
     private boolean checkDataBase() {
-
         SQLiteDatabase checkDB = null;
 
         try {
             String myPath = DB_PATH + DB_NAME;
             checkDB = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READWRITE);
-
         } catch (Exception e) {
-
-            //database does't exist yet.
-
+            //database doesn't exist yet.
         }
 
         if (checkDB != null) {
-
             checkDB.close();
-
         }
 
-        return checkDB != null ? true : false;
+        return checkDB != null;
     }
 
     /**
@@ -105,7 +92,6 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
      * This is done by transfering bytestream.
      */
     protected void copyDataBase(byte[] myInput) throws IOException {
-
         // Path to the just created empty db
         String outFileName = DB_PATH + DB_NAME;
 
@@ -119,15 +105,11 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
         //Close the streams
         myOutput.flush();
         myOutput.close();
-
     }
 
     public void openDataBase() throws SQLException {
-
-        //Open the database
         String myPath = DB_PATH + DB_NAME;
         myDataBase = SQLiteDatabase.openDatabase(myPath, null, SQLiteDatabase.OPEN_READONLY);
-
     }
 
     public List<NearbyCameras> getNearbyCameras(double latfrom, double latto, double longfrom, double longto, double latitude, double longitude, String texfilter) {
@@ -145,27 +127,22 @@ public class CameraDataBaseHelper extends SQLiteOpenHelper {
         }
         close();
         return nearbycamera;
-
     }
 
     @Override
     public synchronized void close() {
-
         if (myDataBase != null)
             myDataBase.close();
 
         super.close();
-
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
     }
 
     // Add your public helper methods to access and get content from the database.

@@ -25,13 +25,12 @@ public class DownloadHelper {
     private static String MOBILE_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/mobilecamera";
     private static String STATIC_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/fixedcamera";
 
-
     public DownloadHelper(final int type, final Context context, final int freq) {
         Thread mydownloadthread = new Thread() {
             @Override
             public void run() {
                 try {
-                    URL u = null;
+                    URL u;
                     String dbname;
                     if (type == 1 && freq != 0) {
                         dbname = "mobilecamera";
@@ -58,11 +57,7 @@ public class DownloadHelper {
                     xxx.copyDataBase(buffer);
                     Log.d("OBD2AA", "Download has been completed!");
                     if (context instanceof AppSettings) {
-
-
                         ((AppSettings) context).showDownload_comp_message(type);
-
-
                     }
                 } catch (Exception E) {
                     E.printStackTrace();

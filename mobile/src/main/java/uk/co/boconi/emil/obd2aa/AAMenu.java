@@ -15,16 +15,13 @@ import java.util.Map.Entry;
 
 public class AAMenu extends MenuAdapter {
 
-
     private CarActivity mActivity;
     private AAMenu.a b;
-    private List<MenuItem> c = new ArrayList();
+    private List<MenuItem> c = new ArrayList<>();
 
     public void update_mActivity(CarActivity caractivity) {
         this.mActivity = caractivity;
-
     }
-
 
     public void a(AAMenu.a parama) {
         this.b = parama;
@@ -32,11 +29,10 @@ public class AAMenu extends MenuAdapter {
 
     public void a(Map<String, String> paramMap) {
         if ((paramMap != null) && (!paramMap.isEmpty())) {
-            this.c = new ArrayList(paramMap.size());
+            this.c = new ArrayList<>(paramMap.size());
             Iterator<Entry<String, String>> mparamMap = paramMap.entrySet().iterator();
             while (mparamMap.hasNext()) {
-                Object localObject = (Map.Entry) mparamMap.next();
-                Bundle localBundle = new Bundle();
+                Object localObject = mparamMap.next();
 
                 localObject = new MenuItem.Builder()
                         .setType(0)
@@ -52,7 +48,7 @@ public class AAMenu extends MenuAdapter {
     }
 
     public MenuItem getMenuItem(int paramInt) {
-        return (MenuItem) this.c.get(paramInt);
+        return this.c.get(paramInt);
     }
 
     public int getMenuItemCount() {
@@ -60,16 +56,16 @@ public class AAMenu extends MenuAdapter {
     }
 
     public void onMenuItemClicked(int paramInt) {
-        Intent intent = null;
+        Intent intent;
         if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMS"))
             intent = new Intent(mActivity.getApplicationContext(), MyTpmsService.class);
         else
             intent = new Intent(mActivity.getApplicationContext(), MyOdbService.class);
         mActivity.startCarActivity(intent);
-
     }
 
-    public static abstract interface a {
-        public abstract void a(String paramString);
+    public interface a {
+        void a(String paramString);
     }
+
 }

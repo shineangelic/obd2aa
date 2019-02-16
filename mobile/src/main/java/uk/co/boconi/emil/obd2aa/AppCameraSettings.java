@@ -1,6 +1,5 @@
 package uk.co.boconi.emil.obd2aa;
 
-import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
@@ -17,7 +16,6 @@ import android.view.MenuInflater;
 
 public class AppCameraSettings extends PreferenceActivity {
 
-    private static Context mContext;
     private AppCompatDelegate mDelegate;
 
     @Override
@@ -25,13 +23,11 @@ public class AppCameraSettings extends PreferenceActivity {
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
-        mContext = this;
+
         //getActionBar().show();
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new MyPreferenceFragment())
                 .commit();
-
-
     }
 
     @Override
@@ -101,11 +97,11 @@ public class AppCameraSettings extends PreferenceActivity {
 
     public static class MyPreferenceFragment extends PreferenceFragment {
 
-
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.speedcamprefs);
         }
     }
+
 }

@@ -29,7 +29,7 @@ public class NearbyCameras {
     private int cameratext = R.string.danger;
     private boolean shownot = true;
 
-    private boolean[] show_warrning = {false, false, false};
+    private boolean[] showWarning = {false, false, false};
 
     public NearbyCameras(double lat, double lng, int id, Integer bearing, String speed, String type, String street, int dbtype, double latitude, double longitude) {
         this.DistanceToCam = (int) SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), new LatLng(latitude, longitude));
@@ -40,12 +40,12 @@ public class NearbyCameras {
             if (bearing == null) {
                 this.bearing = -1;
             } else {
-                this.bearing = bearing.intValue();
+                this.bearing = bearing;
             }
         } else if (bearing == null) {
             this.bearing = -1;
         } else {
-            this.bearing = decodeHeading(lat, lng, bearing.intValue());
+            this.bearing = decodeHeading(lat, lng, bearing);
         }
         //  Log.d("OBD2AA","Decoded heading is: " + this.bearing);
         this.speed = speed;
@@ -99,7 +99,7 @@ public class NearbyCameras {
         } else {
             toPlainString = "0";
         }
-        return Integer.valueOf(toPlainString).intValue() + (i - Integer.valueOf(substring).intValue());
+        return Integer.valueOf(toPlainString) + (i - Integer.valueOf(substring));
     }
 
     public String getstreet() {
@@ -149,12 +149,12 @@ public class NearbyCameras {
         return id;
     }
 
-    public void setShow_warrning(int i, boolean b) {
-        show_warrning[i] = b;
+    public void setShowWarning(int i, boolean b) {
+        showWarning[i] = b;
     }
 
-    public boolean getShow_warrning(int i) {
-        return show_warrning[i];
+    public boolean getShowWarning(int i) {
+        return showWarning[i];
     }
 
     public boolean getShownot() {

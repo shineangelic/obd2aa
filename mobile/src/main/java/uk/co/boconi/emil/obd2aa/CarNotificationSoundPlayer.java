@@ -13,6 +13,7 @@ import android.support.car.media.CarAudioManager;
 import android.util.Log;
 
 public class CarNotificationSoundPlayer {
+
     private final static String TAG = "CarNotifSoundPlayer";
 
     private final static int PLAYBACK_START_DELAY_MS = 300;
@@ -89,4 +90,5 @@ public class CarNotificationSoundPlayer {
         Car car = Car.createCar(mContext, mCarConnectionCallback);
         car.connect();
     }
+
 }

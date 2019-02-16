@@ -11,6 +11,7 @@ import android.util.Log;
  * Created by Emil on 31/08/2017.
  */
 public class CarModeReceiver extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("OBD2AA", "receiver fired");
@@ -20,14 +21,11 @@ public class CarModeReceiver extends BroadcastReceiver {
             Intent starts = new Intent(context, uk.co.boconi.emil.obd2aa.OBD2_Background.class);
             context.startService(starts);
 
-
             if (prefs.getBoolean("fartkontrol", false)) {
                 Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("nu.fartkontrol.app");
                 if (LaunchIntent != null)
                     context.startActivity(LaunchIntent);
             }
-
-
         } else {
             Log.d("OBD2AA", "Should stop the service now");
             OBD2_Background.isrunning = false;
@@ -40,8 +38,7 @@ public class CarModeReceiver extends BroadcastReceiver {
                     context.startActivity(paramIntent);
                 }
             }
-
         }
-
     }
+
 }

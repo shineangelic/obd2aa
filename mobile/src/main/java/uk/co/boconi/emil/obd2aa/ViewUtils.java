@@ -1,17 +1,10 @@
 package uk.co.boconi.emil.obd2aa;
 
-/**
- * Created by Emil on 12/08/2017.
- */
-
 import android.content.res.Resources;
 
-/**
- * Created by bruce on 14-11-6.
- */
-public final class Utils {
+public final class ViewUtils {
 
-    private Utils() {
+    private ViewUtils() {
     }
 
     public static float dp2px(Resources resources, float dp) {
@@ -23,4 +16,5 @@ public final class Utils {
         final float scale = resources.getDisplayMetrics().scaledDensity;
         return sp * scale;
     }
+
 }

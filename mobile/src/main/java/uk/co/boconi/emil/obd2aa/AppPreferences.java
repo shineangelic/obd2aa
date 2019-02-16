@@ -41,8 +41,6 @@ public class AppPreferences extends PreferenceActivity {
         getFragmentManager().beginTransaction()
                 .replace(android.R.id.content, new MyPreferenceFragment())
                 .commit();
-
-
     }
 
     @Override
@@ -143,8 +141,6 @@ public class AppPreferences extends PreferenceActivity {
                             editor.putString("custom_bg_path", files[0]);
                             editor.commit();
                             findPreference("custom_bg_path").setSummary(files[0]);
-
-
                         }
                     });
                     return false;
@@ -152,7 +148,7 @@ public class AppPreferences extends PreferenceActivity {
 
                 ;
             });
-
         }
     }
+
 }

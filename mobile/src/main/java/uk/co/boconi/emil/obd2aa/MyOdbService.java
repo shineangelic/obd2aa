@@ -8,7 +8,6 @@ public class MyOdbService extends CarActivityService {
 
     @Override
     public Class<? extends CarActivity> getCarActivity() {
-
         return OBD2AA.class;
     }
 

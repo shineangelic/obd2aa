@@ -5,6 +5,7 @@ package uk.co.boconi.emil.obd2aa;
  */
 
 public class UnitConvertHelper {
+
     public static float ConvertValue(float inputval, String unit) {
         if (unit.equalsIgnoreCase("km/h"))
             inputval = (float) (inputval / 1.60);
@@ -28,4 +29,5 @@ public class UnitConvertHelper {
             inputval = (float) (inputval * 0.219969);
         return inputval;
     }
+
 }

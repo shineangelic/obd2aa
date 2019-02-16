@@ -34,7 +34,6 @@ public class TPMS extends CarActivity {
             if (!isRunning)
                 return;
 
-
             float[] tpmsvals = (float[]) msg.obj;
             if (isDebugging)
                 Log.d("OBD2AA", "Received message float:" + +tpmsvals[0] + " " + tpmsvals[1] + myunit);
@@ -47,14 +46,12 @@ public class TPMS extends CarActivity {
             tv.setText(String.format("%.2f", tpmsvals[2]) + " " + myunit.toUpperCase());
             tv = (TextView) findViewById(R.id.rear_right);
             tv.setText(String.format("%.2f", tpmsvals[3]) + " " + myunit.toUpperCase());
-
-
         }
     };
+
     private boolean isDemoMode;
     private OBD2_Background mOBD2Service;
     private ServiceConnection mConnection = new ServiceConnection() {
-
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
             OBD2_Background.LocalBinder binder = (OBD2_Background.LocalBinder) service;
@@ -67,15 +64,12 @@ public class TPMS extends CarActivity {
         public void onServiceDisconnected(ComponentName name) {
             mOBD2Service = null;
         }
-
     };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.cartyreview);
-
-
     }
 
     @Override
@@ -85,7 +79,6 @@ public class TPMS extends CarActivity {
         try {
             unbindService(mConnection);
         } catch (Exception E) {
-
         }
     }
 
@@ -165,4 +158,5 @@ public class TPMS extends CarActivity {
         };
         tpms_mon.start();
     }
+
 }

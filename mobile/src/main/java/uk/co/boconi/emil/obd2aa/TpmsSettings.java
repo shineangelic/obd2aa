@@ -19,7 +19,8 @@ import java.util.List;
  * Created by Emil on 22/09/2017.
  */
 public class TpmsSettings extends AppCompatActivity {
-    List<PidList> pidlist = new ArrayList<PidList>();
+
+    List<PidList> pidlist = new ArrayList<>();
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
 
@@ -51,7 +52,6 @@ public class TpmsSettings extends AppCompatActivity {
         et.setText(prefs.getString("rear_right_pressure", " "));
     }
 
-
     public void pidwatcher(View v) {
         Log.d("HU", "Caller tag: " + v.getTag());
         final String i = String.valueOf(v.getId());
@@ -80,4 +80,5 @@ public class TpmsSettings extends AppCompatActivity {
         }
         editor.apply();
     }
+
 }
