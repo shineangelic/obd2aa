@@ -99,7 +99,7 @@ public class OBD2_Background extends Service  {
     private boolean alternativepulling;
     private boolean firstfecth = true;
     private List<PIDToFetch> pidtofetch = new ArrayList<PIDToFetch>();
-    static volatile boolean isrunning;
+    private volatile boolean isrunning;
     private boolean mBind = false;
     private int nightMode=0;
     private long lastcalc=0;
@@ -129,6 +129,7 @@ public class OBD2_Background extends Service  {
 
     @Nullable
     private Date lastMessageSent;
+
 
 
     public class LocalBinder extends Binder {
@@ -715,7 +716,15 @@ public class OBD2_Background extends Service  {
     public Date getLastMessageSent() {
         return lastMessageSent;
     }
-
+    public boolean isRunning(){
+        return isrunning;
+    }
+    @Override
+    public boolean stopService(Intent name) {
+        boolean ret =  super.stopService(name);
+        isrunning = false;
+        return ret;
+    }
 
     private void startTorque ()
     {

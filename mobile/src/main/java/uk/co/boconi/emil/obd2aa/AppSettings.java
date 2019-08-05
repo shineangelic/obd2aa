@@ -52,6 +52,7 @@ import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.apps.auto.sdk.CarToast;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
 import org.prowl.torque.remote.ITorqueService;
@@ -61,7 +62,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,8 +73,6 @@ import uk.co.boconi.emil.obd2aa.Helpers.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
 
 import static java.lang.Integer.parseInt;
-
-import com.google.gson.GsonBuilder;
 
 
 /**
@@ -139,13 +137,13 @@ public class AppSettings extends AppCompatActivity {
         } catch (Exception E) {
             Log.d("OBD2AA", "No service to unbind from");
         }
-        if (mOBDServiceConnection !=null) {
-            try {
-                unbindService(mOBDServiceConnection);
-            } catch (Exception E) {
-                Log.e("OBD2AA", "Cannot unbind something which is not registered.");
-            }
+
+        try {
+            unbindService(mOBDServiceConnection);
+        } catch (Exception E) {
+            Log.e("OBD2AA", "Cannot unbind something which is not registered.");
         }
+
         if (canclose) {
             Intent sendIntent = new Intent();
             sendIntent.setAction("org.prowl.torque.REQUEST_TORQUE_QUIT");
@@ -980,6 +978,7 @@ public class AppSettings extends AppCompatActivity {
             OBD2_Background.LocalBinder binder = (OBD2_Background.LocalBinder) service;
             mOBD2Service = binder.getService();
             odbStatusesTextView.setText(AppSettings.this.getString(R.string.service_obd_connected)
+            + " isRunning? " +mOBD2Service.isRunning()
             + " last message sent to AA at: " +mOBD2Service.getLastMessageSent());
 
         }

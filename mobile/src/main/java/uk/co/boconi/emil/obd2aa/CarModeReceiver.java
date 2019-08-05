@@ -15,7 +15,7 @@ public class CarModeReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         Log.d("OBD2AA", "receiver fired");
-        if (intent.getAction().equalsIgnoreCase("android.app.action.ENTER_CAR_MODE")) {
+        if ("android.app.action.ENTER_CAR_MODE".equalsIgnoreCase(intent.getAction())) {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             Log.d("OBD2AA", "Should start the service now");
             Intent starts = new Intent(context, uk.co.boconi.emil.obd2aa.OBD2_Background.class);
@@ -29,9 +29,11 @@ public class CarModeReceiver extends BroadcastReceiver {
             }
 
 
-        } else {
+        } else if ("android.app.action.EXIT_CAR_MODE".equalsIgnoreCase(intent.getAction())){
             Log.d("OBD2AA", "Should stop the service now");
-            OBD2_Background.isrunning = false;
+            Intent stopIntent = new Intent(context, OBD2_Background.class);
+            context.stopService(stopIntent);
+            //OBD2_Background.stop() = false;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 
             if (prefs.getBoolean("fartkontrol", false)) {
@@ -42,6 +44,10 @@ public class CarModeReceiver extends BroadcastReceiver {
                 }
             }
 
+        } else if ("android.app.action.DOCK_EVENT".equalsIgnoreCase(intent.getAction())) {
+            Log.w("OBD2AA", "unmanaged dock event");
+        } else{
+            Log.e("OBD2AA", "ERROR!! unknown event: " + intent.getAction());
         }
 
     }
