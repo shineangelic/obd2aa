@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa.preference;
+package uk.co.boconi.emil.obd2aa.ui.activity;
 
 import android.Manifest;
 import android.content.ComponentName;
@@ -72,9 +72,11 @@ import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
 import uk.co.boconi.emil.obd2aa.model.ItemData;
 import uk.co.boconi.emil.obd2aa.model.PidList;
+import uk.co.boconi.emil.obd2aa.preference.AppPreferences;
+import uk.co.boconi.emil.obd2aa.preference.CameraPreferences;
+import uk.co.boconi.emil.obd2aa.preference.TPMSPreferences;
 import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
 import uk.co.boconi.emil.obd2aa.ui.SpinnerAdapter;
-import uk.co.boconi.emil.obd2aa.ui.activity.PreviewActivity;
 
 import static java.lang.Integer.parseInt;
 
@@ -118,20 +120,23 @@ public class AppSettings extends AppCompatActivity {
     private AlertDialog notification_dialog;
     private AlertDialog location_dialog;
     private AlertDialog storage_dialog;
-    private ServiceConnection connection = new ServiceConnection() {
+    private ServiceConnection torqueServiceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "SERVICE CONNECTED!");
             torqueService = ITorqueService.Stub.asInterface(service);
 
             try {
+                ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_connected)
+                        +" is connected to ECU? " + torqueService.isConnectedToECU());
                 if (torqueService.getVersion() < 19) {
                     Toast.makeText(AppSettings.this, "Incorrect version. You are using an old version of Torque with this plugin.\n\nThe plugin needs the latest version of Torque to run correctly.\n\nPlease upgrade to the latest version of Torque from Google Play", Toast.LENGTH_LONG);
                     return;
                 }
             } catch (RemoteException e) {
+                ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_connected));
             }
-            Log.d("HU", "Have Torque service connection!");
+            Log.d("HU", "Have Torque service torqueServiceConnection!");
 
             try {
                 pids = torqueService.listAllPIDs();
@@ -157,6 +162,7 @@ public class AppSettings extends AppCompatActivity {
         }
 
         public void onServiceDisconnected(ComponentName name) {
+            ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_disconnected));
             torqueService = null;
         }
     };
@@ -175,7 +181,7 @@ public class AppSettings extends AppCompatActivity {
         Log.d("OBD2AA", "onPause");
         super.onPause();
         try {
-            unbindService(connection);
+            unbindService(torqueServiceConnection);
         } catch (Exception E) {
             Log.d("OBD2AA", "No service to unbind from");
         }
@@ -201,7 +207,7 @@ public class AppSettings extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         canclose = true;
-        boolean successfulBind = bindService(intent, connection, 0);
+        boolean successfulBind = bindService(intent, torqueServiceConnection, 0);
 
         if (successfulBind) {
             // Not really anything to do here.  Once you have bound to the service, you can start calling

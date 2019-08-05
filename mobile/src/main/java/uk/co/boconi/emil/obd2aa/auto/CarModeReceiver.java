@@ -30,7 +30,7 @@ public class CarModeReceiver extends BroadcastReceiver {
 
         } else if ("android.app.action.EXIT_CAR_MODE".equalsIgnoreCase(intent.getAction())){
             Log.d("OBD2AA", "Should stop the service now");
-            Intent stopIntent = new Intent(context, OBD2_Background.class);
+            Intent stopIntent = new Intent(context, AppService.class);
             context.stopService(stopIntent);
             //OBD2_Background.stop() = false;
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

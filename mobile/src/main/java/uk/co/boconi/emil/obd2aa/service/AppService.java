@@ -75,7 +75,7 @@ import static uk.co.boconi.emil.obd2aa.util.SunsetUtil.calculateSunsetSunrise;
 public class AppService extends Service {
 
     public static boolean isdebugging;
-    public static volatile boolean isrunning;
+    private volatile boolean isrunning;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private final IBinder mBinder = new LocalBinder();
     public boolean ecuconnected = true;
@@ -172,6 +172,13 @@ public class AppService extends Service {
         mOBD2AA = obd2;
         if (savedcaractivity == null && obd2 != null)
             savedcaractivity = obd2;
+    }
+
+    @Override
+    public boolean stopService(Intent name) {
+        boolean ret = super.stopService(name);
+        isrunning = false;
+        return ret;
     }
 
     @Override
@@ -397,7 +404,7 @@ public class AppService extends Service {
 
                             if (firstfecth) {
                                 firstfecth = false;
-                                do_pids_sorting();
+                                doPidsSorting();
                             } else
                                 try {
                                     if (!alternativepulling) {
@@ -630,7 +637,7 @@ public class AppService extends Service {
         return unit;
     }
 
-    private void do_pids_sorting() {
+    private void doPidsSorting() {
 
         Log.d("OBD2AA", "PIDS to string....");
         try {

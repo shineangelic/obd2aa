@@ -12,7 +12,7 @@ import java.io.File;
 import java.net.URL;
 import java.net.URLConnection;
 
-import uk.co.boconi.emil.obd2aa.preference.AppSettings;
+import uk.co.boconi.emil.obd2aa.ui.activity.AppSettings;
 
 public class DownloadHelper {
 
