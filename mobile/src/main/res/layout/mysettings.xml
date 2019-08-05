@@ -246,21 +246,27 @@
             android:onClick="doPreview"/>
     </LinearLayout>
 
-</LinearLayout>
     <LinearLayout
-        android:id="@+id/notorque"
-        android:orientation="vertical"
+        android:id="@+id/service_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1"
-        android:visibility="gone" >
+        android:layout_height="wrap_content"
+        android:divider="?android:dividerHorizontal"
+        android:orientation="vertical"
+        android:showDividers="middle">
+
         <TextView
-            android:text="@string/notorque"
+            android:id="@+id/torqueStatus"
+            android:textAppearance="@android:style/TextAppearance.Medium"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            />
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/odbStatus"
+            android:textAppearance="@android:style/TextAppearance.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
+
+</LinearLayout>
+
 </FrameLayout>
     </ScrollView>

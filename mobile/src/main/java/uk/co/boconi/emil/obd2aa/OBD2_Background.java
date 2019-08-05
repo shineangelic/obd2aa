@@ -34,6 +34,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.car.hardware.CarSensorEvent;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
@@ -57,6 +58,7 @@ import org.prowl.torque.remote.ITorqueService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -124,6 +126,9 @@ public class OBD2_Background extends Service  {
     private ExecutorService geodecoderexecutor;
     private int CameraRefreshFreq;
     private String mobile_filter,static_filter;
+
+    @Nullable
+    private Date lastMessageSent;
 
 
     public class LocalBinder extends Binder {
@@ -491,7 +496,7 @@ public class OBD2_Background extends Service  {
                                                     msg.obj = myvals[0];
                                                     msg.arg1 = currpid.getGaugeNumber();
                                                     mOBD2AA.handler.sendMessage(msg);
-
+                                                    lastMessageSent = new Date();
                                                 }
                                                 if (isdebugging)
                                                     Log.d("OBD2-APP", "PID   " + currpid.getPID()[0] + " unit: " + currpid.getUnit() + " value= " + myvals[0] + "last updated at: " + myupdates[0]);
@@ -707,6 +712,11 @@ public class OBD2_Background extends Service  {
         }
     }
 
+    public Date getLastMessageSent() {
+        return lastMessageSent;
+    }
+
+
     private void startTorque ()
     {
         Intent intent = new Intent();
@@ -836,6 +846,7 @@ public class OBD2_Background extends Service  {
             torqueService = null;
         }
     };
+
 
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {

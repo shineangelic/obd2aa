@@ -10,23 +10,18 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
-import android.os.Parcelable;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -34,16 +29,13 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.ViewTreeObserver;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -59,55 +51,30 @@ import com.github.angads25.filepicker.model.DialogConfigs;
 import com.github.angads25.filepicker.model.DialogProperties;
 import com.github.angads25.filepicker.view.FilePickerDialog;
 import com.google.android.apps.auto.sdk.CarToast;
-import com.google.android.apps.auto.sdk.nav.suggestion.NavigationSuggestion;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Polygon;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 import org.prowl.torque.remote.ITorqueService;
 
-import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Serializable;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
 import uk.co.boconi.emil.obd2aa.Helpers.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.Helpers.DownloadHelper;
-import uk.co.boconi.emil.obd2aa.Helpers.NearbyCameras;
 
-import static android.R.attr.data;
-import static android.R.attr.layout;
 import static java.lang.Integer.parseInt;
 
 import com.google.gson.GsonBuilder;
-import com.google.maps.android.PolyUtil;
-import com.google.maps.android.SphericalUtil;
 
 
 /**
@@ -128,7 +95,7 @@ public class AppSettings extends AppCompatActivity {
     private String pidsdesc[];
 
 
-    private Intent intent;
+    private Intent torqueIntent;
     private int text_color,needle_color;
     private String arch_width;
     private boolean isdebugging;
@@ -148,6 +115,10 @@ public class AppSettings extends AppCompatActivity {
     private AlertDialog notification_dialog;
     private AlertDialog location_dialog;
     private AlertDialog storage_dialog;
+    private TextView serviceStatusesTextView;
+    @Nullable
+    private OBD2_Background mOBD2Service;
+    private TextView odbStatusesTextView;
 
 
     @Override
@@ -164,9 +135,16 @@ public class AppSettings extends AppCompatActivity {
         Log.d("OBD2AA", "onPause");
         super.onPause();
         try {
-            unbindService(connection);
+            unbindService(torqueServiceConnection);
         } catch (Exception E) {
             Log.d("OBD2AA", "No service to unbind from");
+        }
+        if (mOBDServiceConnection !=null) {
+            try {
+                unbindService(mOBDServiceConnection);
+            } catch (Exception E) {
+                Log.e("OBD2AA", "Cannot unbind something which is not registered.");
+            }
         }
         if (canclose) {
             Intent sendIntent = new Intent();
@@ -194,18 +172,24 @@ public class AppSettings extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         canclose = true;
-        boolean successfulBind = bindService(intent, connection, 0);
+        boolean successfulBind = bindService(torqueIntent, torqueServiceConnection, BIND_AUTO_CREATE);
+
 
         if (successfulBind) {
-
             // Not really anything to do here.  Once you have bound to the service, you can start calling
             // methods on torqueService.someMethod()  - look at the aidl file for more info on the calls
-            Log.d("HU", "Connected to torque service!");
-
+            Log.d("HU", this.getString(R.string.service_torque_connected));
         } else {
             findViewById(R.id.mainappsetting).setVisibility(View.GONE);
-            findViewById(R.id.notorque).setVisibility(View.VISIBLE);
-            Log.e("HU", "Unable to connect to Torque plugin service");
+            //findViewById(R.id.notorque).setVisibility(View.VISIBLE);
+            Log.e("HU", this.getString(R.string.service_torque_error));
+        }
+
+        if (mOBD2Service==null)
+        {
+            Intent intent = new Intent(AppSettings.this, OBD2_Background.class);
+            intent.putExtra("muststartTorque",false);
+            bindService(intent, mOBDServiceConnection, BIND_AUTO_CREATE);
         }
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -279,6 +263,8 @@ public class AppSettings extends AppCompatActivity {
 
     }
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -294,6 +280,7 @@ public class AppSettings extends AppCompatActivity {
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         editor = prefs.edit();
         PreferenceManager.setDefaultValues(this, R.xml.preference, false);
+
 
         list.add(new ItemData(getResources().getString(R.string.clear), R.drawable.clear, 0));
         list.add(new ItemData(getResources().getString(R.string.a_nobg_only_compl_feel), R.drawable.a_nobg_only_compl_feel, 0));
@@ -325,6 +312,7 @@ public class AppSettings extends AppCompatActivity {
             alternativepulling = prefs.getBoolean("alternativepulling", false);
             watch_fule = prefs.getString("watch_fuel", "0");
             layout_style = prefs.getInt("layout", 0);
+
 
         } else {
             def_color_selector = Color.rgb(0, 255, 0);
@@ -390,6 +378,8 @@ public class AppSettings extends AppCompatActivity {
         et.setTag("arch_width");
         et.setText(arch_width);
         et.addTextChangedListener(getTextWatcher(et));
+        serviceStatusesTextView = (TextView) findViewById(R.id.torqueStatus);
+        odbStatusesTextView = (TextView) findViewById(R.id.odbStatus);
 
         findViewById(R.id.def_color_selector).setBackgroundColor(def_color_selector);
         findViewById(R.id.warn1_color_selector).setBackgroundColor(warn1_color_selector);
@@ -422,9 +412,9 @@ public class AppSettings extends AppCompatActivity {
 
         ColorMode colorMode = ColorMode.RGB;
 
-        intent = new Intent();
-        intent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
-        startService(intent);
+        torqueIntent = new Intent();
+        torqueIntent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
+        startService(torqueIntent);
 
 
         if (prefs.getBoolean("ShowSpeedCamWarrning",true) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) ) { //only download if enabled!
@@ -983,22 +973,42 @@ public class AppSettings extends AppCompatActivity {
             }
         };
     }
+    private ServiceConnection mOBDServiceConnection = new ServiceConnection() {
 
-    private ServiceConnection connection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName arg0, IBinder service) {
+            Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
+            OBD2_Background.LocalBinder binder = (OBD2_Background.LocalBinder) service;
+            mOBD2Service = binder.getService();
+            odbStatusesTextView.setText(AppSettings.this.getString(R.string.service_obd_connected)
+            + " last message sent to AA at: " +mOBD2Service.getLastMessageSent());
+
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            mOBD2Service = null;
+            odbStatusesTextView.setText(AppSettings.this.getString(R.string.service_obd_disconnected));
+        }
+
+    };
+
+    private ServiceConnection torqueServiceConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU","SERVICE CONNECTED!");
             torqueService = ITorqueService.Stub.asInterface(service);
 
             try {
+                serviceStatusesTextView.setText(AppSettings.this.getString(R.string.service_torque_connected)
+                        + " Connected to ECU? "+ torqueService.isConnectedToECU());
                 if (torqueService.getVersion() < 19) {
                     Toast.makeText(AppSettings.this,"Incorrect version. You are using an old version of Torque with this plugin.\n\nThe plugin needs the latest version of Torque to run correctly.\n\nPlease upgrade to the latest version of Torque from Google Play",Toast.LENGTH_LONG);
+                    serviceStatusesTextView.setText(AppSettings.this.getString(R.string.service_torque_error));
                     return;
                 }
             } catch(RemoteException e) {
-
+                serviceStatusesTextView.setText(AppSettings.this.getString(R.string.service_torque_connected));
             }
-            Log.d("HU","Have Torque service connection!");
+            Log.d("HU","Have Torque service torqueServiceConnection!");
 
             /*try {
                 Thread.sleep(1000);
@@ -1029,15 +1039,17 @@ public class AppSettings extends AppCompatActivity {
             }
 
 
-        };
+        }
         public void onServiceDisconnected(ComponentName name) {
+
+            serviceStatusesTextView.setText(AppSettings.this.getString(R.string.service_torque_disconnected));
             torqueService = null;
-        };
+        }
     };
 
-    public ITorqueService getTorqueService() {
+    /*public ITorqueService getTorqueService() {
         return torqueService;
-    }
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -1232,9 +1244,9 @@ public class AppSettings extends AppCompatActivity {
     private final Handler handler = new Handler() {
         public void handleMessage(Message msg) {
             if(msg.arg1 == 1)
-                CarToast.makeText(getBaseContext(), getString(R.string.mobile_updated), Toast.LENGTH_LONG).show();
+                CarToast.makeText(AppSettings.this, getString(R.string.mobile_updated), Toast.LENGTH_LONG).show();
             else
-                CarToast.makeText(getBaseContext(),getString(R.string.static_updated),Toast.LENGTH_LONG).show();
+                CarToast.makeText(AppSettings.this,getString(R.string.static_updated),Toast.LENGTH_LONG).show();
         }
     };
 
