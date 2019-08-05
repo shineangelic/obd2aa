@@ -146,7 +146,7 @@
     <string name='section_cam'>Section(Average speed) Camera</string>
     <string name='other_cam'>Other cameras and warnings</string>
 
-    <!-- Cutom Needle -->
+    <!-- Custom Needle -->
     <string name="custom_needle_ratio1">Custom Needle (ratio 1:1)</string>
     <string name="needle_path">Needle file</string>
     <string name="fartkontrol_desc">Launches a Danish Speed Camera app (useless outside Denmark)</string>
