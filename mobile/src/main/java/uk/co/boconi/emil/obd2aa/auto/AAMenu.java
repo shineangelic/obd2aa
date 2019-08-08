@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import uk.co.boconi.emil.obd2aa.service.OBD2Service;
+import uk.co.boconi.emil.obd2aa.service.OBD2AAService;
 import uk.co.boconi.emil.obd2aa.service.TPMSService;
 
 public class AAMenu extends MenuAdapter {
@@ -62,7 +62,7 @@ public class AAMenu extends MenuAdapter {
         if (getMenuItem(paramInt).getTitle().toString().equalsIgnoreCase("TPMS"))
             intent = new Intent(mActivity.getApplicationContext(), TPMSService.class);
         else
-            intent = new Intent(mActivity.getApplicationContext(), OBD2Service.class);
+            intent = new Intent(mActivity.getApplicationContext(), OBD2AAService.class);
         mActivity.startCarActivity(intent);
     }
 

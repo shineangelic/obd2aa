@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package uk.co.boconi.emil.obd2aa.auto;
 
 import android.content.ComponentName;
 import android.content.Intent;
@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.boconi.emil.obd2aa.auto.AAMenu;
+import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.service.AppService;
 import uk.co.boconi.emil.obd2aa.ui.gauge.ArcAnimation;
 import uk.co.boconi.emil.obd2aa.ui.gauge.ArcProgress;
@@ -88,7 +88,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
     private Boolean isdebugging;
     private MediaPlayer mediaPlayer;
     private boolean prepared;
-    private ServiceConnection mConnection = new ServiceConnection() {
+    private ServiceConnection mObd2aaConnection = new ServiceConnection() {
 
         public void onServiceConnected(ComponentName arg0, IBinder service) {
             Log.d("HU", "BACKGROUND SERVICE CONNECTED!");
@@ -139,9 +139,9 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
         isshowing = false;
         Log.d("OBD2-APP", "On Pause");
         mAppService.OBD2AA_update(null);
-        if (mConnection != null)
+        if (mObd2aaConnection != null)
             try {
-                unbindService(mConnection);
+                unbindService(mObd2aaConnection);
             } catch (Exception E) {
                 Log.e("OBD2AA", "Cannot unbind something which is not registered.");
             }
@@ -162,7 +162,7 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                     Intent intent = new Intent(OBD2AA.this, AppService.class);
                     intent.putExtra("muststartTorque", true);
                     startService(intent);
-                    bindService(intent, mConnection, 0);
+                    bindService(intent, mObd2aaConnection, 0);
                 }
                 CarUiController paramMap = getCarUiController();
 

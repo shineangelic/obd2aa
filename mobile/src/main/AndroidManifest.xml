@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
 
-        <activity android:name=".OBD2AA" />
+        <activity android:name=".auto.OBD2AA" />
 
         <activity android:name=".ui.activity.TPMSActivity" />
 
@@ -57,7 +57,7 @@
             android:resource="@xml/automotive_app_desc" />
 
         <service
-            android:name=".service.OBD2Service"
+            android:name=".service.OBD2AAService"
             android:exported="true"
             android:label="@string/app_name">
             <intent-filter>

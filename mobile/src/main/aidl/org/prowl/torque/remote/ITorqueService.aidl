@@ -1,4 +1,4 @@
-package uk.co.boconi.emil.obd2aa;
+package org.prowl.torque.remote;
 
 interface ITorqueService {
 

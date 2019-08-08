@@ -48,6 +48,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.SphericalUtil;
 
 
+import org.prowl.torque.remote.ITorqueService;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -57,8 +59,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadLocalRandom;
 
-import uk.co.boconi.emil.obd2aa.ITorqueService;
-import uk.co.boconi.emil.obd2aa.OBD2AA;
+import uk.co.boconi.emil.obd2aa.auto.OBD2AA;
 import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.auto.CarNotificationSoundPlayer;
 import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
@@ -172,6 +173,10 @@ public class AppService extends Service {
         mOBD2AA = obd2;
         if (savedcaractivity == null && obd2 != null)
             savedcaractivity = obd2;
+    }
+
+    public boolean isRunning() {
+        return isrunning;
     }
 
     @Override

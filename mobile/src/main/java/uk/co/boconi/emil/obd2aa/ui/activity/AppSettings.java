@@ -9,7 +9,10 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,6 +22,7 @@ import android.os.Message;
 import android.os.RemoteException;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.ContextCompat;
@@ -41,6 +45,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +58,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
+import org.prowl.torque.remote.ITorqueService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,8 +72,8 @@ import java.util.Set;
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
-import uk.co.boconi.emil.obd2aa.ITorqueService;
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.auto.OBD2AA;
 import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
 import uk.co.boconi.emil.obd2aa.model.ItemData;
@@ -75,8 +81,10 @@ import uk.co.boconi.emil.obd2aa.model.PidList;
 import uk.co.boconi.emil.obd2aa.preference.AppPreferences;
 import uk.co.boconi.emil.obd2aa.preference.CameraPreferences;
 import uk.co.boconi.emil.obd2aa.preference.TPMSPreferences;
+import uk.co.boconi.emil.obd2aa.service.AppService;
 import uk.co.boconi.emil.obd2aa.ui.PIDSearch;
 import uk.co.boconi.emil.obd2aa.ui.SpinnerAdapter;
+import uk.co.boconi.emil.obd2aa.ui.gauge.DrawGauges;
 
 import static java.lang.Integer.parseInt;
 
@@ -100,6 +108,7 @@ public class AppSettings extends AppCompatActivity {
     private int def_color_selector;
     private int warn1_color_selector;
     private int warn2_color_selector;
+    private AppService mAppService;
     private ITorqueService torqueService;
     private String pids[];
     private String pidsdesc[];
@@ -133,8 +142,10 @@ public class AppSettings extends AppCompatActivity {
                     Toast.makeText(AppSettings.this, "Incorrect version. You are using an old version of Torque with this plugin.\n\nThe plugin needs the latest version of Torque to run correctly.\n\nPlease upgrade to the latest version of Torque from Google Play", Toast.LENGTH_LONG);
                     return;
                 }
-            } catch (RemoteException e) {
-                ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_connected));
+            } catch (RemoteException | SecurityException e) {
+                ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_disconnected)
+                + " " + e.getMessage());
+                return;
             }
             Log.d("HU", "Have Torque service torqueServiceConnection!");
 
@@ -167,6 +178,22 @@ public class AppSettings extends AppCompatActivity {
         }
     };
 
+    private ServiceConnection mObd2aaConnection = new ServiceConnection() {
+
+        public void onServiceConnected(ComponentName arg0, IBinder service) {
+            Log.d("HU", "BACKGROUND OBD2AA SERVICE CONNECTED!");
+            AppService.LocalBinder binder = (AppService.LocalBinder) service;
+            mAppService = binder.getService();
+            ((TextView)findViewById(R.id.odbStatus)).setText(getString(R.string.service_obd_connected)+
+                    " Is running? " + mAppService.isRunning());
+        }
+
+        public void onServiceDisconnected(ComponentName name) {
+            ((TextView)findViewById(R.id.odbStatus)).setText(getString(R.string.service_obd_disconnected));
+            mAppService = null;
+        }
+    };
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -182,9 +209,17 @@ public class AppSettings extends AppCompatActivity {
         super.onPause();
         try {
             unbindService(torqueServiceConnection);
-        } catch (Exception E) {
-            Log.d("OBD2AA", "No service to unbind from");
+        } catch (Exception e) {
+            Log.d("OBD2AA", "Error unbinding torqueconn: "+ e.getMessage());
         }
+
+        if (mObd2aaConnection != null)
+            try {
+                unbindService(mObd2aaConnection);
+            } catch (Exception E) {
+                Log.e("OBD2AA", "Cannot unbind something which is not registered.");
+            }
+
         if (canclose) {
             Intent sendIntent = new Intent();
             sendIntent.setAction("org.prowl.torque.REQUEST_TORQUE_QUIT");
@@ -207,7 +242,7 @@ public class AppSettings extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         canclose = true;
-        boolean successfulBind = bindService(intent, torqueServiceConnection, 0);
+        boolean successfulBind = bindService(intent, torqueServiceConnection, BIND_AUTO_CREATE);
 
         if (successfulBind) {
             // Not really anything to do here.  Once you have bound to the service, you can start calling
@@ -220,6 +255,11 @@ public class AppSettings extends AppCompatActivity {
             findViewById(R.id.notorque).setVisibility(View.VISIBLE);
             Log.e("HU", "Unable to connect to Torque plugin service");
         }
+
+        Intent intent = new Intent(AppSettings.this, AppService.class);
+        intent.putExtra("muststartTorque", false);
+        //startService(intent);
+        bindService(intent, mObd2aaConnection, BIND_AUTO_CREATE);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Set<String> enabledapps = NotificationManagerCompat.getEnabledListenerPackages(this);
