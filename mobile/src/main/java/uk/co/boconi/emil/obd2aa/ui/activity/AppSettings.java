@@ -53,7 +53,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import org.json.JSONArray;
-import org.prowl.torque.remote.ITorqueService;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -67,6 +66,7 @@ import java.util.Set;
 import me.priyesh.chroma.ChromaDialog;
 import me.priyesh.chroma.ColorMode;
 import me.priyesh.chroma.ColorSelectListener;
+import uk.co.boconi.emil.obd2aa.ITorqueService;
 import uk.co.boconi.emil.obd2aa.R;
 import uk.co.boconi.emil.obd2aa.cameras.CameraDataBaseHelper;
 import uk.co.boconi.emil.obd2aa.cameras.DownloadHelper;
@@ -213,7 +213,9 @@ public class AppSettings extends AppCompatActivity {
             // Not really anything to do here.  Once you have bound to the service, you can start calling
             // methods on torqueService.someMethod()  - look at the aidl file for more info on the calls
             Log.d("HU", "Connected to torque service!");
-        } else {
+        } else if (prefs.getBoolean("demomode", false)){
+            Log.e("HU", "Unable to connect to Torque plugin service, but demo mode");
+        }else {
             findViewById(R.id.mainappsetting).setVisibility(View.GONE);
             findViewById(R.id.notorque).setVisibility(View.VISIBLE);
             Log.e("HU", "Unable to connect to Torque plugin service");
