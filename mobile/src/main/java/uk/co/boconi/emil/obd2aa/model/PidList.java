@@ -12,6 +12,11 @@ public class PidList {
     public String scale;
     public String pid;
 
+    public String scaleUnit;
+    public String scaleDivider;
+    public String scaleDecimals;
+
+
     public PidList(String info) {
         String[] pidinfo = info.split(",");
         this.longName = pidinfo[0];
@@ -21,6 +26,10 @@ public class PidList {
         this.minValue = pidinfo[4];
         this.scale = pidinfo[5];
         this.pid = pidinfo[6] + "," + pidinfo[7];
+
+        this.scaleUnit = "1";
+        this.scaleDivider = "1";
+        this.scaleDecimals = "0";
     }
 
     public PidList(JSONObject data) {
@@ -32,6 +41,10 @@ public class PidList {
             this.minValue = data.getString("minValue");
             this.scale = data.getString("scale");
             this.pid = data.getString("pid");
+
+            this.scaleUnit = "1";
+            this.scaleDivider = "1";
+            this.scaleDecimals = "0";
         } catch (Exception e) {
         }
     }
@@ -70,4 +83,10 @@ public class PidList {
         return this.pid;
     }
 
+
+    public String getScaleUnit() { return this.scaleUnit; }
+
+    public String getScaleDivider() { return this.scaleDivider; }
+
+    public String getScaleDecimals() { return this.scaleDecimals; }
 }

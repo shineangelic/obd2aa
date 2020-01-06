@@ -19,6 +19,12 @@
         <attr name="showArc" format="boolean" />
         <attr name="showtext" format="boolean" />
         <attr name="showNeedle" format="boolean" />
+        <attr name="showUnit" format="boolean" />
+        <attr name="showDecimal" format="boolean" />
+
+        <attr name="arc_scaleUnit" format="integer" />
+        <attr name="arc_scaleDivider" format="float" />
+        <attr name="arc_scaleDecimals" format="integer" />
 
         <attr name="arc_text_size" format="dimension" />
         <attr name="arc_text_color" format="color" />

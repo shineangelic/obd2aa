@@ -495,7 +495,7 @@ public class AppSettings extends AppCompatActivity {
     }
 
     public void gaugechanger(View v) {
-        Log.d("HU", "Gaugchanger called");
+        Log.d("HU", "gaugechanger called");
 
         Spinner myspinner = (Spinner) v;
         int currgauge = 0;
@@ -546,6 +546,11 @@ public class AppSettings extends AppCompatActivity {
             editor.putFloat("minval_" + i, 0);
             editor.putFloat("maxval_" + i, 100);
             editor.putBoolean("locked_" + i, false);
+
+            editor.putInt("scaleunit_" + i, 100);
+            editor.putFloat("scaledivider_" + i, 100);
+            editor.putInt("scaledecimals_" + i, 100);
+
             editor.apply();
             editor.commit();
         }
@@ -575,6 +580,11 @@ public class AppSettings extends AppCompatActivity {
             editor.remove("arch_startpos_" + i);
             editor.remove("arch_length_" + i);
             editor.remove("use_custom_bg_" + i);
+
+            editor.remove("scaleunit_" + i);
+            editor.remove("scaledivider_" + i);
+            editor.remove("scaledecimals_" + i);
+
             editor.apply();
             editor.commit();
             LinearLayout lp = (LinearLayout) findViewById(R.id.parrent_container);
@@ -734,6 +744,30 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
+            int scaleUnit = 0;
+            int scaleDecimals = 0;
+            float scaleDivider = 1;
+            try {
+                scaleUnit = prefs.getInt("scaleunit_" + i, 0);
+                scaleDivider = prefs.getFloat("scaledivider_" + i, 1);
+                scaleDecimals = prefs.getInt("scaledecimals_" + i, 0);
+            } catch (Exception e) { }
+
+            et = (EditText) custom.findViewById(R.id.scaleunit);
+            et.addTextChangedListener(getTextWatcher(et));
+            et.setTag("scaleunit_" + i);
+            et.setText(Integer.toString(scaleUnit));
+            et = (EditText) custom.findViewById(R.id.scaledecimals);
+            et.addTextChangedListener(getTextWatcher(et));
+            et.setTag("scaledecimals_" + i);
+            et.setText(Integer.toString(scaleDecimals));
+            et = (EditText) custom.findViewById(R.id.scaledivider);
+            et.addTextChangedListener(getTextWatcher(et));
+            et.setTag("scaledivider_" + i);
+            et.setText(Float.toString(scaleDivider));
+
+
+
             Spinner sp = (Spinner) custom.findViewById(R.id.gauges_style_spinner);
             SpinnerAdapter adapter = new SpinnerAdapter(this,
                     R.layout.spinner_layout, R.id.txt, list);
@@ -807,6 +841,11 @@ public class AppSettings extends AppCompatActivity {
                 editor.putFloat("minval_" + i, parseInt(d.getMinValue()));
                 editor.putFloat("maxval_" + i, parseInt(d.getMaxValue()));
                 editor.putBoolean("locked_" + i, false);
+
+                editor.putInt("scaleunit_" + i, parseInt(d.getScaleUnit()));
+                editor.putFloat("scaledivider_" + i, Float.parseFloat(d.getScaleDivider()));
+                editor.putInt("scaledecimals_" + i, parseInt(d.getScaleDecimals()));
+
                 editor.apply();
             }
         }

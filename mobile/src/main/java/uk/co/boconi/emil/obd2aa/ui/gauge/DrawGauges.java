@@ -34,7 +34,7 @@ public class DrawGauges {
 
         Boolean isdebugging = prefs.getBoolean("debugging", false);
 
-        Log.d("OBD2AA", "Total Width:" + totalwidth + "Total height: " + totalheight);
+        Log.d("OBD2AA", "Total Width:" + totalwidth + "; Total height: " + totalheight);
 
         if (layout_style != 0) {
             LayoutInflater inflater = (LayoutInflater) mcontext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -147,6 +147,9 @@ public class DrawGauges {
                 newArc.setShowDecimal(prefs.getBoolean("showdecimal_" + x, false));
                 newArc.setShowUnit(prefs.getBoolean("showunit_" + x, false));
 
+                newArc.setScaleUnit(prefs.getInt("scaleunit_" + x, 0));
+                newArc.setScaleDivider(prefs.getFloat("scaledivider_" + x, 1));
+                newArc.setScaleDecimals(prefs.getInt("scaledecimals_" + x, 0));
             }
         } else {
             int rownumber = 0;
@@ -172,14 +175,12 @@ public class DrawGauges {
                     columnnumber = 2;
                     break;
                 case 5:
-                    rownumber = 2;
-                    columnnumber = 3;
-                    break;
                 case 6:
                     rownumber = 2;
                     columnnumber = 3;
                     break;
                 case 7:
+                case 9:
                     rownumber = 3;
                     columnnumber = 3;
                     break;
@@ -187,18 +188,8 @@ public class DrawGauges {
                     rownumber = 2;
                     columnnumber = 4;
                     break;
-                case 9:
-                    rownumber = 3;
-                    columnnumber = 3;
-                    break;
                 case 10:
-                    rownumber = 3;
-                    columnnumber = 4;
-                    break;
                 case 11:
-                    rownumber = 3;
-                    columnnumber = 4;
-                    break;
                 case 12:
                     rownumber = 3;
                     columnnumber = 4;
@@ -340,16 +331,16 @@ public class DrawGauges {
                         newArc.setShowDecimal(prefs.getBoolean("showdecimal_" + x, false));
                         newArc.setShowUnit(prefs.getBoolean("showunit_" + x, false));
                         newArc.setTag("gauge_" + x);
+
+                        newArc.setScaleUnit(prefs.getInt("scaleunit_" + x, 0));
+                        newArc.setScaleDivider(prefs.getFloat("scaledivider_" + x, 1));
+                        newArc.setScaleDecimals(prefs.getInt("scaledecimals_" + x, 0));
                         row.addView(newArc);
 
                         x++;
                     }
                 }
-
             }
         }
-
     }
-
-
 }

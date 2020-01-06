@@ -45,8 +45,11 @@
     <string name="warn2_color">Warning Color 2:</string>
     <string name="text_color">Text Color:</string>
     <string name="preview">Preview</string>
+    <string name="scale_unit">Scale Unit (0=auto):</string>
+    <string name="scale_decimals">Scale Decimals:</string>
+    <string name="scale_divider">Scale Divider:</string>
 
-    <!-- Verions 1.5 -->
+    <!-- Versions 1.5 -->
 
     <string name="file_creation_error">Error saving data to file.</string>
     <string name="front_left">Front left pressure sensor:</string>

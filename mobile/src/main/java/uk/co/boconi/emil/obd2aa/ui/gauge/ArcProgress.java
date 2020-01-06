@@ -17,9 +17,11 @@ import android.os.Parcelable;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import uk.co.boconi.emil.obd2aa.R;
+import uk.co.boconi.emil.obd2aa.model.Scale;
 import uk.co.boconi.emil.obd2aa.util.ViewUtils;
 
 public class ArcProgress extends View {
@@ -56,14 +58,20 @@ public class ArcProgress extends View {
     private final float default_bottom_text_size;
     private final float default_stroke_width;
     private final String default_suffix_text;
+
     private final int default_max = 100;
     private final int default_min = 0;
+    private final int default_unit = 0; // automatic unit
+    private final float default_divider = 1f;
+    private final int default_decimals = 0;
+
     private final int default_gaugestyle = 0;
     private final float default_arc_angle = 360 * 0.73f;
     private final int min_size;
     protected Paint textPaint;
     Typeface type = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed.ttf");
     float[][] scale_pos = new float[12][];
+    float[][] scale_num_pos = new float[12][];
     private Paint paint;
     private RectF rectF = new RectF();
     private float strokeWidth;
@@ -103,7 +111,9 @@ public class ArcProgress extends View {
     private int x;
     private int needlecolor = -1;
     private int indent = 0;
-    private float startposition = 270;
+    private float startposition = 235;
+
+    private Scale gaugeScale;
 
     public ArcProgress(Context context) {
         this(context, null);
@@ -146,8 +156,17 @@ public class ArcProgress extends View {
         showArc = attributes.getBoolean(R.styleable.ArcProgress_showArc, default_showArc);
         showText = attributes.getBoolean(R.styleable.ArcProgress_showtext, default_showText);
         showNeedle = attributes.getBoolean(R.styleable.ArcProgress_showNeedle, default_showNeedle);
-        showDecimal = attributes.getBoolean(R.styleable.ArcProgress_showNeedle, default_showDecimal);
-        showUnit = attributes.getBoolean(R.styleable.ArcProgress_showNeedle, default_showUnit);
+        showDecimal = attributes.getBoolean(R.styleable.ArcProgress_showDecimal, default_showDecimal);
+        showUnit = attributes.getBoolean(R.styleable.ArcProgress_showUnit, default_showUnit);
+
+        gaugeScale = new Scale(
+                    attributes.getInt(R.styleable.ArcProgress_arc_min, default_min),
+                    attributes.getInt(R.styleable.ArcProgress_arc_max, default_max),
+                    attributes.getInt(R.styleable.ArcProgress_arc_scaleUnit, default_unit),
+                    attributes.getFloat(R.styleable.ArcProgress_arc_scaleDivider, default_divider),
+                    attributes.getInt(R.styleable.ArcProgress_arc_scaleDecimals, default_decimals)
+                );
+
         setMax(attributes.getInt(R.styleable.ArcProgress_arc_max, default_max));
         setMin(attributes.getInt(R.styleable.ArcProgress_arc_min, default_min));
         setGaugeStyle(attributes.getInt(R.styleable.ArcProgress_gaugestyle, default_gaugestyle));
@@ -158,6 +177,33 @@ public class ArcProgress extends View {
         suffixTextPadding = attributes.getDimension(R.styleable.ArcProgress_arc_suffix_text_padding, default_suffix_padding);
         bottomTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_bottom_text_size, default_bottom_text_size);
         bottomText = attributes.getString(R.styleable.ArcProgress_arc_bottom_text);
+    }
+
+    public float getScaleUnit() {
+        return gaugeScale.getUnit();
+    }
+
+    public void setScaleUnit(int scaleUnit) {
+        this.gaugeScale.setUnit(scaleUnit);
+        this.invalidate();
+    }
+
+    public float getScaleDivider() {
+        return gaugeScale.getDisplayDivider();
+    }
+
+    public void setScaleDivider(float scaleDivider) {
+        this.gaugeScale.setDisplayDivider(scaleDivider);
+        this.invalidate();
+    }
+
+    public float getScaleDecimals() {
+        return gaugeScale.getDisplayDecimals();
+    }
+
+    public void setScaleDecimals(int scaleDecimals) {
+        this.gaugeScale.setDisplayDecimals(scaleDecimals);
+        this.invalidate();
     }
 
     protected void initPainters() {
@@ -294,10 +340,9 @@ public class ArcProgress extends View {
     }
 
     public void setMax(float max) {
-
         this.max = max;
+        gaugeScale.setMaxValue(max);
         invalidate();
-
     }
 
     public float getMin() {
@@ -306,6 +351,7 @@ public class ArcProgress extends View {
 
     public void setMin(float min) {
         this.min = min;
+        gaugeScale.setMinValue(min);
         invalidate();
     }
 
@@ -455,24 +501,41 @@ public class ArcProgress extends View {
         myradius = width / 2;
         cx = width / 2f;
         x = 0;
-        if (getGaugestyle() == 6 || getGaugestyle() == 7) {
-            float scalelenght = (14 / (480 / (float) width));
-            for (int i = -135; i <= 135; i += 27) {
 
-                float angle2 = (float) Math.toRadians(i); // Need to convert to radians first
+        Log.d("OBD2AA",
+                "Scale: (" + bottomText + " " + gaugeScale.getMinValue() +
+                        ":" + gaugeScale.getMaxValue() +
+                        " " + gaugeScale.getUnit() +
+                        " " + gaugeScale.getSize() + ")");
+
+        if (getGaugestyle() == 6 || getGaugestyle() == 7) {
+            float scaleLength = (14 / (480 / (float) width));
+
+            int scaleAngleRange = 270;
+            int scaleAngleOffset = -170;
+
+            for (int i = 0; i < gaugeScale.getSize(); i++) {
+                float angle1 = scaleAngleRange * gaugeScale.getItem(i).getPerc() - scaleAngleOffset;
+                float angle2 = (float) Math.toRadians(angle1); // Need to convert to radians first
 
                 float startX = (float) (cx + (myradius) * Math.sin(angle2));
                 float startY = (float) (cx - (myradius) * Math.cos(angle2));
 
-                float stopX = (float) (cx + (myradius - scalelenght) * Math.sin(angle2));
-                float stopY = (float) (cx - (myradius - scalelenght) * Math.cos(angle2));
+                float stopX = (float) (cx + (myradius - scaleLength) * Math.sin(angle2));
+                float stopY = (float) (cx - (myradius - scaleLength) * Math.cos(angle2));
                 scale_pos[x] = new float[]{startX, startY, stopX, stopY};
+                //scale_num_pos[x] = new float[]{};
                 x++;
             }
         } else {
             float scaleMarkSize = getResources().getDisplayMetrics().density * getStrokeWidth();
-            for (int i = -145; i <= 145; i += 29) {
-                float angle2 = (float) Math.toRadians(i); // Need to convert to radians first
+
+            int scaleAngleRange = 280;
+            int scaleAngleOffset = -180;
+
+            for (int i = 0; i < gaugeScale.getSize(); i++) {
+                float angle1 = scaleAngleRange * gaugeScale.getItem(i).getPerc() - scaleAngleOffset;
+                float angle2 = (float) Math.toRadians(angle1); // Need to convert to radians first
 
                 float startX = (float) (cx + (myradius - 2 - getStrokeWidth()) * Math.sin(angle2));
                 float startY = (float) (cx - (myradius - 2 - getStrokeWidth()) * Math.cos(angle2));
@@ -483,7 +546,6 @@ public class ArcProgress extends View {
                 x++;
             }
         }
-
     }
 
     @Override
@@ -558,7 +620,7 @@ public class ArcProgress extends View {
         }
 
 
-        if (showArc)  //This is scho Scale actually
+        if (showArc)  // This is show Scale actually
         {
             paint.setStyle(Paint.Style.STROKE);
             if (getGaugestyle() == 6 || getGaugestyle() == 7)
@@ -566,7 +628,7 @@ public class ArcProgress extends View {
             else
                 paint.setColor(Color.WHITE);
             float scaleMarkSize = getResources().getDisplayMetrics().density * getStrokeWidth(); // 16dp
-            float scalelenght = (14 / (480 / (float) getWidth()));
+            float scaleLength = (14 / (480 / (float) getWidth()));
             paint.setStrokeWidth(2);
             if (getGaugestyle() == 6 || getGaugestyle() == 7) {
                 paint.setTextSize(getWidth() / 14);

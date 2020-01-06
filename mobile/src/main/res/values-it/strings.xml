@@ -45,6 +45,9 @@
     <string name="warn2_color">Colore avviso 2:</string>
     <string name="text_color">Colore testo:</string>
     <string name="preview">Anteprima</string>
+    <string name="scale_unit">Unità scala (0=auto):</string>
+    <string name="scale_decimals">Decimali scala:</string>
+    <string name="scale_divider">Divisore scala:</string>
 
     <!-- Verions 1.5 -->
     <string name="file_creation_error">Errore durante il salvataggio</string>
