@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -102,7 +103,12 @@ public class TPMSActivity extends CarActivity {
         localMenuController.showMenuButton();
         xxx.updateActivity(TPMSActivity.this);
         Intent intent = new Intent(TPMSActivity.this, AppService.class);
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }
+        else {
+            startService(intent);
+        }
         bindService(intent, mConnection, 0);
         Log.d("OBD2AA", "TPMS View loaded.");
     }

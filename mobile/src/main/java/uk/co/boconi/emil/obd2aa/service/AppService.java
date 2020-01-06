@@ -24,6 +24,7 @@ import android.graphics.Typeface;
 import android.location.Location;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -697,7 +698,12 @@ public class AppService extends Service {
     private void startTorque() {
         Intent intent = new Intent();
         intent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }
+        else {
+            startService(intent);
+        }
         boolean successfulBind = bindService(intent, connection, 0);
         if (successfulBind) {
             mBind = true;

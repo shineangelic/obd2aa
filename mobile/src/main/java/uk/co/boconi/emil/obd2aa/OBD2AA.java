@@ -8,6 +8,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -161,7 +162,12 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
                 else {
                     Intent intent = new Intent(OBD2AA.this, AppService.class);
                     intent.putExtra("muststartTorque", true);
-                    startService(intent);
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(intent);
+                    }
+                    else {
+                        startService(intent);
+                    }
                     bindService(intent, mConnection, 0);
                 }
                 CarUiController paramMap = getCarUiController();

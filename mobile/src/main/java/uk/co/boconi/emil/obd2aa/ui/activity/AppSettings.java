@@ -423,7 +423,12 @@ public class AppSettings extends AppCompatActivity {
 
         intent = new Intent();
         intent.setClassName("org.prowl.torque", "org.prowl.torque.remote.TorqueService");
-        startService(intent);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(intent);
+        }
+        else {
+            startService(intent);
+        }
 
         if (prefs.getBoolean("ShowSpeedCamWarrning", true) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) && (ContextCompat.checkSelfPermission(AppSettings.this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)) { //only download if enabled!
             new DownloadHelper(1, this, 3000);
