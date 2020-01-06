@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -18,7 +19,13 @@ public class CarModeReceiver extends BroadcastReceiver {
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
             Log.d("OBD2AA", "Should start the service now");
             Intent starts = new Intent(context, AppService.class);
-            context.startService(starts);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                context.startForegroundService(starts);
+            }
+            else {
+                context.startService(starts);
+            }
+
 
             if (prefs.getBoolean("fartkontrol", false)) {
                 Intent LaunchIntent = context.getPackageManager().getLaunchIntentForPackage("nu.fartkontrol.app");
