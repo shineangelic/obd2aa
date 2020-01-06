@@ -58,6 +58,7 @@ public class ArcProgress extends View {
     private final float default_bottom_text_size;
     private final float default_stroke_width;
     private final String default_suffix_text;
+    private final float default_scale_text_size;
 
     private final int default_max = 100;
     private final int default_min = 0;
@@ -69,6 +70,7 @@ public class ArcProgress extends View {
     private final float default_arc_angle = 360 * 0.73f;
     private final int min_size;
     protected Paint textPaint;
+    protected Paint textScalePaint;
     Typeface type = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed.ttf");
     float[][] scale_pos = new float[12][];
     float[][] scale_num_pos = new float[12][];
@@ -78,6 +80,7 @@ public class ArcProgress extends View {
     private float suffixTextSize;
     private float bottomTextSize;
     private String bottomText;
+    private float scaleTextSize;
     private float textSize;
     private int textColor;
     private float progress = 0;
@@ -134,6 +137,7 @@ public class ArcProgress extends View {
         default_suffix_text = "%";
         default_bottom_text_size = ViewUtils.sp2px(getResources(), 10);
         default_stroke_width = ViewUtils.dp2px(getResources(), 4);
+        default_scale_text_size = ViewUtils.sp2px(getResources(), 8);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ArcProgress, defStyleAttr, 0);
         initByAttributes(attributes);
@@ -177,6 +181,7 @@ public class ArcProgress extends View {
         suffixTextPadding = attributes.getDimension(R.styleable.ArcProgress_arc_suffix_text_padding, default_suffix_padding);
         bottomTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_bottom_text_size, default_bottom_text_size);
         bottomText = attributes.getString(R.styleable.ArcProgress_arc_bottom_text);
+        scaleTextSize = attributes.getDimension(R.styleable.ArcProgress_arc_scale_text_size, default_scale_text_size);
     }
 
     public float getScaleUnit() {
@@ -212,6 +217,11 @@ public class ArcProgress extends View {
         textPaint.setColor(textColor);
         textPaint.setTextSize(textSize);
         textPaint.setAntiAlias(true);
+
+        textScalePaint = new TextPaint();
+        textScalePaint.setColor(textColor);
+        textScalePaint.setTextSize(scaleTextSize);
+        textScalePaint.setAntiAlias(true);
 
         paint = new Paint();
         paint.setColor(default_unfinished_color);
@@ -373,6 +383,15 @@ public class ArcProgress extends View {
         this.invalidate();
     }
 
+    public float getScaleTextSize() {
+        return scaleTextSize;
+    }
+
+    public void setScaleTextSize(float scaleTextSize) {
+        this.scaleTextSize = scaleTextSize;
+        this.invalidate();
+    }
+
     public float getTextSize() {
         return textSize;
     }
@@ -512,7 +531,7 @@ public class ArcProgress extends View {
             float scaleLength = (14 / (480 / (float) width));
 
             int scaleAngleRange = 270;
-            int scaleAngleOffset = -170;
+            int scaleAngleOffset = -180;
 
             for (int i = 0; i < gaugeScale.getSize(); i++) {
                 float angle1 = scaleAngleRange * gaugeScale.getItem(i).getPerc() - scaleAngleOffset;
@@ -524,13 +543,16 @@ public class ArcProgress extends View {
                 float stopX = (float) (cx + (myradius - scaleLength) * Math.sin(angle2));
                 float stopY = (float) (cx - (myradius - scaleLength) * Math.cos(angle2));
                 scale_pos[x] = new float[]{startX, startY, stopX, stopY};
-                //scale_num_pos[x] = new float[]{};
+
+                startX = (float) (cx + (myradius - scaleLength * 4) * Math.sin(angle2));
+                startY = (float) (cx - (myradius - scaleLength * 4) * Math.cos(angle2));
+                scale_num_pos[x] = new float[]{startX, startY};
                 x++;
             }
         } else {
             float scaleMarkSize = getResources().getDisplayMetrics().density * getStrokeWidth();
 
-            int scaleAngleRange = 280;
+            int scaleAngleRange = 270;
             int scaleAngleOffset = -180;
 
             for (int i = 0; i < gaugeScale.getSize(); i++) {
@@ -543,6 +565,10 @@ public class ArcProgress extends View {
                 float stopX = (float) (cx + (myradius - 2 - getStrokeWidth() - scaleMarkSize) * Math.sin(angle2));
                 float stopY = (float) (cx - (myradius - 2 - getStrokeWidth() - scaleMarkSize) * Math.cos(angle2));
                 scale_pos[x] = new float[]{startX, startY, stopX, stopY};
+
+                startX = (float) (cx + (myradius - 2 - getStrokeWidth() - scaleMarkSize * 2.3f) * Math.sin(angle2));
+                startY = (float) (cx - (myradius - 2 - getStrokeWidth() - scaleMarkSize * 2.3f) * Math.cos(angle2));
+                scale_num_pos[x] = new float[]{startX, startY};
                 x++;
             }
         }
@@ -634,11 +660,23 @@ public class ArcProgress extends View {
                 paint.setTextSize(getWidth() / 14);
                 for (int i = 0; i < x; i++) {
                     canvas.drawLine(scale_pos[i][0], scale_pos[i][1], scale_pos[i][2], scale_pos[i][3], paint);
+
+                    String scaleText = gaugeScale.getItem(i).getDisplay();
+                    canvas.drawText(scaleText,
+                            (scale_num_pos[i][0] - textScalePaint.measureText(scaleText) / 2.0f),
+                            scale_num_pos[i][1] - (textScalePaint.descent() + textScalePaint.ascent()) / 2,
+                            textScalePaint);
                 }
 
             } else {
                 for (int i = 0; i < x; i++) {
                     canvas.drawLine(scale_pos[i][0], scale_pos[i][1], scale_pos[i][2], scale_pos[i][3], paint);
+
+                    String scaleText = gaugeScale.getItem(i).getDisplay();
+                    canvas.drawText(scaleText,
+                            (scale_num_pos[i][0] - textScalePaint.measureText(scaleText) / 2.0f),
+                            scale_num_pos[i][1] - (textScalePaint.descent() + textScalePaint.ascent()) / 2,
+                            textScalePaint);
                 }
 
             }
@@ -690,7 +728,7 @@ public class ArcProgress extends View {
         else
             text = String.format("%.0f", getProgress());
         float bottomTextBaseline = 0;
-        float bottomTextHeigh = 0;
+        float bottomTextHeight = 0;
 
         if (arcBottomHeight == 0) {
             float radius = getWidth() / 2f;
@@ -707,7 +745,7 @@ public class ArcProgress extends View {
                 canvas.drawText(suffixText, (getWidth() - textPaint.measureText(suffixText)) / 2.0f, bottomTextBaseline, textPaint);
             } else {
                 textPaint.setTextSize(bottomTextSize);
-                bottomTextHeigh = textPaint.measureText(getBottomText());
+                bottomTextHeight = textPaint.measureText(getBottomText());
                 bottomTextBaseline = getHeight() - arcBottomHeight - (textPaint.descent() + textPaint.ascent()) / 2;
                 canvas.drawText(getBottomText(), (getWidth() - textPaint.measureText(getBottomText())) / 2.0f, bottomTextBaseline, textPaint);
             }
@@ -747,11 +785,11 @@ public class ArcProgress extends View {
 
                     Rect textBounds = new Rect();
                     textPaint.getTextBounds(getBottomText(), 0, getBottomText().length(), textBounds);
-                    bottomTextHeigh = bottomTextBaseline + textBounds.top;
+                    bottomTextHeight = bottomTextBaseline + textBounds.top;
                     textPaint.setColor(Color.WHITE);
-                    //Log.d("OBD2AA",text+ " height is: "+ getHeight() + "Bootm text height: " + bottomTextHeigh + " bottome text bounds: "+ textBounds.top + " bottom text baseline: " + bottomTextBaseline);
+                    //Log.d("OBD2AA",text+ " height is: "+ getHeight() + "Bootm text height: " + bottomTextHeight + " bottome text bounds: "+ textBounds.top + " bottom text baseline: " + bottomTextBaseline);
                     textPaint.setTextSize((float) (getBottomTextSize() * 1.8));
-                    canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f, bottomTextHeigh + getHeight() / 13, textPaint);
+                    canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f, bottomTextHeight + getHeight() / 13, textPaint);
                     //canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f,  (getWidth() - textPaint.measureText(text)) / 2.0f, textPaint);
                 }
 

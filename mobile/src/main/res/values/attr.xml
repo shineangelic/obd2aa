@@ -35,6 +35,7 @@
 
         <attr name="arc_bottom_text" format="string" />
         <attr name="arc_bottom_text_size" format="dimension" />
+        <attr name="arc_scale_text_size" format="dimension" />
     </declare-styleable>
 
     <declare-styleable name="Themes">
