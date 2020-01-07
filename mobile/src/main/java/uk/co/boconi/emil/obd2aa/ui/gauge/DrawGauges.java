@@ -101,11 +101,11 @@ public class DrawGauges {
                 newArc.setStrokeWidth(arch_width);
 
                 if (prefs.getInt("gaugestyle_" + x, 0) == 6) {
-                    newArc.setBackgroundResource(R.drawable.bg1);
+                    newArc.setBackgroundResource(R.drawable.bg1_6);
                     newArc.setShowNeedle(false);
 
                 } else if (prefs.getInt("gaugestyle_" + x, 0) == 7) {
-                    newArc.setBackgroundResource(R.drawable.bg2);
+                    newArc.setBackgroundResource(R.drawable.bg2_6);
                     newArc.setShowNeedle(false);
 
                 } else {
