@@ -139,7 +139,8 @@ public class OBD2AA extends CarActivity implements CarSensorManager.CarSensorEve
         super.onPause();
         isshowing = false;
         Log.d("OBD2-APP", "On Pause");
-        mAppService.OBD2AA_update(null);
+        if (mAppService != null)
+            mAppService.OBD2AA_update(null);
         if (mConnection != null)
             try {
                 unbindService(mConnection);
