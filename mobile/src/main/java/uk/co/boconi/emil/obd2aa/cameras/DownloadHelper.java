@@ -7,56 +7,62 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
 import uk.co.boconi.emil.obd2aa.ui.activity.AppSettings;
 
 public class DownloadHelper {
-
     private static String mobileURL = "http://data.blitzer.de/output/mobile.php?v=4&key=d83nv9dj38FQ";
     private static String staticURL = "http://data.blitzer.de/output/static.php?v=4";
     private static String MOBILE_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/mobilecamera";
     private static String STATIC_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/fixedcamera";
 
     public DownloadHelper(final int type, final Context context, final int freq) {
-        Thread mydownloadthread = new Thread() {
+        Thread downloadThread = new Thread() {
             @Override
             public void run() {
                 try {
-                    URL u;
-                    String dbname;
+                    URL url;
+                    String dbName;
                     if (type == 1 && freq != 0) {
-                        dbname = "mobilecamera";
+                        dbName = "mobilecamera";
                         File file = new File(MOBILE_DB_PATH);
                         if (file.exists() && ((System.currentTimeMillis() - file.lastModified()) / 1000) < freq) //Only download a new file every 5 minutes;
                             return;
-                        u = new URL(mobileURL);
+                        url = new URL(mobileURL);
                     } else {
                         File file = new File(STATIC_DB_PATH);
-                        dbname = "fixedcamera";
+                        dbName = "fixedcamera";
                         if (file.exists() && ((System.currentTimeMillis() - file.lastModified()) / 1000) < 604800 && freq != 1)  //Only download a new static database file every 7 days.
                             return;
-                        u = new URL(staticURL);
+                        url = new URL(staticURL);
                     }
-                    URLConnection conn = u.openConnection();
-                    int contentLength = conn.getContentLength();
-                    DataInputStream stream = new DataInputStream(u.openStream());
+                    HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
+                    urlConn.setRequestMethod("GET");
+                    urlConn.setDoOutput(true);
+                    urlConn.connect();
+
+                    int contentLength = urlConn.getContentLength();
+                    DataInputStream stream = new DataInputStream(url.openStream());
 
                     byte[] buffer = new byte[contentLength];
                     stream.readFully(buffer);
                     stream.close();
-                    CameraDataBaseHelper xxx = new CameraDataBaseHelper(context, type, dbname);
-                    xxx.createDataBase();
-                    xxx.copyDataBase(buffer);
+                    CameraDataBaseHelper cdbh = new CameraDataBaseHelper(context, type, dbName);
+                    cdbh.createDataBase();
+                    cdbh.copyDataBase(buffer);
                     Log.d("OBD2AA", "Download has been completed!");
                     if (context instanceof AppSettings) {
                         ((AppSettings) context).showDownload_comp_message(type);
                     }
-                } catch (Exception E) {
-                    E.printStackTrace();
+                } catch (Exception e) {
+                    Log.e("OBD2AA", "exception", e);
                 }
             }
         };
@@ -68,8 +74,8 @@ public class DownloadHelper {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean use_mobile = prefs.getBoolean("use_mobile", true);
         if (isConnected && use_mobile)
-            mydownloadthread.start();
+            downloadThread.start();
         else if (isConnected && isWiFi)
-            mydownloadthread.start();
+            downloadThread.start();
     }
 }

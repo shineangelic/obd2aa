@@ -145,19 +145,19 @@ public class AppSettings extends AppCompatActivity {
                     pidsdesc[i] = pidsdesc[i] + "," + pids[i];
                 }
                 Arrays.sort(pidsdesc, String.CASE_INSENSITIVE_ORDER);
+
+                for (int i = 0; i < pids.length; i++) {
+                    String[] info = pidsdesc[i].split(",");
+                    if (isdebugging)
+                        try {
+                            Log.d("OBD2AA", "Pid name: " + info[0] + " Units: " + info[2] + " Unit conversion: " + torqueService.getPreferredUnit(info[2]));
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
+                        }
+                    pidlist.add(new PidList(pidsdesc[i]));
+                }
             } catch (RemoteException e) {
                 e.printStackTrace();
-            }
-
-            for (int i = 0; i < pids.length; i++) {
-                String[] info = pidsdesc[i].split(",");
-                if (isdebugging)
-                    try {
-                        Log.d("OBD2AA", "Pid name: " + info[0] + " Units: " + info[2] + " Unit conversion: " + torqueService.getPreferredUnit(info[2]));
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
-                    }
-                pidlist.add(new PidList(pidsdesc[i]));
             }
         }
 

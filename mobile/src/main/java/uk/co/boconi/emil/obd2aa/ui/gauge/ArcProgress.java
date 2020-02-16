@@ -129,7 +129,6 @@ public class ArcProgress extends View {
     public ArcProgress(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
-        default_text_size = ViewUtils.sp2px(getResources(), 18);
         min_size = (int) ViewUtils.dp2px(getResources(), 100);
         default_text_size = ViewUtils.sp2px(getResources(), 35);
         default_suffix_text_size = ViewUtils.sp2px(getResources(), 15);
@@ -137,7 +136,7 @@ public class ArcProgress extends View {
         default_suffix_text = "%";
         default_bottom_text_size = ViewUtils.sp2px(getResources(), 10);
         default_stroke_width = ViewUtils.dp2px(getResources(), 4);
-        default_scale_text_size = ViewUtils.sp2px(getResources(), 8);
+        default_scale_text_size = ViewUtils.sp2px(getResources(), 12);
 
         TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ArcProgress, defStyleAttr, 0);
         initByAttributes(attributes);
@@ -544,8 +543,8 @@ public class ArcProgress extends View {
                 float stopY = (float) (cx - (myradius - scaleLength) * Math.cos(angle2));
                 scale_pos[x] = new float[]{startX, startY, stopX, stopY};
 
-                startX = (float) (cx + (myradius - scaleLength * 4) * Math.sin(angle2));
-                startY = (float) (cx - (myradius - scaleLength * 4) * Math.cos(angle2));
+                startX = (float) (cx + (myradius - scaleLength * 5) * Math.sin(angle2));
+                startY = (float) (cx - (myradius - scaleLength * 5) * Math.cos(angle2));
                 scale_num_pos[x] = new float[]{startX, startY};
                 x++;
             }
@@ -566,8 +565,8 @@ public class ArcProgress extends View {
                 float stopY = (float) (cx - (myradius - 2 - getStrokeWidth() - scaleMarkSize) * Math.cos(angle2));
                 scale_pos[x] = new float[]{startX, startY, stopX, stopY};
 
-                startX = (float) (cx + (myradius - 2 - getStrokeWidth() - scaleMarkSize * 2.3f) * Math.sin(angle2));
-                startY = (float) (cx - (myradius - 2 - getStrokeWidth() - scaleMarkSize * 2.3f) * Math.cos(angle2));
+                startX = (float) (cx + (myradius - 2 - getStrokeWidth() - scaleMarkSize * 3f) * Math.sin(angle2));
+                startY = (float) (cx - (myradius - 2 - getStrokeWidth() - scaleMarkSize * 3f) * Math.cos(angle2));
                 scale_num_pos[x] = new float[]{startX, startY};
                 x++;
             }
@@ -585,17 +584,13 @@ public class ArcProgress extends View {
         //Log.d("OBD2AA","Progress: "+progress + ", Curr_progress: "+curr_progress+ ", Max: "+ getMax()+", Min: "+getMin()+ ", arcAngle: "+arcAngle + ",Finished: "+finishedSweepAngle);
         //if(curr_progress == 0) finishedStartAngle = 0.01f;
         paint.setColor(unfinishedStrokeColor);
-        //We need to calculate the store witdth, assuming
-
-
+        // We need to calculate the store width, assuming
         paint.setStrokeWidth(strokeWidth);
-
 
         switch (getGaugestyle()) {
             case 0:
                 break;
             case 1:
-
                 paint.setColor(unfinishedStrokeColor);
                 paint.setShader(null);
                 canvas.drawArc(rectF, startAngle, arcAngle, false, paint);
@@ -623,7 +618,6 @@ public class ArcProgress extends View {
                 canvas.drawArc(rectF, startAngle, arcAngle, false, paint);
                 paint.setShader(null);
                 break;
-
         }
 
 
@@ -645,8 +639,8 @@ public class ArcProgress extends View {
             paint.setShader(null);
         }
 
-
-        if (showArc)  // This is show Scale actually
+        // Scale
+        if (showArc)
         {
             paint.setStyle(Paint.Style.STROKE);
             if (getGaugestyle() == 6 || getGaugestyle() == 7)
@@ -683,7 +677,7 @@ public class ArcProgress extends View {
             paint.setStrokeWidth(getStrokeWidth());
         }
 
-
+        // Needle
         if (showNeedle) {
             if (needleBitmap == null) {
                 paint.setShader(null);
@@ -706,7 +700,6 @@ public class ArcProgress extends View {
                 canvas.drawCircle(cx, cx, 2, paint);
                 paint.setStyle(Paint.Style.STROKE);
             } else {
-
                 Matrix needlematrix = new Matrix();
                 needlematrix.setRotate(startAngle + finishedSweepAngle, cx, cx);
                 paint.setAntiAlias(true);
@@ -717,16 +710,12 @@ public class ArcProgress extends View {
         }
 
 
-        String text;
-
-
+        String value;
         textPaint.setTypeface(type);
-
-
         if (showDecimal)
-            text = String.format("%.2f", getProgress());
+            value = String.format("%.2f", getProgress());
         else
-            text = String.format("%.0f", getProgress());
+            value = String.format("%.0f", getProgress());
         float bottomTextBaseline = 0;
         float bottomTextHeight = 0;
 
@@ -736,9 +725,8 @@ public class ArcProgress extends View {
             arcBottomHeight = radius * (float) (1 - Math.cos(angle / 180 * Math.PI));
         }
 
-
+        // Suffix
         if (!TextUtils.isEmpty(getBottomText())) {
-
             if (getGaugestyle() == 6 || getGaugestyle() == 7) {
                 textPaint.setTextSize(bottomTextSize);
                 bottomTextBaseline = getHeight() / 2 + (70 / (480 / (float) getWidth()));
@@ -751,8 +739,8 @@ public class ArcProgress extends View {
             }
         }
 
-
-        if (!TextUtils.isEmpty(text)) {
+        // Set value style
+        if (!TextUtils.isEmpty(value)) {
             textPaint.setColor(textColor);
             if (getUseGradientColor()) {
                 if (isReverse) {
@@ -771,32 +759,28 @@ public class ArcProgress extends View {
                         textPaint.setColor(low2color);
                 }
             }
-            textPaint.setTextSize(textSize);
 
+            // Value
+            textPaint.setTextSize(textSize * .8f);
             float textHeight = textPaint.descent() + textPaint.ascent();
-
             float textBaseline = (getHeight() - textHeight) / 2.0f;
             if (showText)
-
                 if (!showNeedle)
-                    canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f, textBaseline, textPaint);
+                    canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f, textBaseline, textPaint);
                 else {
-
-
                     Rect textBounds = new Rect();
                     textPaint.getTextBounds(getBottomText(), 0, getBottomText().length(), textBounds);
                     bottomTextHeight = bottomTextBaseline + textBounds.top;
                     textPaint.setColor(Color.WHITE);
-                    //Log.d("OBD2AA",text+ " height is: "+ getHeight() + "Bootm text height: " + bottomTextHeight + " bottome text bounds: "+ textBounds.top + " bottom text baseline: " + bottomTextBaseline);
+                    //Log.d("OBD2AA",value+ " height is: "+ getHeight() + "Bottom text height: " + bottomTextHeight + " bottom text bounds: "+ textBounds.top + " bottom value baseline: " + bottomTextBaseline);
                     textPaint.setTextSize((float) (getBottomTextSize() * 1.8));
-                    canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f, bottomTextHeight + getHeight() / 13, textPaint);
-                    //canvas.drawText(text, (getWidth() - textPaint.measureText(text)) / 2.0f,  (getWidth() - textPaint.measureText(text)) / 2.0f, textPaint);
+                    canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f, bottomTextHeight + getHeight() / 13, textPaint);
+                    //canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f,  (getWidth() - textPaint.measureText(value)) / 2.0f, textPaint);
                 }
 
-
+            // Unit
             textPaint.setTextSize(suffixTextSize);
             float suffixHeight = textPaint.descent() + textPaint.ascent();
-
             if (showUnit)
                 if (!showNeedle) {
                     if (getGaugestyle() == 6 || getGaugestyle() == 7) {
@@ -806,17 +790,13 @@ public class ArcProgress extends View {
                     } else {
                         //textBaseline =  (137/(480/getWidth()));
                         textBaseline = (getHeight() - textHeight) / 2.0f;
-                        canvas.drawText(suffixText, getWidth() / 2.0f + textPaint.measureText(text) + suffixTextPadding + 5, textBaseline + textHeight - suffixHeight, textPaint);
-
+                        canvas.drawText(suffixText, getWidth() / 2.0f + textPaint.measureText(value) + suffixTextPadding + 5, textBaseline + textHeight - suffixHeight, textPaint);
                     }
-
                 } else {
                     textPaint.setTextSize(textSize);
                     canvas.drawText(suffixText, (getWidth() - textPaint.measureText(suffixText)) / 2.0f, textBaseline + textHeight + 5, textPaint);
                 }
         }
-
-
     }
 
     public Bitmap BITMAP_RESIZER(Bitmap bitmap, int newWidth, int newHeight) {

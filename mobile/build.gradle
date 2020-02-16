@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId 'uk.co.boconi.emil.obd2aa'
         minSdkVersion 21
-        targetSdkVersion 28
+        targetSdkVersion 25
         versionCode 35
         versionName '2.0'
     }

@@ -21,15 +21,15 @@ public class NearbyCameras {
     private final String speed;
     private final String type;
     private final String street;
-    private int DistanceToCam;
-    private int dbtype;
+    private int distanceToCam;
+    private int dbType;
     private int cameratext = R.string.danger;
     private boolean shownot = true;
 
     private boolean[] showWarning = {false, false, false};
 
-    public NearbyCameras(double lat, double lng, int id, Integer bearing, String speed, String type, String street, int dbtype, double latitude, double longitude) {
-        this.DistanceToCam = (int) SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), new LatLng(latitude, longitude));
+    public NearbyCameras(double lat, double lng, int id, Integer bearing, String speed, String type, String street, int dbType, double latitude, double longitude) {
+        this.distanceToCam = (int) SphericalUtil.computeDistanceBetween(new LatLng(lat, lng), new LatLng(latitude, longitude));
         this.lat = lat;
         this.lng = lng;
         this.id = id;
@@ -48,7 +48,7 @@ public class NearbyCameras {
         this.speed = speed;
         this.type = type;
         this.street = street;
-        this.dbtype = dbtype;
+        this.dbType = dbType;
     }
 
     public double getlat() {
@@ -63,8 +63,8 @@ public class NearbyCameras {
         return bearing;
     }
 
-    public int getDbtype() {
-        return dbtype;
+    public int getDbType() {
+        return dbType;
     }
 
     public int getType() {
@@ -104,33 +104,33 @@ public class NearbyCameras {
     }
 
     public void setDistanceToCam(int distance) {
-        DistanceToCam = distance;
+        distanceToCam = distance;
     }
 
-    public int getDistaceToCam() {
-        return DistanceToCam;
+    public int getDistanceToCam() {
+        return distanceToCam;
     }
 
     public void setCameratext(int textid) {
         cameratext = textid;
     }
 
-    public int[] geticon() {
-        Log.d("OBD2AA", "Db type = " + dbtype + " type = " + type);
-        if ((dbtype == 1 && type.equalsIgnoreCase("1")) || (dbtype == 2 && type.equalsIgnoreCase("7"))) {
+    public int[] getIcon() {
+        Log.d("OBD2AA", "Db type = " + dbType + " type = " + type);
+        if ((dbType == 1 && type.equalsIgnoreCase("1")) || (dbType == 2 && type.equalsIgnoreCase("7"))) {
             Log.d("OBD2AA", "This should be a speed camera");
             setCameratext(R.string.speedcam);
             return new int[]{R.drawable.speed_camera_sam_b, R.string.speedcam, 0};
-        } else if ((dbtype == 1 && type.equalsIgnoreCase("2")) || (dbtype == 2 && type.equalsIgnoreCase("11"))) {
+        } else if ((dbType == 1 && type.equalsIgnoreCase("2")) || (dbType == 2 && type.equalsIgnoreCase("11"))) {
 
             return new int[]{R.drawable.speed_camera_sam_b, R.string.traffic_cam, 1};
-        } else if (dbtype == 2 && type.equalsIgnoreCase("12")) {
+        } else if (dbType == 2 && type.equalsIgnoreCase("12")) {
 
             return new int[]{R.drawable.speed_camera_sam_b, R.string.section_cam_beg, 0};
-        } else if (dbtype == 2 && type.equalsIgnoreCase("13")) {
+        } else if (dbType == 2 && type.equalsIgnoreCase("13")) {
 
             return new int[]{R.drawable.speed_camera_sam_b, R.string.section_cam_over, 0};
-        } else if (dbtype == 2 && type.equalsIgnoreCase("14")) {
+        } else if (dbType == 2 && type.equalsIgnoreCase("14")) {
 
             return new int[]{R.drawable.speed_camera_sam_b, R.string.tunnel, 0};
         } else {
@@ -164,7 +164,7 @@ public class NearbyCameras {
 
     @Override
     public String toString() {
-        return "Camera pos: " + this.lat + "," + this.lng + ", Bearing: " + this.bearing + ", distance: " + this.DistanceToCam;
+        return "Camera pos: " + this.lat + "," + this.lng + ", Bearing: " + this.bearing + ", distance: " + this.distanceToCam;
     }
 
 }

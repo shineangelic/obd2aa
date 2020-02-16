@@ -29,7 +29,7 @@ public class isCameraInWay {
         Collections.sort(nearbycamera, new Comparator<NearbyCameras>() {
             @Override
             public int compare(NearbyCameras o1, NearbyCameras o2) {
-                return Integer.compare(o1.getDistaceToCam(), o2.getDistaceToCam());
+                return Integer.compare(o1.getDistanceToCam(), o2.getDistanceToCam());
             }
         });
         // Log.d("OBD2AA","Sorted Camere list" + nearbycamera.toString());

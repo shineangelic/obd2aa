@@ -2,6 +2,7 @@ package uk.co.boconi.emil.obd2aa.service;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -190,6 +191,12 @@ public class AppService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        int NOTIFICATION_ID = (int) (System.currentTimeMillis()%10000);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForeground(NOTIFICATION_ID, new Notification.Builder(this).build());
+        }
+
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
         mNotifyMgr = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         editor = prefs.edit();
@@ -267,7 +274,7 @@ public class AppService extends Service {
         /* Register Torque Service only if autostart is enabled */
         if (prefs.getBoolean("autostart", false)) {
             startTorque();
-            data_fecther();
+            dataFetcher();
         }
 
         if ((!prefs.getBoolean("daynight", false) && (!ShowSpeedCamWarrning)) || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -290,7 +297,7 @@ public class AppService extends Service {
                 mLocationRequest.setInterval(1000);
                 mLocationRequest.setFastestInterval(1000);
                 new DownloadHelper(1, this, CameraRefreshFreq);
-                refreshmoible();
+                refreshMobileDB();
 
             } else
                 mLocationRequest.setInterval(60 * 1000);
@@ -326,7 +333,7 @@ public class AppService extends Service {
             if (intent.hasExtra("muststartTorque"))
                 startTorque();
         if (!isrunning)
-            data_fecther();
+            dataFetcher();
         return START_STICKY;
     }
 
@@ -360,7 +367,7 @@ public class AppService extends Service {
         android.os.Process.killProcess(android.os.Process.myPid()); //Do a kill.
     }
 
-    private void data_fecther() {
+    private void dataFetcher() {
 
         final String[] fuelpid = {prefs.getString("watch_fuel", "0"), prefs.getString("coolant_pid", "05,0")};
 
@@ -858,7 +865,7 @@ public class AppService extends Service {
             //Log.d("OBD2AA","Camera is: " + camera);
             if (camera != null) {
                 prevCamera = camera;
-                int[] resources = camera.geticon();
+                int[] resources = camera.getIcon();
                 Bitmap bmp;
                 if (resources[2] == 1) {
                     bmp = BitmapFactory.decodeResource(getResources(), R.drawable.traffic_light);
@@ -876,22 +883,22 @@ public class AppService extends Service {
                 }
                 if (camera.getShownot()) {
                     if (useImperial)
-                        showNotification(getString(resources[1]) + " " + Math.round(camera.getDistaceToCam() * 1.0936) + " yd", camera.getstreet(), resources[0], bmp, camera.getid());
+                        showNotification(getString(resources[1]) + " " + Math.round(camera.getDistanceToCam() * 1.0936) + " yd", camera.getstreet(), resources[0], bmp, camera.getid());
                     else
-                        showNotification(getString(resources[1]) + " " + camera.getDistaceToCam() + " m", camera.getstreet(), resources[0], bmp, camera.getid());
+                        showNotification(getString(resources[1]) + " " + camera.getDistanceToCam() + " m", camera.getstreet(), resources[0], bmp, camera.getid());
 
                 }
 
                 int sound_to_play = 0;
-                if (camera.getDistaceToCam() > audio_2 && camera.getDistaceToCam() <= audio_1 && !camera.getShowWarning(0)) {
+                if (camera.getDistanceToCam() > audio_2 && camera.getDistanceToCam() <= audio_1 && !camera.getShowWarning(0)) {
                     sound_to_play = R.raw.beep;
                     camera.setShowWarning(0, true);
                 }
-                if (camera.getDistaceToCam() > audio_3 && camera.getDistaceToCam() <= audio_2 && !camera.getShowWarning(1)) {
+                if (camera.getDistanceToCam() > audio_3 && camera.getDistanceToCam() <= audio_2 && !camera.getShowWarning(1)) {
                     sound_to_play = R.raw.beepbeep;
                     camera.setShowWarning(1, true);
                 }
-                if (camera.getDistaceToCam() <= audio_3 && !camera.getShowWarning(2)) {
+                if (camera.getDistanceToCam() <= audio_3 && !camera.getShowWarning(2)) {
                     sound_to_play = R.raw.beepbeepbeep;
                     camera.setShowWarning(2, true);
                 }
@@ -936,14 +943,14 @@ public class AppService extends Service {
         paramCarSensorEvent.intValues[0] = j;
     }
 
-    private void refreshmoible() {
+    private void refreshMobileDB() {
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (isdebugging)
                     Log.d("OBD2AA", "Refreshing the mobile database");
                 new DownloadHelper(1, getBaseContext(), CameraRefreshFreq);
-                refreshmoible();
+                refreshMobileDB();
             }
         }, 60000);
     }
