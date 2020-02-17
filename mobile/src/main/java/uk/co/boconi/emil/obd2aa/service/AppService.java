@@ -102,7 +102,7 @@ public class AppService extends Service {
     private CameraDataBaseHelper staticDB = new CameraDataBaseHelper(this, 2, "fixedcamera");
     private CameraDataBaseHelper mobileDB = new CameraDataBaseHelper(this, 1, "mobilecamera");
     private boolean isSpeedCamShowing;
-    private boolean ShowSpeedCamWarrning;
+    private boolean ShowSpeedCamWarning;
     private boolean playSound;
     private boolean isDemoMode;
     private Paint textpaint;
@@ -210,8 +210,8 @@ public class AppService extends Service {
         rectF.set(16, 16, 240, 240);
         geodecoderexecutor = Executors.newSingleThreadExecutor();
         paint = new Paint();
-        ShowSpeedCamWarrning = prefs.getBoolean("ShowSpeedCamWarrning", true);
-        Log.d("OBD2AA", "ShowSpeedCamWarrning: " + ShowSpeedCamWarrning);
+        ShowSpeedCamWarning = prefs.getBoolean("ShowSpeedCamWarning", true);
+        Log.d("OBD2AA", "ShowSpeedCamWarning: " + ShowSpeedCamWarning);
         playSound = prefs.getBoolean("play_sound", true);
         isDemoMode = prefs.getBoolean("demomode", false);
         useImperial = prefs.getBoolean("useimperials", true);
@@ -277,7 +277,7 @@ public class AppService extends Service {
             dataFetcher();
         }
 
-        if ((!prefs.getBoolean("daynight", false) && (!ShowSpeedCamWarrning)) || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if ((!prefs.getBoolean("daynight", false) && (!ShowSpeedCamWarning)) || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -293,10 +293,10 @@ public class AppService extends Service {
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
 
 
-            if (ShowSpeedCamWarrning) {                  //Polling speed depends on setting, only poll faster if we need to detect speed camera.
+            if (ShowSpeedCamWarning) {                  //Polling speed depends on setting, only poll faster if we need to detect speed camera.
                 mLocationRequest.setInterval(1000);
                 mLocationRequest.setFastestInterval(1000);
-                new DownloadHelper(1, this, CameraRefreshFreq);
+                // new DownloadHelper(1, this, CameraRefreshFreq);
                 refreshMobileDB();
 
             } else
@@ -851,7 +851,7 @@ public class AppService extends Service {
         }
 
 
-        if (ShowSpeedCamWarrning) {
+        if (ShowSpeedCamWarning) {
             camera = null;
 
             if (prevCamera != null && isCameraInWay.stillinRange(location, prevCamera, visual_display))

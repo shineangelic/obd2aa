@@ -288,6 +288,7 @@ public class AppSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Resources res = getResources();
+
         // Change locale settings in the app.
         /*
         android.content.res.Configuration conf = res.getConfiguration();

@@ -7,13 +7,10 @@ import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.File;
-import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import uk.co.boconi.emil.obd2aa.ui.activity.AppSettings;
 
@@ -43,10 +40,10 @@ public class DownloadHelper {
                             return;
                         url = new URL(staticURL);
                     }
+
                     HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
                     urlConn.setRequestMethod("GET");
-                    urlConn.setDoOutput(true);
-                    urlConn.connect();
+                    urlConn.setDoInput(true);
 
                     int contentLength = urlConn.getContentLength();
                     DataInputStream stream = new DataInputStream(url.openStream());
@@ -69,8 +66,8 @@ public class DownloadHelper {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
-        boolean isWiFi = activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
+        boolean isConnected = (activeNetwork != null) && activeNetwork.isConnectedOrConnecting();
+        boolean isWiFi = (activeNetwork != null) && (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI);
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean use_mobile = prefs.getBoolean("use_mobile", true);
         if (isConnected && use_mobile)
