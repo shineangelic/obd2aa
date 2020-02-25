@@ -15,7 +15,8 @@ import java.net.URL;
 import uk.co.boconi.emil.obd2aa.ui.activity.AppSettings;
 
 public class DownloadHelper {
-    private static String mobileURL = "http://data.blitzer.de/output/mobile.php?v=4&key=d83nv9dj38FQ";
+    private static String mobileURL = "https://www.google.it";
+    //private static String mobileURL = "http://data.blitzer.de/output/mobile.php?v=4&key=d83nv9dj38FQ";
     private static String staticURL = "http://data.blitzer.de/output/static.php?v=4";
     private static String MOBILE_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/mobilecamera";
     private static String STATIC_DB_PATH = "/data/data/uk.co.boconi.emil.obd2aa/databases/fixedcamera";
@@ -40,10 +41,10 @@ public class DownloadHelper {
                             return;
                         url = new URL(staticURL);
                     }
-
                     HttpURLConnection urlConn = (HttpURLConnection)url.openConnection();
                     urlConn.setRequestMethod("GET");
-                    urlConn.setDoInput(true);
+                    urlConn.setDoOutput(true);
+                    urlConn.connect();
 
                     int contentLength = urlConn.getContentLength();
                     DataInputStream stream = new DataInputStream(url.openStream());
@@ -66,8 +67,8 @@ public class DownloadHelper {
 
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = (activeNetwork != null) && activeNetwork.isConnectedOrConnecting();
-        boolean isWiFi = (activeNetwork != null) && (activeNetwork.getType() == ConnectivityManager.TYPE_WIFI);
+        boolean isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+        boolean isWiFi = activeNetwork != null && activeNetwork.getType() == ConnectivityManager.TYPE_WIFI;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean use_mobile = prefs.getBoolean("use_mobile", true);
         if (isConnected && use_mobile)

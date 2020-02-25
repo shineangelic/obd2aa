@@ -25,11 +25,12 @@ public class Scale {
         scaleItems = new ArrayList<>();
 
         // automatic unit
-        if (unit == 0 || true) {
+        if (unit == 0) {
             unit = 1;
-            float x = maxValue - minValue;
-            while (x > 10) {
-                x /= 10;
+            float diff = maxValue - minValue;
+            float test = 0;
+            while (Math.abs(10 - diff / unit) > test) {
+                test = Math.abs(10 - diff / unit);
                 unit *= 10;
             }
         }

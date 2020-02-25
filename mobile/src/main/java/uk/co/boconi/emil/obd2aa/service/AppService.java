@@ -388,7 +388,6 @@ public class AppService extends Service {
                         // Log.d("OBD2AA","Max speed: " + myprefs.toString());
                         //medit.putString("parking_card_max_speed_mps","200");
                         // medit.apply();
-                        // medit.commit();
                         //Log.d("OBD2AA","Driver position: " + localCarInfo.toString());
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -646,12 +645,12 @@ public class AppService extends Service {
     }
 
     private void doPidsSorting() {
-
         Log.d("OBD2AA", "PIDS to string....");
         try {
             String[] pidsdesc = torqueService.getPIDInformation(pids);
 
-            for (int i = 0; i < pids.length; i++) {                                 //Build the pidstofetch object with correct data
+            for (int i = 0; i < pids.length; i++) {
+                //Build the pidstofetch object with correct data
                 boolean needsconversion = !(torqueService.getPreferredUnit(units[i]).equalsIgnoreCase(units[i]));
                 // Log.d("OBD2AA","Pid "+pids[i] + "Status: " +pidMap.get(pids[i]));
 
@@ -683,20 +682,17 @@ public class AppService extends Service {
                         editor.putFloat("minval_" + (i + 1), min);
                         editor.apply();
                     }
-
                 }
                 try {
                     pidtofetch.add(new PIDToFetch(pids[i], true, 0, i, units[i], needsconversion, prefs.getFloat("maxval_" + (i + 1), 0), prefs.getFloat("minval_" + (i + 1), 0)));
                 } catch (Exception E) {
-                    //Bad luck again with previousely stored min/max as integer let's convert it to float and try again
+                    //Bad luck again with previously stored min/max as integer let's convert it to float and try again
                     editor.putFloat("maxval_" + (i + 1), prefs.getInt("maxval_" + (i + 1), 0));
                     editor.putFloat("minval_" + (i + 1), prefs.getInt("minval_" + (i + 1), 0));
                     editor.apply();
                     pidtofetch.add(new PIDToFetch(pids[i], true, 0, i, units[i], needsconversion, prefs.getFloat("maxval_" + (i + 1), 0), prefs.getFloat("minval_" + (i + 1), 0)));
                 }
             }
-
-
         } catch (RemoteException e) {
             e.printStackTrace();
         }

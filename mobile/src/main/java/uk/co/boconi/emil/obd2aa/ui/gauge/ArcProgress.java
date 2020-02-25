@@ -72,8 +72,8 @@ public class ArcProgress extends View {
     protected Paint textPaint;
     protected Paint textScalePaint;
     Typeface type = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed.ttf");
-    float[][] scale_pos = new float[12][];
-    float[][] scale_num_pos = new float[12][];
+    float[][] scale_pos;
+    float[][] scale_num_pos;
     private Paint paint;
     private RectF rectF = new RectF();
     private float strokeWidth;
@@ -165,9 +165,9 @@ public class ArcProgress extends View {
         gaugeScale = new Scale(
                     attributes.getInt(R.styleable.ArcProgress_arc_min, default_min),
                     attributes.getInt(R.styleable.ArcProgress_arc_max, default_max),
-                    attributes.getInt(R.styleable.ArcProgress_arc_scaleUnit, default_unit),
-                    attributes.getFloat(R.styleable.ArcProgress_arc_scaleDivider, default_divider),
-                    attributes.getInt(R.styleable.ArcProgress_arc_scaleDecimals, default_decimals)
+                    attributes.getInt(R.styleable.ArcProgress_arc_scaleunit, default_unit),
+                    attributes.getFloat(R.styleable.ArcProgress_arc_scaledivider, default_divider),
+                    attributes.getInt(R.styleable.ArcProgress_arc_scaledecimals, default_decimals)
                 );
 
         setMax(attributes.getInt(R.styleable.ArcProgress_arc_max, default_max));
@@ -526,6 +526,8 @@ public class ArcProgress extends View {
                         " " + gaugeScale.getUnit() +
                         " " + gaugeScale.getSize() + ")");
 
+        scale_pos = new float[gaugeScale.getSize()][];
+        scale_num_pos = new float[gaugeScale.getSize()][];
         if (getGaugestyle() == 6 || getGaugestyle() == 7) {
             float scaleLength = (14 / (480 / (float) width));
 

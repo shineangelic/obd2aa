@@ -109,7 +109,7 @@ public class AppSettings extends AppCompatActivity {
     private boolean isdebugging;
     private boolean alternativepulling;
     private AlertDialog.Builder b;
-    private String watch_fule;
+    private String watch_fuel;
     private boolean canclose;
     private FilePickerDialog filedialog;
     private boolean should_Restart = false;
@@ -127,10 +127,10 @@ public class AppSettings extends AppCompatActivity {
             torqueService = ITorqueService.Stub.asInterface(service);
 
             try {
-                ((TextView)findViewById(R.id.torqueStatus)).setText(getString(R.string.service_torque_connected)
-                        +" is connected to ECU? " + torqueService.isConnectedToECU());
+                ((TextView)findViewById(R.id.torqueStatus)).setText(
+                        getString(R.string.service_torque_connected) + torqueService.isConnectedToECU());
                 if (torqueService.getVersion() < 19) {
-                    Toast.makeText(AppSettings.this, "Incorrect version. You are using an old version of Torque with this plugin.\n\nThe plugin needs the latest version of Torque to run correctly.\n\nPlease upgrade to the latest version of Torque from Google Play", Toast.LENGTH_LONG);
+                    Toast.makeText(AppSettings.this, "Incorrect version. You are using an old version of Torque with this plugin.\n\nThe plugin needs the latest version of Torque to run correctly.\n\nPlease upgrade to the latest version of Torque from Google Play", Toast.LENGTH_LONG).show();
                     return;
                 }
             } catch (RemoteException e) {
@@ -316,9 +316,7 @@ public class AppSettings extends AppCompatActivity {
         style_list.add(new ItemData(getString(R.string.style) + " 2", R.drawable.style_2, 3));
         style_list.add(new ItemData(getString(R.string.style) + " 3", R.drawable.style_3, 4));
 
-
         //Load default colors:
-
         if (prefs.contains("def_color_selector")) {
             def_color_selector = prefs.getInt("def_color_selector", 0);
             warn1_color_selector = prefs.getInt("def_warn1_selector", 0);
@@ -329,7 +327,7 @@ public class AppSettings extends AppCompatActivity {
             gauge_number = prefs.getInt("gauge_number", 0);
             isdebugging = prefs.getBoolean("debugging", false);
             alternativepulling = prefs.getBoolean("alternativepulling", false);
-            watch_fule = prefs.getString("watch_fuel", "0");
+            watch_fuel = prefs.getString("watch_fuel", "0");
             layout_style = prefs.getInt("layout", 0);
 
         } else {
@@ -339,11 +337,11 @@ public class AppSettings extends AppCompatActivity {
             text_color = Color.WHITE;
             needle_color = Color.WHITE;
             arch_width = "8";
-            addgauge(6);
+            addGauge(6);
             gauge_number = 6;
             isdebugging = false;
             alternativepulling = false;
-            watch_fule = "0";
+            watch_fuel = "0";
             layout_style = 0;
 
             editor.putInt("def_color_selector", def_color_selector);
@@ -356,11 +354,9 @@ public class AppSettings extends AppCompatActivity {
             editor.putString("arch_width", arch_width);
             editor.putBoolean("debugging", isdebugging);
             editor.putBoolean("alternativepulling", alternativepulling);
-            editor.putString("watch_fuel", watch_fule);
-            editor.putString("watch_fuel", watch_fule);
+            editor.putString("watch_fuel", watch_fuel);
+            editor.putString("watch_fuel", watch_fuel);
             editor.apply();
-            // editor.commit();
-
         }
 
         final Spinner sp = (Spinner) findViewById(R.id.layout_style_spinner);
@@ -375,13 +371,10 @@ public class AppSettings extends AppCompatActivity {
 
                 editor.putInt("layout", position);
                 editor.apply();
-                editor.commit();
                 Spinner tmpspinner = (Spinner) findViewById(R.id.gaugeselector);
                 dont_do_loop_update = true;
                 tmpspinner.setSelection(style_list.get(position).getGaugeNumber() - 1);
-
-                //gaugechanger(findViewById(R.id.gaugeselector));
-
+                //changeGaugeNo(findViewById(R.id.gaugeselector));
             }
 
             @Override
@@ -409,7 +402,7 @@ public class AppSettings extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 Log.d("HU", "Spinner onSelected callback");
-                gaugechanger(parentView);
+                changeGaugeNo(parentView);
                 if (!dont_do_loop_update)
                     sp.setSelection(0);
                 else
@@ -437,7 +430,7 @@ public class AppSettings extends AppCompatActivity {
         }
     }
 
-    public void showcolorpicker(final View V) {
+    public void showColorPicker(final View V) {
         if (V.getId() == R.id.def_color_selector)
             mColor = def_color_selector;
         else if (V.getId() == R.id.warn1_color_selector)
@@ -462,7 +455,7 @@ public class AppSettings extends AppCompatActivity {
                 .onColorSelected(new ColorSelectListener() {
                     @Override
                     public void onColorSelected(int color) {
-                        updatecolor(V, color);
+                        updateColor(V, color);
                         mColor = color;
                     }
                 })
@@ -470,7 +463,7 @@ public class AppSettings extends AppCompatActivity {
                 .show(getSupportFragmentManager(), "dialog");
     }
 
-    private void updatecolor(View V, int newcolor) {
+    private void updateColor(View V, int newcolor) {
         if (V.getId() == R.id.def_color_selector)
             def_color_selector = newcolor;
         else if (V.getId() == R.id.warn1_color_selector)
@@ -481,10 +474,10 @@ public class AppSettings extends AppCompatActivity {
             text_color = newcolor;
         else
             needle_color = newcolor;
-        applyandshowcolor();
+        applyAndShowColor();
     }
 
-    private void applyandshowcolor() {
+    private void applyAndShowColor() {
 
         editor.putInt("def_color_selector", def_color_selector);
         editor.putInt("def_warn1_selector", warn1_color_selector);
@@ -492,7 +485,6 @@ public class AppSettings extends AppCompatActivity {
         editor.putInt("text_color", text_color);
         editor.putInt("needle_color", needle_color);
         editor.apply();
-        //editor.commit();
         findViewById(R.id.def_color_selector).setBackgroundColor(def_color_selector);
         findViewById(R.id.warn1_color_selector).setBackgroundColor(warn1_color_selector);
         findViewById(R.id.warn2_color_selector).setBackgroundColor(warn2_color_selector);
@@ -500,34 +492,33 @@ public class AppSettings extends AppCompatActivity {
         findViewById(R.id.needle_color_selector).setBackgroundColor(needle_color);
     }
 
-    public void gaugechanger(View v) {
-        Log.d("HU", "gaugechanger called");
+    public void changeGaugeNo(View v) {
+        Log.d("HU", "changeGaugeNo called");
 
         Spinner myspinner = (Spinner) v;
-        int currgauge = 0;
+        int new_gauge_no = 0;
         try {
-            currgauge = parseInt(myspinner.getSelectedItem().toString());
+            new_gauge_no = parseInt(myspinner.getSelectedItem().toString());
         } catch (Exception E) {
             Log.e("OBD2AA", E.getMessage());
             return;
         }
 
-        if (currgauge == gauge_number) {
-            showgaugesettings(1, currgauge);
+        if (new_gauge_no == gauge_number) {
+            showGaugeSettings(1, new_gauge_no);
             return;
-        } else if (currgauge < gauge_number)
-            removegauge(currgauge);
-        else if (currgauge > gauge_number) {
-            addgauge(currgauge);
-            showgaugesettings(gauge_number + 1, currgauge);
+        } else if (new_gauge_no < gauge_number)
+            removeGauge(new_gauge_no);
+        else if (new_gauge_no > gauge_number) {
+            addGauge(new_gauge_no);
+            showGaugeSettings(gauge_number + 1, new_gauge_no);
         }
-        gauge_number = currgauge;
+        gauge_number = new_gauge_no;
         editor.putInt("gauge_number", gauge_number);
         editor.apply();
-
     }
 
-    public void addgauge(int newgauge) {
+    public void addGauge(int newgauge) {
         for (int i = gauge_number + 1; i <= newgauge; i++) {
             editor.putString("gaugepid_" + i, "");
             editor.putString("gaugename_" + i, "");
@@ -553,16 +544,15 @@ public class AppSettings extends AppCompatActivity {
             editor.putFloat("maxval_" + i, 100);
             editor.putBoolean("locked_" + i, false);
 
-            editor.putInt("scaleunit_" + i, 100);
-            editor.putFloat("scaledivider_" + i, 100);
-            editor.putInt("scaledecimals_" + i, 100);
+            editor.putInt("scaleunit_" + i, 0);
+            editor.putFloat("scaledivider_" + i, 1);
+            editor.putInt("scaledecimals_" + i, 0);
 
             editor.apply();
-            editor.commit();
         }
     }
 
-    public void removegauge(int newgauge) {
+    public void removeGauge(int newgauge) {
         for (int i = newgauge + 1; i <= gauge_number; i++) {
             editor.remove("gaugepid_" + i);
             editor.remove("gaugename_" + i);
@@ -592,34 +582,33 @@ public class AppSettings extends AppCompatActivity {
             editor.remove("scaledecimals_" + i);
 
             editor.apply();
-            editor.commit();
-            LinearLayout lp = (LinearLayout) findViewById(R.id.parrent_container);
+            LinearLayout lp = findViewById(R.id.parent_container);
             lp.removeView(lp.findViewWithTag("gaugewrapper_" + i));
         }
     }
 
-    public void showgaugesettings(int fromgauge, int newgauge) {
+    public void showGaugeSettings(int fromgauge, int newgauge) {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout parent = (LinearLayout) (LinearLayout) findViewById(R.id.parrent_container);
+        LinearLayout parent = findViewById(R.id.parent_container);
         for (int i = fromgauge; i <= newgauge; i++) {
 
             final View custom = inflater.inflate(R.layout.gauge, null);
             custom.setTag("gaugewrapper_" + i);
-            TextView tv = (TextView) custom.findViewById(R.id.gaugetitle);
+            TextView tv = custom.findViewById(R.id.gaugetitle);
             tv.setText(getResources().getString(R.string.gauge_name) + " " + i + " - " + prefs.getString("gauge_orig_name_" + i, "") + ": ");
             tv.setTag("gaugetitle_" + i);
-            EditText et = (EditText) custom.findViewById(R.id.gaugepid);
+            EditText et = custom.findViewById(R.id.gaugepid);
 
             et.setOnClickListener(pidwatcher(et));
             et.setTag("gaugepid_" + i);
             et.setText(prefs.getString("gaugepid_" + i, ""));
-            et = (EditText) custom.findViewById(R.id.gaugename);
+            et = custom.findViewById(R.id.gaugename);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("gaugename_" + i);
             et.setText(prefs.getString("gaugename_" + i, ""));
 
-            et = (EditText) custom.findViewById(R.id.minval);
+            et = custom.findViewById(R.id.minval);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("minval_" + i);
             try {
@@ -628,10 +617,9 @@ public class AppSettings extends AppCompatActivity {
                 int aux = prefs.getInt("minval_" + i, 0);
                 editor.putFloat("minval_" + i, aux);
                 editor.apply();
-                editor.commit();
                 et.setText(Integer.toString(aux));
             }
-            et = (EditText) custom.findViewById(R.id.maxval);
+            et = custom.findViewById(R.id.maxval);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("maxval_" + i);
             try {
@@ -640,20 +628,19 @@ public class AppSettings extends AppCompatActivity {
                 int aux = prefs.getInt("maxval_" + i, 0);
                 editor.putFloat("maxval_" + i, aux);
                 editor.apply();
-                editor.commit();
                 et.setText(Integer.toString(aux));
             }
 
-            et = (EditText) custom.findViewById(R.id.warn1level);
+            et = custom.findViewById(R.id.warn1level);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("warn1level_" + i);
             et.setText(prefs.getString("warn1level_" + i, ""));
-            et = (EditText) custom.findViewById(R.id.warn2level);
+            et = custom.findViewById(R.id.warn2level);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("warn2level_" + i);
             et.setText(prefs.getString("warn2level_" + i, ""));
 
-            et = (EditText) custom.findViewById(R.id.custom_bg_path);
+            et = custom.findViewById(R.id.custom_bg_path);
             et.setTag("custom_bg_path_" + i);
             et.setText(prefs.getString("custom_bg_path_" + i, ""));
             et.setOnClickListener(custom_bg_watcher(et));
@@ -662,7 +649,7 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
-            et = (EditText) custom.findViewById(R.id.arch_indent);
+            et = custom.findViewById(R.id.arch_indent);
             et.setTag("arch_indent_" + i);
             try {
                 et.setText(String.valueOf(prefs.getInt("arch_indent_" + i, 0)));
@@ -670,7 +657,6 @@ public class AppSettings extends AppCompatActivity {
                 Log.e("OBD2AA", "Could not get arch indent!" + E);
                 editor.putInt("arch_indent_" + i, 0);
                 editor.apply();
-                editor.commit();
                 et.setText("0");
             }
             et.addTextChangedListener(getTextWatcher(et));
@@ -679,7 +665,7 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
-            et = (EditText) custom.findViewById(R.id.arch_startpos);
+            et = custom.findViewById(R.id.arch_startpos);
             et.setTag("arch_startpos_" + i);
             try {
                 et.setText(String.valueOf(prefs.getInt("arch_startpos_" + i, 270)));
@@ -687,7 +673,6 @@ public class AppSettings extends AppCompatActivity {
                 Log.e("OBD2AA", "Could not get arch indent!" + E);
                 editor.putInt("arch_startpos_" + i, 270);
                 editor.apply();
-                editor.commit();
                 et.setText("270");
             }
             et.addTextChangedListener(getTextWatcher(et));
@@ -696,7 +681,7 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
-            et = (EditText) custom.findViewById(R.id.arch_length);
+            et = custom.findViewById(R.id.arch_length);
             et.setTag("arch_length_" + i);
             try {
                 et.setText(String.valueOf(prefs.getInt("arch_length_" + i, 263)));
@@ -704,7 +689,6 @@ public class AppSettings extends AppCompatActivity {
                 Log.e("OBD2AA", "Could not get arch indent!" + E);
                 editor.putInt("arch_length_" + i, 263);
                 editor.apply();
-                editor.commit();
                 et.setText("263");
             }
             et.addTextChangedListener(getTextWatcher(et));
@@ -713,35 +697,35 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
-            CheckBox cb = (CheckBox) custom.findViewById(R.id.isreversed);
+            CheckBox cb = custom.findViewById(R.id.isreversed);
             cb.setTag("isreversed_" + i);
             cb.setChecked(prefs.getBoolean("isreversed_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.showscale);
+            cb = custom.findViewById(R.id.showscale);
             cb.setTag("showscale_" + i);
             cb.setChecked(prefs.getBoolean("showscale_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.showneedle);
+            cb = custom.findViewById(R.id.showneedle);
             cb.setTag("showneedle_" + i);
             cb.setChecked(prefs.getBoolean("showneedle_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.showtext);
+            cb = custom.findViewById(R.id.showtext);
             cb.setTag("showtext_" + i);
             cb.setChecked(prefs.getBoolean("showtext_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.usegradienttext);
+            cb = custom.findViewById(R.id.usegradienttext);
             cb.setTag("usegradienttext_" + i);
             cb.setChecked(prefs.getBoolean("usegradienttext_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.showdecimal);
+            cb = custom.findViewById(R.id.showdecimal);
             cb.setTag("showdecimal_" + i);
             cb.setChecked(prefs.getBoolean("showdecimal_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.showunit);
+            cb = custom.findViewById(R.id.showunit);
             cb.setTag("showunit_" + i);
             cb.setChecked(prefs.getBoolean("showunit_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.use_custom_bg);
+            cb = custom.findViewById(R.id.use_custom_bg);
             cb.setTag("use_custom_bg_" + i);
             cb.setChecked(prefs.getBoolean("use_custom_bg_" + i, false));
-            cb = (CheckBox) custom.findViewById(R.id.use_custom_needle);
+            cb = custom.findViewById(R.id.use_custom_needle);
             cb.setTag("use_custom_needle_" + i);
             cb.setChecked(prefs.getBoolean("use_custom_needle_" + i, false));
 
-            et = (EditText) custom.findViewById(R.id.custom_needle_path);
+            et = custom.findViewById(R.id.custom_needle_path);
             et.setTag("custom_needle_path_" + i);
             et.setText(prefs.getString("custom_needle_path_" + i, ""));
             et.setOnClickListener(custom_bg_watcher(et));
@@ -750,31 +734,22 @@ public class AppSettings extends AppCompatActivity {
                 tmpview.setVisibility(View.GONE);
             }
 
-            int scaleUnit = 0;
-            int scaleDecimals = 0;
-            float scaleDivider = 1;
-            try {
-                scaleUnit = prefs.getInt("scaleunit_" + i, 0);
-                scaleDivider = prefs.getFloat("scaledivider_" + i, 1);
-                scaleDecimals = prefs.getInt("scaledecimals_" + i, 0);
-            } catch (Exception e) { }
-
-            et = (EditText) custom.findViewById(R.id.scaleunit);
+            et = custom.findViewById(R.id.scaleunit);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("scaleunit_" + i);
-            et.setText(Integer.toString(scaleUnit));
-            et = (EditText) custom.findViewById(R.id.scaledecimals);
+            et.setText(String.valueOf(prefs.getInt("scaleunit_" + i, 0)));
+
+            et = custom.findViewById(R.id.scaledecimals);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("scaledecimals_" + i);
-            et.setText(Integer.toString(scaleDecimals));
-            et = (EditText) custom.findViewById(R.id.scaledivider);
+            et.setText(String.valueOf(prefs.getInt("scaledecimals_" + i, 0)));
+
+            et = custom.findViewById(R.id.scaledivider);
             et.addTextChangedListener(getTextWatcher(et));
             et.setTag("scaledivider_" + i);
-            et.setText(Float.toString(scaleDivider));
+            et.setText(String.valueOf(prefs.getFloat("scaledivider_" + i, 1)));
 
-
-
-            Spinner sp = (Spinner) custom.findViewById(R.id.gauges_style_spinner);
+            Spinner sp = custom.findViewById(R.id.gauges_style_spinner);
             SpinnerAdapter adapter = new SpinnerAdapter(this,
                     R.layout.spinner_layout, R.id.txt, list);
             sp.setAdapter(adapter);
@@ -788,15 +763,12 @@ public class AppSettings extends AppCompatActivity {
                     Log.d("HU", mytag);
                     editor.putInt(mytag, position);
                     editor.apply();
-                    editor.commit();
-
                 }
 
                 @Override
                 public void onNothingSelected(AdapterView<?> parentView) {
                     // your code here
                 }
-
             });
 
             parent.addView(custom);
@@ -805,26 +777,22 @@ public class AppSettings extends AppCompatActivity {
 
                 @Override
                 public void onGlobalLayout() {
-
-                    ImageButton ib = (ImageButton) custom.findViewById(R.id.toggler);
-                    int compactheight = ib.getHeight();
-                    custom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, compactheight));
-                    custom.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                ImageButton ib = custom.findViewById(R.id.toggler);
+                int compactheight = ib.getHeight();
+                custom.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, compactheight));
+                custom.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             });
-
-
         }
-
     }
 
-    public void updateview(String position, int i) {
+    public void updateView(String position, int i) {
         for (PidList d : pidlist) {
             if (d.getPidName() != null && d.getPidName().equalsIgnoreCase(position)) {
-                Log.d("OBD2AA", "Item possition: " + d.getShortPidName() + d.getMaxValue() + d.getMinValue() + "unit:" + d.getUnit());
+                Log.d("OBD2AA", "Item position: " + d.getShortPidName() + d.getMaxValue() + d.getMinValue() + "unit:" + d.getUnit());
 
-                LinearLayout lp = (LinearLayout) findViewById(R.id.parrent_container);
-                EditText et = (EditText) lp.findViewWithTag("gaugepid_" + i);
+                LinearLayout lp = findViewById(R.id.parent_container);
+                EditText et = lp.findViewWithTag("gaugepid_" + i);
                 et.setText(d.getPid());
 
                 TextView tv = (TextView) lp.findViewWithTag("gaugetitle_" + i);
@@ -832,14 +800,21 @@ public class AppSettings extends AppCompatActivity {
 
                 editor.putString("gaugepid_" + i, d.getPid());
 
-                et = (EditText) lp.findViewWithTag("gaugename_" + i);
+                et = lp.findViewWithTag("gaugename_" + i);
                 et.setText(d.getShortPidName());
                 et.requestFocus();
 
-                et = (EditText) lp.findViewWithTag("minval_" + i);
+                et = lp.findViewWithTag("minval_" + i);
                 et.setText(d.getMinValue());
-                et = (EditText) lp.findViewWithTag("maxval_" + i);
+                et = lp.findViewWithTag("maxval_" + i);
                 et.setText(d.getMaxValue());
+
+                et = lp.findViewWithTag("scaleunit_" + i);
+                et.setText(d.getScaleUnit());
+                et = lp.findViewWithTag("scaledivider_" + i);
+                et.setText(d.getScaleDivider());
+                et = lp.findViewWithTag("scaledecimals_" + i);
+                et.setText(d.getScaleDecimals());
 
                 editor.putString("gaugename_" + i, d.getShortPidName());
                 editor.putString("gauge_orig_name_" + i, d.getShortPidName());
@@ -882,7 +857,7 @@ public class AppSettings extends AppCompatActivity {
                         Log.d("OBD2AA", "Selected file" + files[0]);
                         // editor.putString("custom_bg_path_"+pidnumber,files[0] );
                         editor.putString(pidnumber, files[0]);
-                        editor.commit();
+                        editor.apply();
                         et.setText(files[0]);
                     }
                 });
@@ -907,7 +882,6 @@ public class AppSettings extends AppCompatActivity {
         CheckBox cb = (CheckBox) V;
         editor.putBoolean(mytag, cb.isChecked());
         editor.apply();
-        editor.commit();
         if (mytag.contains("use_custom_bg_")) {
             String pidnumber = mytag.split("_")[3];
             View tmptview = (View) V.getRootView().findViewWithTag("custom_bg_path_" + pidnumber).getParent();
@@ -958,7 +932,6 @@ public class AppSettings extends AppCompatActivity {
                     editor.putBoolean("locked_" + temp_gauge_number, true);
                     editor.putFloat(tagname, myval);
                 } else if (tagname.contains("arch_indent_") || tagname.contains("arch_startpos_") || tagname.contains("arch_length_")) {
-
                     int myval = 0;
                     if (editText.getText().toString().length() != 0)
                         try {
@@ -966,12 +939,10 @@ public class AppSettings extends AppCompatActivity {
                         } catch (NumberFormatException e) {
 
                         }
-
                     editor.putInt(tagname, myval);
                 } else
                     editor.putString(tagname, editText.getText().toString());
                 editor.apply();
-                editor.commit();
             }
 
             @Override
@@ -1005,7 +976,6 @@ public class AppSettings extends AppCompatActivity {
             i.putExtra("pidlist", listSerializedToJson);
         }
         startActivity(i);
-
     }
 
     public void export_settings(MenuItem item) {
@@ -1025,7 +995,6 @@ public class AppSettings extends AppCompatActivity {
         //String listSerializedToJson = new Gson().toJson(prefs.getAll());
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         String listSerializedToJson = gson.toJson(list);
-
 
         Log.d("OBD2AA", listSerializedToJson);
 
@@ -1051,7 +1020,6 @@ public class AppSettings extends AppCompatActivity {
         } catch (Exception e) {
             Toast.makeText(AppSettings.this, getResources().getString(R.string.file_creation_error), Toast.LENGTH_LONG);
             e.printStackTrace();
-
         }
     }
 
@@ -1104,7 +1072,6 @@ public class AppSettings extends AppCompatActivity {
                             canclose = false;
                             should_Restart = true;
                             AppSettings.this.finish();
-
                         }
                     });
 
@@ -1112,7 +1079,6 @@ public class AppSettings extends AppCompatActivity {
                 } catch (Exception E) {
                     Log.e("OBD2AA", E.toString());
                 }
-
             }
         });
     }
@@ -1163,5 +1129,4 @@ public class AppSettings extends AppCompatActivity {
         msg.arg1 = type;
         handler.sendMessage(msg);
     }
-
 }

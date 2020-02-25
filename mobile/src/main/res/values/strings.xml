@@ -154,10 +154,10 @@
     <string name="needle_path">Needle file</string>
     <string name="fartkontrol_desc">Launches a Danish Speed Camera app (useless outside Denmark)</string>
     <string name="alternativepulling_desc">enable this option if you have difficulties getting gauges updated, it uses an old deprecated method of obtaining data</string>
-    <string name="service_torque_connected">Connected to torque service!</string>
+    <string name="service_torque_connected">Connected to Torque service! Connected to ECU? </string>
     <string name="service_torque_error">Unable to connect to Torque plugin service</string>
-    <string name="service_obd_connected">ODB service connection succesuful</string>
-    <string name="service_obd_disconnected">ODB service disconnected</string>
+    <string name="service_obd_connected">OBD service connection successful</string>
+    <string name="service_obd_disconnected">OBD service disconnected</string>
     <string name="service_torque_disconnected">Torque service disconnected</string>
 
 </resources>

@@ -72,7 +72,7 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
             public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                 Log.d(TAG, "Selected Item is = " + list.getItemAtPosition(position) + " position: " + position + "ID: ");
                 if (mAppSettings != null)
-                    mAppSettings.updateview(list.getItemAtPosition(position).toString(), parseInt(i));
+                    mAppSettings.updateView(list.getItemAtPosition(position).toString(), parseInt(i));
                 else
                     TPMSPreferences.updateview(list.getItemAtPosition(position).toString(), parseInt(i));
                 InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);

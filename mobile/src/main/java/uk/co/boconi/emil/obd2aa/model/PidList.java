@@ -51,7 +51,6 @@ public class PidList {
 
     @Override
     public String toString() {
-        // TODO Auto-generated method stub
         return this.longName.toString();
     }
 
@@ -59,9 +58,7 @@ public class PidList {
         return this.longName;
     }
 
-    public String getShortPidName() {
-        return this.shortName;
-    }
+    public String getShortPidName() { return this.shortName; }
 
     public String getUnit() {
         return this.unit;
@@ -83,10 +80,11 @@ public class PidList {
         return this.pid;
     }
 
-
     public String getScaleUnit() { return this.scaleUnit; }
 
-    public String getScaleDivider() { return this.scaleDivider; }
+    public String getScaleDivider() {
+        return this.scaleDivider;
+    }
 
     public String getScaleDecimals() { return this.scaleDecimals; }
 }

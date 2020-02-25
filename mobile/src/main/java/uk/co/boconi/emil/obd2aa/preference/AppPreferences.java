@@ -137,7 +137,7 @@ public class AppPreferences extends PreferenceActivity {
 
                             SharedPreferences.Editor editor = preferences.edit();
                             editor.putString("custom_bg_path", files[0]);
-                            editor.commit();
+                            editor.apply();
                             findPreference("custom_bg_path").setSummary(files[0]);
                         }
                     });
@@ -148,5 +148,4 @@ public class AppPreferences extends PreferenceActivity {
             });
         }
     }
-
 }

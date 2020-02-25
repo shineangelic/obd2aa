@@ -349,8 +349,7 @@
             android:layout_weight="5"
             android:ems="10"
             android:gravity=""
-            android:inputType="numberDecimal"
-            android:text="0" />
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
@@ -374,8 +373,7 @@
             android:layout_weight="5"
             android:ems="10"
             android:gravity=""
-            android:inputType="numberDecimal"
-            android:text="1" />
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
@@ -399,8 +397,7 @@
             android:layout_weight="5"
             android:ems="10"
             android:gravity=""
-            android:inputType="numberDecimal"
-            android:text="0" />
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
@@ -424,8 +421,7 @@
             android:layout_weight="5"
             android:ems="10"
             android:gravity=""
-            android:inputType="numberDecimal"
-            android:text="80" />
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 
@@ -448,8 +444,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:ems="10"
-            android:inputType="numberDecimal"
-            android:text="90" />
+            android:inputType="numberDecimal" />
 
     </LinearLayout>
 

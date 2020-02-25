@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker" />
+                    android:onClick="showColorPicker" />
 
             </LinearLayout>
 
@@ -117,7 +117,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker" />
+                    android:onClick="showColorPicker" />
 
             </LinearLayout>
 
@@ -141,7 +141,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker" />
+                    android:onClick="showColorPicker" />
 
             </LinearLayout>
 
@@ -165,7 +165,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker" />
+                    android:onClick="showColorPicker" />
 
             </LinearLayout>
 
@@ -189,7 +189,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="3"
-                    android:onClick="showcolorpicker" />
+                    android:onClick="showColorPicker" />
 
             </LinearLayout>
 
@@ -217,7 +217,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/parrent_container"
+                android:id="@+id/parent_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="?attr/dividerHorizontal"

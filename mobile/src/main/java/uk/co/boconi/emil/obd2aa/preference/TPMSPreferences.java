@@ -37,9 +37,7 @@ public class TPMSPreferences extends AppCompatActivity {
             JSONArray jsonArray = new JSONArray(listSerializedToJson);
             for (int i = 0; i < jsonArray.length(); i++) {
                 pidlist.add(new PidList(jsonArray.getJSONObject(i)));
-
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -63,7 +61,7 @@ public class TPMSPreferences extends AppCompatActivity {
         String ss = null;
         for (PidList d : pidlist) {
             if (d.getPidName() != null && d.getPidName().equalsIgnoreCase(s)) {
-                Log.d("OBD2AA", "Item possition: " + d.getShortPidName() + d.getMaxValue() + d.getMinValue() + "unit:" + d.getUnit());
+                Log.d("OBD2AA", "Item position: " + d.getShortPidName() + d.getMaxValue() + d.getMinValue() + "unit:" + d.getUnit());
                 ss = d.getPid();
             }
         }
@@ -81,5 +79,4 @@ public class TPMSPreferences extends AppCompatActivity {
         }
         editor.apply();
     }
-
 }

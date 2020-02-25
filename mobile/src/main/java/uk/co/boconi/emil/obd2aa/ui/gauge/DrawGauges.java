@@ -147,9 +147,9 @@ public class DrawGauges {
                 newArc.setShowDecimal(prefs.getBoolean("showdecimal_" + x, false));
                 newArc.setShowUnit(prefs.getBoolean("showunit_" + x, false));
 
-                newArc.setScaleUnit(Integer.parseInt(prefs.getString("scaleunit_" + x, "0")));
-                newArc.setScaleDivider(Float.parseFloat(prefs.getString("scaledivider_" + x, "1")));
-                newArc.setScaleDecimals(Integer.parseInt(prefs.getString("scaledecimals_" + x, "0")));
+                newArc.setScaleUnit(prefs.getInt("scaleunit_" + x, 0));
+                newArc.setScaleDivider(prefs.getFloat("scaledivider_" + x, 1));
+                newArc.setScaleDecimals(prefs.getInt("scaledecimals_" + x, 0));
             }
         } else {
             int rownumber = 0;
@@ -332,11 +332,10 @@ public class DrawGauges {
                         newArc.setShowUnit(prefs.getBoolean("showunit_" + x, false));
                         newArc.setTag("gauge_" + x);
 
-                        newArc.setScaleUnit(Integer.parseInt(prefs.getString("scaleunit_" + x, "0")));
-                        newArc.setScaleDivider(Float.parseFloat(prefs.getString("scaledivider_" + x, "1")));
-                        newArc.setScaleDecimals(Integer.parseInt(prefs.getString("scaledecimals_" + x, "0")));
+                        newArc.setScaleUnit(prefs.getInt("scaleunit_" + x, 0));
+                        newArc.setScaleDivider(prefs.getFloat("scaledivider_" + x, 1));
+                        newArc.setScaleDecimals(prefs.getInt("scaledecimals_" + x, 0));
                         row.addView(newArc);
-
                         x++;
                     }
                 }
