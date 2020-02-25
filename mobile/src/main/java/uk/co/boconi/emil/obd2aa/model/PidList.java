@@ -27,7 +27,7 @@ public class PidList {
         this.scale = pidinfo[5];
         this.pid = pidinfo[6] + "," + pidinfo[7];
 
-        this.scaleUnit = "1";
+        this.scaleUnit = "0";
         this.scaleDivider = "1";
         this.scaleDecimals = "0";
     }

@@ -919,7 +919,9 @@ public class AppSettings extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                 String tagname = editText.getTag().toString();
-                if (tagname.contains("minval_") || tagname.contains("maxval_")) {
+                if (tagname.contains("minval_")
+                        || tagname.contains("maxval_")
+                        || tagname.contains("scaledivider_")) {
                     float myval = 0;
 
                     if (editText.getText().toString().length() != 0)
@@ -931,14 +933,16 @@ public class AppSettings extends AppCompatActivity {
                     String temp_gauge_number = tagname.split("_")[1];
                     editor.putBoolean("locked_" + temp_gauge_number, true);
                     editor.putFloat(tagname, myval);
-                } else if (tagname.contains("arch_indent_") || tagname.contains("arch_startpos_") || tagname.contains("arch_length_")) {
+                } else if (tagname.contains("arch_indent_")
+                        || tagname.contains("arch_startpos_")
+                        || tagname.contains("arch_length_")
+                        || tagname.contains("scaleunit_")
+                        || tagname.contains("scaledecimals_")) {
                     int myval = 0;
                     if (editText.getText().toString().length() != 0)
                         try {
                             myval = parseInt(editText.getText().toString());
-                        } catch (NumberFormatException e) {
-
-                        }
+                        } catch (NumberFormatException e) { }
                     editor.putInt(tagname, myval);
                 } else
                     editor.putString(tagname, editText.getText().toString());
