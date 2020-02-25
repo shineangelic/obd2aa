@@ -27,7 +27,7 @@
 
             android:layout_gravity=""
             android:layout_weight="5"
-            android:onClick="togglelayout"
+            android:onClick="toggleLayout"
             android:tag="collapsed"
             app:srcCompat="@drawable/ic_add_black_24dp">
 
@@ -176,7 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="5"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -201,7 +201,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="true"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -226,7 +226,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="true"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -251,7 +251,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="true"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -274,7 +274,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="true"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -300,7 +300,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="true"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -325,7 +325,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="false"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -469,7 +469,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="false"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 
@@ -520,7 +520,7 @@
             android:layout_height="match_parent"
             android:layout_weight="5"
             android:checked="false"
-            android:onClick="checkboxupdater" />
+            android:onClick="checkboxUpdater" />
 
     </LinearLayout>
 

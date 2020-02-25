@@ -178,7 +178,6 @@ public class AppSettings extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        Log.d("OBD2AA", "onPause");
         super.onPause();
         try {
             unbindService(torqueServiceConnection);
@@ -309,7 +308,6 @@ public class AppSettings extends AppCompatActivity {
         list.add(new ItemData(getResources().getString(R.string.e_bg_ffull_fill), R.drawable.e_bg_ffull_fill, 0));
         list.add(new ItemData(getResources().getString(R.string.d_bg_fill_compl), R.drawable.partfill_bg1, 0));
         list.add(new ItemData(getResources().getString(R.string.d_bg_fill_compl), R.drawable.partfill_bg2, 0));
-
 
         style_list.add(new ItemData("Auto", R.drawable.auto, 0));
         style_list.add(new ItemData(getString(R.string.style) + " 1", R.drawable.style_1, 5));
@@ -643,7 +641,7 @@ public class AppSettings extends AppCompatActivity {
             et = custom.findViewById(R.id.custom_bg_path);
             et.setTag("custom_bg_path_" + i);
             et.setText(prefs.getString("custom_bg_path_" + i, ""));
-            et.setOnClickListener(custom_bg_watcher(et));
+            et.setOnClickListener(customBgWatcher(et));
             if (!prefs.getBoolean("use_custom_bg_" + i, false)) {
                 View tmpview = (View) et.getParent();
                 tmpview.setVisibility(View.GONE);
@@ -728,7 +726,7 @@ public class AppSettings extends AppCompatActivity {
             et = custom.findViewById(R.id.custom_needle_path);
             et.setTag("custom_needle_path_" + i);
             et.setText(prefs.getString("custom_needle_path_" + i, ""));
-            et.setOnClickListener(custom_bg_watcher(et));
+            et.setOnClickListener(customBgWatcher(et));
             if (!prefs.getBoolean("use_custom_needle_" + i, false)) {
                 View tmpview = (View) et.getParent();
                 tmpview.setVisibility(View.GONE);
@@ -832,7 +830,7 @@ public class AppSettings extends AppCompatActivity {
         }
     }
 
-    private View.OnClickListener custom_bg_watcher(final EditText et) {
+    private View.OnClickListener customBgWatcher(final EditText et) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -876,7 +874,7 @@ public class AppSettings extends AppCompatActivity {
         };
     }
 
-    public void checkboxupdater(View V) {
+    public void checkboxUpdater(View V) {
         String mytag = (String) V.getTag();
         Log.d("HU", mytag);
         CheckBox cb = (CheckBox) V;
@@ -966,8 +964,7 @@ public class AppSettings extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    public void openpref(MenuItem item) {
-        Log.d("OBD2AA", "Menu Clicked");
+    public void openPref(MenuItem item) {
         canclose = false;
         Intent i = null;
         if (item.getItemId() == R.id.pref_menu)
@@ -982,7 +979,7 @@ public class AppSettings extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void export_settings(MenuItem item) {
+    public void exportSettings(MenuItem item) {
         Map<String, ?> all = prefs.getAll();
         List list = new ArrayList();
         for (Map.Entry<String, ?> entry : all.entrySet()) {
@@ -1027,7 +1024,7 @@ public class AppSettings extends AppCompatActivity {
         }
     }
 
-    public void import_settings(MenuItem item) {
+    public void importSettings(MenuItem item) {
         DialogProperties properties = new DialogProperties();
         properties.selection_mode = DialogConfigs.SINGLE_MODE;
         properties.selection_type = DialogConfigs.FILE_SELECT;
@@ -1114,7 +1111,7 @@ public class AppSettings extends AppCompatActivity {
         startActivity(i);
     }
 
-    public void togglelayout(View view) {
+    public void toggleLayout(View view) {
         LinearLayout l = (LinearLayout) (view.getParent()).getParent();
         ImageButton ib = (ImageButton) view;
         if (view.getTag().toString().equalsIgnoreCase("collapsed")) {
@@ -1128,7 +1125,7 @@ public class AppSettings extends AppCompatActivity {
         }
     }
 
-    public void showDownload_comp_message(int type) {
+    public void showDownloadCompMessage(int type) {
         Message msg = handler.obtainMessage();
         msg.arg1 = type;
         handler.sendMessage(msg);

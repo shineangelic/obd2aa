@@ -57,7 +57,7 @@ public class DownloadHelper {
                     cdbh.copyDataBase(buffer);
                     Log.d("OBD2AA", "Download has been completed!");
                     if (context instanceof AppSettings) {
-                        ((AppSettings) context).showDownload_comp_message(type);
+                        ((AppSettings) context).showDownloadCompMessage(type);
                     }
                 } catch (Exception e) {
                     Log.e("OBD2AA", "exception", e);

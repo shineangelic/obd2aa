@@ -4,28 +4,28 @@
     <item
         android:id="@+id/pref_menu"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:onClick="openpref"
+        android:onClick="openPref"
         android:title="@string/settings" />
 
     <item
         android:id="@+id/speedcam_menu"
         android:icon="@android:drawable/ic_menu_preferences"
-        android:onClick="openpref"
+        android:onClick="openPref"
         android:title="@string/speedcam_settings" />
 
     <item
         android:id="@+id/tpms_menu"
-        android:onClick="openpref"
+        android:onClick="openPref"
         android:title="TPMS" />
 
     <item
         android:id="@+id/exp_item"
-        android:onClick="export_settings"
+        android:onClick="exportSettings"
         android:title="@string/export" />
 
     <item
         android:id="@+id/imp_item"
-        android:onClick="import_settings"
+        android:onClick="importSettings"
         android:title="@string/importmenu" />
 
 </menu>
