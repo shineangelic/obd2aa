@@ -61,9 +61,9 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
 
         final android.support.v7.app.AlertDialog dialog = b.show();
 
-        filterText = (EditText) alertLayout.findViewById(R.id.EditBox);
+        filterText = alertLayout.findViewById(R.id.EditBox);
         filterText.addTextChangedListener(filterTextWatcher);
-        list = (ListView) alertLayout.findViewById(R.id.List);
+        list = alertLayout.findViewById(R.id.List);
         adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, pidlist);
         list.setAdapter(adapter);
 
@@ -91,5 +91,4 @@ public class PIDSearch extends AlertDialog implements View.OnClickListener {
     public void onStop() {
         filterText.removeTextChangedListener(filterTextWatcher);
     }
-
 }
