@@ -278,11 +278,11 @@ public class DrawGauges {
                         newArc.setStrokeWidth(arch_width);
                         newArc.setBottomTextSize((float) (itemwidth / 9.333));
                         if (prefs.getInt("gaugestyle_" + x, 0) == 6) {
-                            newArc.setBackgroundResource(R.drawable.bg1);
+                            newArc.setBackgroundResource(R.drawable.bg1_6);
                             newArc.setShowNeedle(false);
                             newArc.setTextSize((float) (itemwidth / 6.1));
                         } else if (prefs.getInt("gaugestyle_" + x, 0) == 7) {
-                            newArc.setBackgroundResource(R.drawable.bg2);
+                            newArc.setBackgroundResource(R.drawable.bg2_6);
                             newArc.setShowNeedle(false);
                             newArc.setTextSize((float) (itemwidth / 6.1));
                         } else {

@@ -71,7 +71,9 @@ public class ArcProgress extends View {
     private final int min_size;
     protected Paint textPaint;
     protected Paint textScalePaint;
-    Typeface type = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed.ttf");
+    //Typeface type = Typeface.createFromAsset(getContext().getAssets(), "fonts/RobotoCondensed.ttf");
+    Typeface type = getResources().getFont(R.font.djbgetdigital_6g5g);
+
     float[][] scale_pos;
     float[][] scale_num_pos;
     private Paint paint;
@@ -131,10 +133,10 @@ public class ArcProgress extends View {
 
         min_size = (int) ViewUtils.dp2px(getResources(), 100);
         default_text_size = ViewUtils.sp2px(getResources(), 35);
-        default_suffix_text_size = ViewUtils.sp2px(getResources(), 15);
+        default_suffix_text_size = ViewUtils.sp2px(getResources(), 12);
         default_suffix_padding = ViewUtils.dp2px(getResources(), 4);
         default_suffix_text = "%";
-        default_bottom_text_size = ViewUtils.sp2px(getResources(), 10);
+        default_bottom_text_size = ViewUtils.sp2px(getResources(), 8);
         default_stroke_width = ViewUtils.dp2px(getResources(), 4);
         default_scale_text_size = ViewUtils.sp2px(getResources(), 12);
 
@@ -737,7 +739,10 @@ public class ArcProgress extends View {
                 textPaint.setTextSize(bottomTextSize);
                 bottomTextHeight = textPaint.measureText(getBottomText());
                 bottomTextBaseline = getHeight() - arcBottomHeight - (textPaint.descent() + textPaint.ascent()) / 2;
-                canvas.drawText(getBottomText(), (getWidth() - textPaint.measureText(getBottomText())) / 2.0f, bottomTextBaseline, textPaint);
+                if (getGaugestyle() == 0 && !showArc)
+                    canvas.drawText(getBottomText(), (getWidth() - textPaint.measureText(getBottomText())) / 2, bottomTextBaseline, textPaint);
+                else
+                    canvas.drawText(getBottomText(), (getWidth() * .9f - textPaint.measureText(getBottomText())), bottomTextBaseline, textPaint);
             }
         }
 
@@ -776,7 +781,8 @@ public class ArcProgress extends View {
                     textPaint.setColor(Color.WHITE);
                     //Log.d("OBD2AA",value+ " height is: "+ getHeight() + "Bottom text height: " + bottomTextHeight + " bottom text bounds: "+ textBounds.top + " bottom value baseline: " + bottomTextBaseline);
                     textPaint.setTextSize((float) (getBottomTextSize() * 1.8));
-                    canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f, bottomTextHeight + getHeight() / 13, textPaint);
+                    canvas.drawText(value, (getWidth() * .9f - textPaint.measureText(value)), bottomTextHeight, textPaint);
+                    //MAURI canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f, bottomTextHeight + getHeight() / 13, textPaint);
                     //canvas.drawText(value, (getWidth() - textPaint.measureText(value)) / 2.0f,  (getWidth() - textPaint.measureText(value)) / 2.0f, textPaint);
                 }
 
