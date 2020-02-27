@@ -1,17 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "27.0.2"
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
+
     defaultConfig {
-        applicationId "uk.co.boconi.emil.obd2aa"
+        applicationId 'uk.co.boconi.emil.obd2aa'
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 35
-        versionName "2.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
+        versionName '2.0'
     }
+
     lintOptions {
         disable 'MissingTranslation'
     }
@@ -24,21 +24,18 @@ android {
     }
 }
 
-
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile 'com.android.support:support-v4:25.4.0'
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.google.android.gms:play-services-location:11.0.4'
-    compile 'com.google.code.gson:gson:2.8.0'
-    compile 'com.github.angads25:filepicker:1.1.1'
-    compile 'com.google.maps.android:android-maps-utils:0.5+'
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'me.priyesh:chroma:1.0.2'
-    compile files('src/main/lib/clean.jar')
+    implementation files('src/main/lib/clean.jar')
+
+    implementation 'com.android.support:support-v4:28.0.0'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    implementation 'com.google.android.gms:play-services-location:11.0.4'
+    implementation 'com.google.android.gms:play-services-maps:11.0.4'
+    implementation 'com.google.maps.android:android-maps-utils:0.5+'
+
+    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.github.angads25:filepicker:1.1.1'
+    implementation 'me.priyesh:chroma:1.0.2'
 }

@@ -2,84 +2,85 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:title="@string/settings">
 
-    <PreferenceCategory
-        android:title="@string/generalsettings">
+    <PreferenceCategory android:title="@string/generalsettings">
 
     <CheckBoxPreference android:title="@string/pulling"
         android:key="alternativepulling"
         android:defaultValue="false"
+        android:summary="@string/alternativepulling_desc"
         />
 
     <CheckBoxPreference android:title="@string/debugging"
         android:key="debugging"
         android:defaultValue="false"/>
 
-    <CheckBoxPreference android:title="@string/autostart"
-        android:defaultValue="true"
-        android:key="autostart"
-        />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="autostart"
+            android:title="@string/autostart" />
 
-       <CheckBoxPreference android:title="@string/fartkontrol"
-        android:defaultValue="true"
-        android:key="fartkontrol"
-        />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="fartkontrol"
+            android:summary="@string/fartkontrol_desc"
+            android:title="@string/fartkontrol" />
 
-     <CheckBoxPreference android:title="@string/daynight"
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="daynight"
             android:summary="@string/daynight_desc"
-            />
-        <CheckBoxPreference android:title="@string/custom_bg"
+            android:title="@string/daynight" />
+        <CheckBoxPreference
             android:defaultValue="false"
-            android:key="custombg"/>
+            android:key="custombg"
+            android:title="@string/custom_bg" />
         <Preference
-            android:title="@string/bg_path"
+            android:dependency="custombg"
             android:key="custom_bg_path"
 
-            android:dependency="custombg"
-            />
+            android:title="@string/bg_path" />
 
-        <CheckBoxPreference android:title="@string/demo"
+        <CheckBoxPreference
             android:defaultValue="false"
             android:key="demomode"
             android:summary="@string/demo_summary"
-            />
+            android:title="@string/demo" />
 
-</PreferenceCategory>
+    </PreferenceCategory>
 
-    <PreferenceCategory  android:title="@string/PIDAlarm">
+    <PreferenceCategory android:title="@string/PIDAlarm">
 
-        <CheckBoxPreference android:title="@string/fuel_mon_tit"
-        android:defaultValue="true"
-        android:key="monitorfuel"
-         />
-    <ListPreference
-        android:title="@string/fuel_mon_tit_picker"
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="monitorfuel"
+            android:title="@string/fuel_mon_tit" />
+        <ListPreference
+            android:defaultValue="ff126b,0"
 
-        android:dependency="monitorfuel"
-        android:summary="@string/fuel_mon_desc"
-        android:key="watch_fuel"
-        android:inputType="number"
-        android:numeric="integer"
-        android:entries="@array/fuelpids"
-        android:entryValues="@array/fuelvalue"
-        android:defaultValue="ff126b,0"/>
+            android:dependency="monitorfuel"
+            android:entries="@array/fuelpids"
+            android:entryValues="@array/fuelvalue"
+            android:inputType="number"
+            android:key="watch_fuel"
+            android:numeric="integer"
+            android:summary="@string/fuel_mon_desc"
+            android:title="@string/fuel_mon_tit_picker" />
 
-        <CheckBoxPreference android:title="@string/coolant_mon_pid_tit"
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="monitorcoolant"
             android:summary="@string/coolant_mon_pid_desc"
-            />
+            android:title="@string/coolant_mon_pid_tit" />
 
         <ListPreference
-            android:title="@string/fuel_mon_tit_picker"
+            android:defaultValue="05,0"
 
             android:dependency="monitorcoolant"
-            android:key="coolant_pid"
-            android:numeric="integer"
             android:entries="@array/oilpids"
             android:entryValues="@array/coolantvalue"
-            android:defaultValue="05,0"/>
+            android:key="coolant_pid"
+            android:numeric="integer"
+            android:title="@string/fuel_mon_tit_picker" />
 
         <EditTextPreference
             android:defaultValue="80"
@@ -90,5 +91,6 @@
             android:summary="@string/temp_desc"
             android:title="@string/temp" />
 
-</PreferenceCategory>
+    </PreferenceCategory>
+
 </PreferenceScreen>
